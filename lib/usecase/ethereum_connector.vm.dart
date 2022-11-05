@@ -27,7 +27,15 @@ final connectionStateProvider =
   );
 });
 
-final myWalletAddressProvider = StateProvider<EthereumAddress?>((_) => null);
+final myWalletAddressProvider = Provider<EthereumAddress?>((ref) {
+  final connectionState = ref.watch(connectionStateProvider);
+  if (connectionState == WalletConnectionState.connected) {
+    final hex = ref.read(connectionStateProvider.notifier).connector.address;
+    return EthereumAddress.fromHex(hex);
+  } else {
+    return null;
+  }
+});
 final isWalletConnectedProvider = Provider<bool>((ref) {
   return ref.watch(myWalletAddressProvider) != null;
 });
@@ -59,9 +67,6 @@ class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {
         logger.info('Session connected: $session');
         state = WalletConnectionState.connected;
         logger.info('Wallet address: ${session.accounts.first}');
-        ref
-            .read(myWalletAddressProvider.notifier)
-            .update((state) => EthereumAddress.fromHex(connector.address));
         await Future<void>.delayed(Duration.zero);
         onConnected?.call();
       } else {
@@ -75,7 +80,6 @@ class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {
   }
 
   Future<void> disconnect() async {
-    ref.read(myWalletAddressProvider.notifier).update((state) => null);
     state = WalletConnectionState.disconnected;
     connector = EthereumConnector();
   }
