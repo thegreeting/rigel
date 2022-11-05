@@ -123,7 +123,9 @@ class HomePage extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.create),
-        onPressed: () {},
+        onPressed: () {
+          context.push('/select_greeting_word');
+        },
       ),
     );
   }
