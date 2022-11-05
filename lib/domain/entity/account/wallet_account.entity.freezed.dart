@@ -164,14 +164,15 @@ class __$$_WalletAccountCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_WalletAccount implements _WalletAccount {
+class _$_WalletAccount extends _WalletAccount {
   const _$_WalletAccount(
       {required this.id,
       required this.name,
       this.description,
       this.url,
       this.image,
-      this.nameForAvatar});
+      this.nameForAvatar})
+      : super._();
 
   factory _$_WalletAccount.fromJson(Map<String, dynamic> json) =>
       _$$_WalletAccountFromJson(json);
@@ -230,7 +231,7 @@ class _$_WalletAccount implements _WalletAccount {
   }
 }
 
-abstract class _WalletAccount implements WalletAccount {
+abstract class _WalletAccount extends WalletAccount {
   const factory _WalletAccount(
       {required final String id,
       required final String name,
@@ -238,6 +239,7 @@ abstract class _WalletAccount implements WalletAccount {
       final String? url,
       final String? image,
       final String? nameForAvatar}) = _$_WalletAccount;
+  const _WalletAccount._() : super._();
 
   factory _WalletAccount.fromJson(Map<String, dynamic> json) =
       _$_WalletAccount.fromJson;

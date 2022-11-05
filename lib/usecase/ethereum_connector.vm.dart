@@ -2,7 +2,9 @@ import 'package:altair/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
+import 'package:web3dart/web3dart.dart';
 
+import '../domain/entity/account/wallet_account.entity.dart';
 import '../domain/state/connection.state.dart';
 import '../interface_adapter/repository/ethereum_connector.dart';
 import '../interface_adapter/repository/greeting.repository.dart';
@@ -25,9 +27,16 @@ final connectionStateProvider =
   );
 });
 
-final myWalletAddressProvider = StateProvider<String?>((_) => null);
+final myWalletAddressProvider = StateProvider<EthereumAddress?>((_) => null);
 final isWalletConnectedProvider = Provider<bool>((ref) {
   return ref.watch(myWalletAddressProvider) != null;
+});
+final myWalletAccountProvider = Provider<WalletAccount?>((ref) {
+  final address = ref.watch(myWalletAddressProvider);
+  if (address == null) {
+    return null;
+  }
+  return WalletAccount.fromWalletAddress(address);
 });
 
 class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {
@@ -37,7 +46,7 @@ class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {
   ) : super(WalletConnectionState.disconnected);
 
   final Ref ref;
-  final EthereumConnector connector;
+  EthereumConnector connector;
 
   Future<void> connect({
     required Future<SessionStatus?> Function(EthereumConnector connector) onCallConnect,
@@ -50,7 +59,9 @@ class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {
         logger.info('Session connected: $session');
         state = WalletConnectionState.connected;
         logger.info('Wallet address: ${session.accounts.first}');
-        ref.read(myWalletAddressProvider.notifier).update((state) => connector.address);
+        ref
+            .read(myWalletAddressProvider.notifier)
+            .update((state) => EthereumAddress.fromHex(connector.address));
         await Future<void>.delayed(Duration.zero);
         onConnected?.call();
       } else {
@@ -64,6 +75,8 @@ class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {
   }
 
   Future<void> disconnect() async {
+    ref.read(myWalletAddressProvider.notifier).update((state) => null);
     state = WalletConnectionState.disconnected;
+    connector = EthereumConnector();
   }
 }

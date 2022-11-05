@@ -1,5 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
+// ignore_for_file: type=lint, implicit_dynamic_parameter, implicit_dynamic_type, implicit_dynamic_method, strict_raw_type, unnecessary_cast, mixin_inherits_from_not_object
+
 part of 'wallet_account.entity.dart';
 
 // **************************************************************************
@@ -13,7 +15,7 @@ _$_WalletAccount _$$_WalletAccountFromJson(Map<String, dynamic> json) =>
       description: json['description'] as String?,
       url: json['url'] as String?,
       image: json['image'] as String?,
-      nameForAvatar: json['nameForAvatar'] as String?,
+      nameForAvatar: json['name_for_avatar'] as String?,
     );
 
 Map<String, dynamic> _$$_WalletAccountToJson(_$_WalletAccount instance) =>
@@ -23,5 +25,5 @@ Map<String, dynamic> _$$_WalletAccountToJson(_$_WalletAccount instance) =>
       'description': instance.description,
       'url': instance.url,
       'image': instance.image,
-      'nameForAvatar': instance.nameForAvatar,
+      'name_for_avatar': instance.nameForAvatar,
     };

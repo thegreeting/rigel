@@ -1,4 +1,6 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:altair/application/config/color_scheme.dart';
+import 'package:altair/presentation/atom/avatar.dart';
 import 'package:altair/presentation/atom/caption_text.dart';
 import 'package:altair/presentation/molecule/exception_info.dart';
 import 'package:altair/presentation/molecule/loading_info.dart';
@@ -7,8 +9,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../usecase/campaign.vm.dart';
+import '../../usecase/ethereum_connector.vm.dart';
 import '../atom/title_text.dart';
 
 class HomePage extends ConsumerWidget {
@@ -17,6 +21,7 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final campaignAsyncValue = ref.watch(currentCampaignProvider);
+    final myWalletAccount = ref.watch(myWalletAccountProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -29,8 +34,27 @@ class HomePage extends ConsumerWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.person),
-            onPressed: () {},
+            icon: myWalletAccount == null
+                ? const Icon(Icons.person)
+                : SizedBox.square(
+                    dimension: 36,
+                    child: Avatar.fromWalletAccount(myWalletAccount),
+                  ),
+            onPressed: myWalletAccount == null
+                ? null
+                : () async {
+                    final ok = await showOkCancelAlertDialog(
+                      context: context,
+                      title: 'Your Wallet address is',
+                      message: myWalletAccount.id,
+                      okLabel: 'Disconnect',
+                      isDestructiveAction: true,
+                    );
+                    if (ok == OkCancelResult.ok) {
+                      await ref.read(connectionStateProvider.notifier).disconnect();
+                      context.go('/');
+                    }
+                  },
           ),
           const Gap(16),
         ],

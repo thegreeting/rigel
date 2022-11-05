@@ -1,0 +1,25 @@
+targets:
+  $default:
+    builders:
+      source_gen|combining_builder:
+        options:
+          ignore_for_file:
+            - type=lint
+            - implicit_dynamic_parameter
+            - implicit_dynamic_type
+            - implicit_dynamic_method
+            - strict_raw_type
+            - unnecessary_cast
+            - mixin_inherits_from_not_object
+      freezed:
+        generate_for:
+          include:
+            - lib/domain/**entity.dart
+            - lib/interface_adapter/**model.dart
+            - lib/usecase/**state.dart
+      json_serializable:
+        generate_for:
+          include:
+            - lib/**/*.dart
+        options:
+          field_rename: snake
