@@ -1,3 +1,4 @@
+import 'package:altair/application/config/color_scheme.dart';
 import 'package:altair/presentation/atom/caption_text.dart';
 import 'package:altair/presentation/molecule/exception_info.dart';
 import 'package:altair/presentation/molecule/loading_info.dart';
@@ -51,8 +52,12 @@ class HomePage extends ConsumerWidget {
                   return Padding(
                     padding: const EdgeInsets.all(16),
                     child: Card(
+                      elevation: 0,
+                      color: AppPalette.scheme.primaryContainer
+                          .maybeResolve(context)!
+                          .withOpacity(.4),
                       child: Padding(
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.all(32),
                         child: Column(
                           children: [
                             ListTile(
