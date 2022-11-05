@@ -1,3 +1,4 @@
+import 'package:altair/application/config/color_scheme.dart';
 import 'package:flutter/material.dart';
 
 class AltairApp extends StatelessWidget {
@@ -11,9 +12,9 @@ class AltairApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
-        primarySwatch: Colors.green,
+        colorScheme: AppPalette.scheme,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'The Greeting'),
     );
   }
 }
