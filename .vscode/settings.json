@@ -1,3 +1,32 @@
 {
-  "dart.flutterSdkPath": "~/.asdf/installs/flutter/3.3.7-stable"
+  "files.exclude": {
+    "**/.dart_tool": true,
+    "**/.idea": true,
+    "**/*.iml": true,
+  },
+  "[dart]": {
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.rulers": [
+      88
+    ],
+    "editor.selectionHighlight": false,
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.suggestSelection": "first",
+    "editor.tabCompletion": "onlySnippets",
+    "editor.wordBasedSuggestions": false,
+    "editor.defaultFormatter": "Dart-Code.dart-code",
+    "editor.formatOnPaste": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true,
+      "source.organizeImports": false,
+      "source.sortMembers": false,
+    },
+  },
+  "dart.flutterSdkPath": "~/.asdf/installs/flutter/3.3.7-stable",
+  "dart.lineLength": 88,
+  "dart.runPubGetOnPubspecChanges": "always",
+  "cSpell.words": [
+    "Miyazaki"
+  ],
 }
