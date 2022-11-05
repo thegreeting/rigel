@@ -1,5 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import 'greeting_word.entity.dart';
+
 part 'campaign.entity.freezed.dart';
 part 'campaign.entity.g.dart';
 
@@ -15,6 +17,11 @@ class Campaign with _$Campaign {
     // https://schema.org/CreativeWork
     required DateTime startDate,
     required DateTime endDate,
+    // https://schema.org/FinancialProduct
+    required String currency,
+    required BigInt pricePerMessage, // [Wei]
+    // ---
+    required List<GreetingWord> greetingWords,
   }) = _Campaign;
 
   factory Campaign.fromJson(Map<String, dynamic> json) => _$CampaignFromJson(json);

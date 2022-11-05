@@ -13,6 +13,11 @@ _$_Campaign _$$_CampaignFromJson(Map<String, dynamic> json) => _$_Campaign(
       url: json['url'] as String?,
       startDate: DateTime.parse(json['startDate'] as String),
       endDate: DateTime.parse(json['endDate'] as String),
+      currency: json['currency'] as String,
+      pricePerMessage: BigInt.parse(json['pricePerMessage'] as String),
+      greetingWords: (json['greetingWords'] as List<dynamic>)
+          .map((e) => GreetingWord.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$_CampaignToJson(_$_Campaign instance) =>
@@ -23,4 +28,7 @@ Map<String, dynamic> _$$_CampaignToJson(_$_Campaign instance) =>
       'url': instance.url,
       'startDate': instance.startDate.toIso8601String(),
       'endDate': instance.endDate.toIso8601String(),
+      'currency': instance.currency,
+      'pricePerMessage': instance.pricePerMessage.toString(),
+      'greetingWords': instance.greetingWords,
     };

@@ -28,7 +28,12 @@ mixin _$Campaign {
       throw _privateConstructorUsedError; // required ImageObject image, // representative image
 // https://schema.org/CreativeWork
   DateTime get startDate => throw _privateConstructorUsedError;
-  DateTime get endDate => throw _privateConstructorUsedError;
+  DateTime get endDate =>
+      throw _privateConstructorUsedError; // https://schema.org/FinancialProduct
+  String get currency => throw _privateConstructorUsedError;
+  BigInt get pricePerMessage => throw _privateConstructorUsedError; // [Wei]
+// ---
+  List<GreetingWord> get greetingWords => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -47,7 +52,10 @@ abstract class $CampaignCopyWith<$Res> {
       String? description,
       String? url,
       DateTime startDate,
-      DateTime endDate});
+      DateTime endDate,
+      String currency,
+      BigInt pricePerMessage,
+      List<GreetingWord> greetingWords});
 }
 
 /// @nodoc
@@ -69,6 +77,9 @@ class _$CampaignCopyWithImpl<$Res, $Val extends Campaign>
     Object? url = freezed,
     Object? startDate = null,
     Object? endDate = null,
+    Object? currency = null,
+    Object? pricePerMessage = null,
+    Object? greetingWords = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -95,6 +106,18 @@ class _$CampaignCopyWithImpl<$Res, $Val extends Campaign>
           ? _value.endDate
           : endDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      currency: null == currency
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as String,
+      pricePerMessage: null == pricePerMessage
+          ? _value.pricePerMessage
+          : pricePerMessage // ignore: cast_nullable_to_non_nullable
+              as BigInt,
+      greetingWords: null == greetingWords
+          ? _value.greetingWords
+          : greetingWords // ignore: cast_nullable_to_non_nullable
+              as List<GreetingWord>,
     ) as $Val);
   }
 }
@@ -112,7 +135,10 @@ abstract class _$$_CampaignCopyWith<$Res> implements $CampaignCopyWith<$Res> {
       String? description,
       String? url,
       DateTime startDate,
-      DateTime endDate});
+      DateTime endDate,
+      String currency,
+      BigInt pricePerMessage,
+      List<GreetingWord> greetingWords});
 }
 
 /// @nodoc
@@ -132,6 +158,9 @@ class __$$_CampaignCopyWithImpl<$Res>
     Object? url = freezed,
     Object? startDate = null,
     Object? endDate = null,
+    Object? currency = null,
+    Object? pricePerMessage = null,
+    Object? greetingWords = null,
   }) {
     return _then(_$_Campaign(
       id: null == id
@@ -158,6 +187,18 @@ class __$$_CampaignCopyWithImpl<$Res>
           ? _value.endDate
           : endDate // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      currency: null == currency
+          ? _value.currency
+          : currency // ignore: cast_nullable_to_non_nullable
+              as String,
+      pricePerMessage: null == pricePerMessage
+          ? _value.pricePerMessage
+          : pricePerMessage // ignore: cast_nullable_to_non_nullable
+              as BigInt,
+      greetingWords: null == greetingWords
+          ? _value._greetingWords
+          : greetingWords // ignore: cast_nullable_to_non_nullable
+              as List<GreetingWord>,
     ));
   }
 }
@@ -171,7 +212,11 @@ class _$_Campaign implements _Campaign {
       this.description,
       this.url,
       required this.startDate,
-      required this.endDate});
+      required this.endDate,
+      required this.currency,
+      required this.pricePerMessage,
+      required final List<GreetingWord> greetingWords})
+      : _greetingWords = greetingWords;
 
   factory _$_Campaign.fromJson(Map<String, dynamic> json) =>
       _$$_CampaignFromJson(json);
@@ -191,10 +236,25 @@ class _$_Campaign implements _Campaign {
   final DateTime startDate;
   @override
   final DateTime endDate;
+// https://schema.org/FinancialProduct
+  @override
+  final String currency;
+  @override
+  final BigInt pricePerMessage;
+// [Wei]
+// ---
+  final List<GreetingWord> _greetingWords;
+// [Wei]
+// ---
+  @override
+  List<GreetingWord> get greetingWords {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_greetingWords);
+  }
 
   @override
   String toString() {
-    return 'Campaign(id: $id, name: $name, description: $description, url: $url, startDate: $startDate, endDate: $endDate)';
+    return 'Campaign(id: $id, name: $name, description: $description, url: $url, startDate: $startDate, endDate: $endDate, currency: $currency, pricePerMessage: $pricePerMessage, greetingWords: $greetingWords)';
   }
 
   @override
@@ -209,13 +269,28 @@ class _$_Campaign implements _Campaign {
             (identical(other.url, url) || other.url == url) &&
             (identical(other.startDate, startDate) ||
                 other.startDate == startDate) &&
-            (identical(other.endDate, endDate) || other.endDate == endDate));
+            (identical(other.endDate, endDate) || other.endDate == endDate) &&
+            (identical(other.currency, currency) ||
+                other.currency == currency) &&
+            (identical(other.pricePerMessage, pricePerMessage) ||
+                other.pricePerMessage == pricePerMessage) &&
+            const DeepCollectionEquality()
+                .equals(other._greetingWords, _greetingWords));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, name, description, url, startDate, endDate);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      name,
+      description,
+      url,
+      startDate,
+      endDate,
+      currency,
+      pricePerMessage,
+      const DeepCollectionEquality().hash(_greetingWords));
 
   @JsonKey(ignore: true)
   @override
@@ -238,7 +313,10 @@ abstract class _Campaign implements Campaign {
       final String? description,
       final String? url,
       required final DateTime startDate,
-      required final DateTime endDate}) = _$_Campaign;
+      required final DateTime endDate,
+      required final String currency,
+      required final BigInt pricePerMessage,
+      required final List<GreetingWord> greetingWords}) = _$_Campaign;
 
   factory _Campaign.fromJson(Map<String, dynamic> json) = _$_Campaign.fromJson;
 
@@ -255,6 +333,13 @@ abstract class _Campaign implements Campaign {
   DateTime get startDate;
   @override
   DateTime get endDate;
+  @override // https://schema.org/FinancialProduct
+  String get currency;
+  @override
+  BigInt get pricePerMessage;
+  @override // [Wei]
+// ---
+  List<GreetingWord> get greetingWords;
   @override
   @JsonKey(ignore: true)
   _$$_CampaignCopyWith<_$_Campaign> get copyWith =>
