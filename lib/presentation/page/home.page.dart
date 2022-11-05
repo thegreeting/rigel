@@ -1,3 +1,5 @@
+import 'package:altair/presentation/molecule/exception_info.dart';
+import 'package:altair/presentation/molecule/loading_info.dart';
 import 'package:altair/usecase/message.vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -43,8 +45,8 @@ class HomePage extends ConsumerWidget {
             },
           );
         },
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stackTrace) => Center(child: Text(error.toString())),
+        loading: LoadingInfo.new,
+        error: RecoverableExceptionInfo.withStackTrace,
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.create),
