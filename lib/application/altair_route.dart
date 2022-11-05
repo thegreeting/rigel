@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../presentation/page/home.page.dart';
@@ -12,7 +13,10 @@ final router = GoRouter(
       routes: [
         GoRoute(
           path: 'home',
-          builder: (context, state) => const HomePage(),
+          pageBuilder: (context, state) => const MaterialPage<HomePage>(
+            child: HomePage(),
+            fullscreenDialog: true,
+          ),
         ),
       ],
     ),
