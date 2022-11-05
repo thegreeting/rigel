@@ -43,6 +43,8 @@ class SimpleInfo extends StatelessWidget {
               ),
             ),
             textAlign: enableCentering ? TextAlign.center : TextAlign.start,
+            maxLines: 10,
+            overflow: TextOverflow.fade,
           ),
         ],
       ),

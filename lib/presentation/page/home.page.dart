@@ -69,53 +69,64 @@ class HomePage extends ConsumerWidget {
                   child: Text('No messages yet'),
                 );
               }
-              return ListView.builder(
-                itemCount: messages.length,
-                itemBuilder: (context, index) {
-                  final message = messages[index];
-                  return Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Card(
-                      elevation: 0,
-                      color: AppPalette.scheme.primaryContainer
-                          .maybeResolve(context)!
-                          .withOpacity(.4),
-                      child: Padding(
-                        padding: const EdgeInsets.all(32),
-                        child: Column(
-                          children: [
-                            ListTile(
-                              title: TitleText(message.greetingWord),
-                              subtitle: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const CaptionText('from: '),
-                                  Expanded(
-                                    child: Text(
-                                      message.sender.name,
-                                      maxLines: 2,
+              return RefreshIndicator(
+                onRefresh: () async {
+                  return ref.refresh(messagesProviders(campaign.id));
+                },
+                child: ListView.builder(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  itemCount: messages.length,
+                  itemBuilder: (context, index) {
+                    final message = messages[index];
+                    return Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Card(
+                        elevation: 0,
+                        color: AppPalette.scheme.primaryContainer
+                            .maybeResolve(context)!
+                            .withOpacity(.4),
+                        child: Padding(
+                          padding: const EdgeInsets.all(32),
+                          child: Column(
+                            children: [
+                              ListTile(
+                                title:
+                                    TitleText('#${message.id} ${message.greetingWord}'),
+                                subtitle: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const CaptionText('from: '),
+                                    Expanded(
+                                      child: Text(
+                                        message.sender.name,
+                                        maxLines: 2,
+                                      ),
                                     ),
-                                  ),
+                                  ],
+                                ),
+                              ),
+                              const Gap(4),
+                              Row(
+                                children: [
+                                  const CaptionText('Resonanced?: '),
+                                  Text(message.isResonanced.toString()),
                                 ],
                               ),
-                            ),
-                            const Gap(4),
-                            Row(
-                              children: [
-                                const CaptionText('Resonanced?: '),
-                                Text(message.isResonanced.toString()),
-                              ],
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               );
             },
             loading: LoadingInfo.new,
-            error: RecoverableExceptionInfo.withStackTrace,
+            error: (error, stackTrace) => RecoverableExceptionInfo.withStackTrace(
+              error,
+              stackTrace,
+              onPressed: () => ref.refresh(messagesProviders(campaign.id)),
+            ),
           );
         },
         loading: () => const LoadingInfo(message: 'Loading campaign...'),

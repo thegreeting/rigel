@@ -41,6 +41,7 @@ class GreetingRepository {
   }
 
   Future<Message> getMessageById(String campaignId, int id) async {
+    logger.info('🙋 getMessageById: $id of campaign: $campaignId');
     final messageRaws = await (() async {
       try {
         return connector.callContract(
@@ -57,6 +58,9 @@ class GreetingRepository {
           throw NotFound();
         }
         throw NetworkException();
+        // ignore: avoid_catches_without_on_clauses
+      } catch (e) {
+        throw NetworkException(failureReason: e.toString());
       }
     })();
     if (messageRaws.isEmpty) {
