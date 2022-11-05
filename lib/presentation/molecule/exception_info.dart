@@ -23,25 +23,27 @@ class ExceptionInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 280),
-          child: SimpleInfo(
-            title: title,
-            message: message,
-          ),
-        ),
-        const SizedBox(height: 16),
-        if (onPressed != null)
-          PlatformElevatedButton(
-            onPressed: onPressed,
-            child: Text(
-              buttonText ?? 'Retry',
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 300),
+            child: SimpleInfo(
+              title: title,
+              message: message,
             ),
           ),
-      ],
+          const SizedBox(height: 16),
+          if (onPressed != null)
+            PlatformElevatedButton(
+              onPressed: onPressed,
+              child: Text(
+                buttonText ?? 'Retry',
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

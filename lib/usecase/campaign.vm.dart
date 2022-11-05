@@ -3,7 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/entity/campaign/campaign.entity.dart';
 
-final currentCampaignProvider = Provider<Campaign>((ref) {
+final currentCampaignProvider = FutureProvider<Campaign>((ref) async {
+  // final connector = ref.watch(ethereumConnectorProvider);
+  // final wordsRaw = await connector.callContract(
+  //   greetingCampaignContract,
+  //   'getMessageIds',
+  // );
+
   return Campaign(
     id: 'network.greeting.ETHSF22',
     name: 'ETH SF',

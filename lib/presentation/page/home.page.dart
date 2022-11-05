@@ -1,22 +1,29 @@
+import 'package:altair/presentation/atom/caption_text.dart';
 import 'package:altair/presentation/molecule/exception_info.dart';
 import 'package:altair/presentation/molecule/loading_info.dart';
 import 'package:altair/usecase/message.vm.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 
 import '../../usecase/campaign.vm.dart';
+import '../atom/title_text.dart';
 
 class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final campaign = ref.watch(currentCampaignProvider);
-    final messagesAsyncValue = ref.watch(messagesProviders(campaign.id));
+    final campaignAsyncValue = ref.watch(currentCampaignProvider);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text(campaign.name),
+        title: campaignAsyncValue.when(
+          data: (campaign) => Text(campaign.name),
+          loading: PlatformCircularProgressIndicator.new,
+          error: (_, __) => const Text('Error'),
+        ),
         automaticallyImplyLeading: false,
         centerTitle: true,
         actions: [
@@ -27,25 +34,62 @@ class HomePage extends ConsumerWidget {
           const Gap(16),
         ],
       ),
-      body: messagesAsyncValue.when(
-        data: (messages) {
-          if (messages.isEmpty) {
-            return const Center(
-              child: Text('No messages yet'),
-            );
-          }
-          return ListView.builder(
-            itemCount: messages.length,
-            itemBuilder: (context, index) {
-              final message = messages[index];
-              return ListTile(
-                title: Text(message.sender.toString()),
-                subtitle: Text(message.dateSent.toString()),
+      body: campaignAsyncValue.when(
+        data: (campaign) {
+          final messagesAsyncValue = ref.watch(messagesProviders(campaign.id));
+          return messagesAsyncValue.when(
+            data: (messages) {
+              if (messages.isEmpty) {
+                return const Center(
+                  child: Text('No messages yet'),
+                );
+              }
+              return ListView.builder(
+                itemCount: messages.length,
+                itemBuilder: (context, index) {
+                  final message = messages[index];
+                  return Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              title: TitleText(message.greetingWord),
+                              subtitle: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const CaptionText('from: '),
+                                  Expanded(
+                                    child: Text(
+                                      message.sender.name,
+                                      maxLines: 2,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const Gap(4),
+                            Row(
+                              children: [
+                                const CaptionText('Resonanced?: '),
+                                Text(message.isResonanced.toString()),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  );
+                },
               );
             },
+            loading: LoadingInfo.new,
+            error: RecoverableExceptionInfo.withStackTrace,
           );
         },
-        loading: LoadingInfo.new,
+        loading: () => const LoadingInfo(message: 'Loading campaign...'),
         error: RecoverableExceptionInfo.withStackTrace,
       ),
       floatingActionButton: FloatingActionButton(

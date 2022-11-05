@@ -5,8 +5,14 @@ part 'message.entity.freezed.dart';
 part 'message.entity.g.dart';
 
 enum MessageStatus {
-  waitingForReply,
-  replied,
+  waitingForReply(0),
+  replied(1);
+
+  const MessageStatus(this.value);
+  factory MessageStatus.fromValue(int value) {
+    return MessageStatus.values.firstWhere((e) => e.value == value);
+  }
+  final int value;
 }
 
 @freezed
