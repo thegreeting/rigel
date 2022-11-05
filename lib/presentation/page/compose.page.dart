@@ -16,9 +16,7 @@ class ComposePage extends ConsumerWidget {
           ),
         ],
       ),
-      body: ListView(
-        children: const [],
-      ),
+      body: ListView(),
     );
   }
 }

@@ -10,7 +10,7 @@ final messagesProviders = StateNotifierProvider.family<PaginationNotifier<Messag
     fetchNextItems: (_) async {
       // TODO(knaoe): retrieve my message ids from campaign
       final repo = ref.watch(greetingRepositoryProvider);
-      final message = await repo.getMessageById('1');
+      final message = await repo.getMessageById(campaignId, 0);
 
       return PaginatedFetchResult(
         entities: [

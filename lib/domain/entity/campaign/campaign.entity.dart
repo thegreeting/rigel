@@ -26,3 +26,13 @@ class Campaign with _$Campaign {
 
   factory Campaign.fromJson(Map<String, dynamic> json) => _$CampaignFromJson(json);
 }
+
+class ShallowCampaign {
+  const ShallowCampaign({
+    required this.id,
+    required this.name,
+  });
+
+  final String id;
+  final String name;
+}

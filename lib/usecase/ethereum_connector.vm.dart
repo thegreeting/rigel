@@ -7,15 +7,32 @@ import 'package:web3dart/web3dart.dart';
 import '../domain/entity/account/wallet_account.entity.dart';
 import '../domain/state/connection.state.dart';
 import '../interface_adapter/repository/ethereum_connector.dart';
+import '../interface_adapter/repository/greeting.contract.dart';
 import '../interface_adapter/repository/greeting.repository.dart';
 
 final ethereumConnectorProvider = Provider<EthereumConnector>((ref) {
   return EthereumConnector();
 });
 
+final theGreetingFacadeContractAddressProvider = Provider<EthereumAddress>((ref) {
+  // this is overritten while app startup. see also main.dart
+  return EthereumAddress.fromHex('0x7cD6D292680ba5a776ECA7F062B0eE0c717e6F0A');
+});
+
+final theGreetingFacadeDeployedContractProvider = Provider<DeployedContract>(
+  (ref) {
+    final contractAddress = ref.watch(theGreetingFacadeContractAddressProvider);
+    return DeployedContract(
+      ContractAbi.fromJson(theGreetingContractAbi, 'The Greeting'),
+      contractAddress,
+    );
+  },
+);
+
 final greetingRepositoryProvider = Provider<GreetingRepository>((ref) {
   return GreetingRepository(
     ref.watch(ethereumConnectorProvider),
+    ref.watch(theGreetingFacadeDeployedContractProvider),
   );
 });
 
@@ -83,4 +100,8 @@ class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {
     state = WalletConnectionState.disconnected;
     connector = EthereumConnector();
   }
+}
+
+Future<EthereumAddress> loadTheGreetingFacadeContractAddress() async {
+  return getTheGreetingContractAddressViaProxy(EthereumConnector());
 }

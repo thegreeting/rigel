@@ -1,18 +1,19 @@
 import 'package:altair/domain/entity/campaign/greeting_word.entity.dart';
+import 'package:altair/usecase/ethereum_connector.vm.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/entity/campaign/campaign.entity.dart';
 
 final currentCampaignProvider = FutureProvider<Campaign>((ref) async {
-  // final connector = ref.watch(ethereumConnectorProvider);
-  // final wordsRaw = await connector.callContract(
-  //   greetingCampaignContract,
-  //   'getMessageIds',
-  // );
+  final repository = ref.watch(greetingRepositoryProvider);
+  final campaigns = await repository.getShallowCampaigns();
+
+  // TODO(knaoe): select campaign UI for future work.
+  final firstCampaigns = campaigns.first;
 
   return Campaign(
-    id: 'network.greeting.ETHSF22',
-    name: 'ETH SF',
+    id: firstCampaigns.id,
+    name: firstCampaigns.name,
     startDate: DateTime(2022, 11, 4, 2),
     endDate: DateTime(
       2022,
