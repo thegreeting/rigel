@@ -59,7 +59,7 @@ class WelcomePage extends ConsumerWidget {
             ),
             const Gap(8),
             const CaptionText(
-              'Scan QR code with Metamask mobile\n(sendTransaction might fail in others)',
+              'Scan QR code with MetaMask mobile\n(sendTransaction might fail in others)',
               textAlign: TextAlign.center,
             ),
           ],
