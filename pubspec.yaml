@@ -65,11 +65,15 @@ flutter_icons:
   ios: true
   image_path: "assets/icon/theGreetingLauncher.png"
   min_sdk_android: 21
+  remove_alpha_ios: true
   web:
     generate: true
     image_path: "assets/icon/theGreetingLauncher.png"
     background_color: "#FFFFFF"
     theme_color: "#31C48D"
+  macos:
+    generate: true
+    image_path: "assets/icon/theGreetingLauncher.png"
 
 # The following section is specific to Flutter packages.
 flutter:
