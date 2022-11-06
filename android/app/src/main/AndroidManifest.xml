@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="network.greeting.altair">
    <application
-        android:label="altair"
+        android:label="Greeting"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity
