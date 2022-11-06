@@ -3,7 +3,9 @@ import 'package:altair/presentation/atom/title_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
+import '../../usecase/ethereum_connector.vm.dart';
 import '../../usecase/greeting_word.vm.dart';
 
 class ComposePage extends ConsumerWidget {
@@ -16,9 +18,16 @@ class ComposePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final myWalletAccount = ref.watch(myWalletAccountProvider);
     final greetingWordAsyncValue = ref.watch(
       selectedGreetingWordStateNotifierProvider(campaignId),
     );
+
+    if (myWalletAccount == null) {
+      context.go('/');
+      return const Placeholder();
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Write message'),

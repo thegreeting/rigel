@@ -29,6 +29,11 @@ class HomePage extends ConsumerWidget {
     final myWalletAccount = ref.watch(myWalletAccountProvider);
     final messageType = ref.watch(currentMessageTypeProvider);
 
+    if (myWalletAccount == null) {
+      context.go('/');
+      return const Placeholder();
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: campaignAsyncValue.when(
