@@ -86,6 +86,12 @@ class HomePage extends ConsumerWidget {
         ),
         automaticallyImplyLeading: false,
         actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () async {
+              return ref.refresh(messagesProvider);
+            },
+          ),
           EthereumAddressText(myWalletAccount.id),
           IconButton(
             icon: SizedBox.square(
