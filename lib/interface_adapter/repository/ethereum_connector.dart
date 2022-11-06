@@ -169,6 +169,7 @@ class EthereumConnector implements WalletConnector {
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       logger.severe('Error: $e');
+      rethrow;
     }
   }
 

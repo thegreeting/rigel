@@ -130,6 +130,43 @@ class GreetingRepository {
     );
   }
 
+  Future<EtherAmount> getPricePerMessageInWei(String campaignId) async {
+    logger.info('getPricePerMessageInEther');
+    final result = await _interactWithCallContractGuard(
+      () => connector.callContract(
+        contract,
+        'getPricePerMessageInWei',
+        params: <dynamic>[
+          EthereumAddress.fromHex(campaignId),
+        ],
+      ),
+    );
+
+    final price = result[0] as BigInt;
+    return EtherAmount.inWei(price);
+  }
+
+  Future<void> sendMessage(
+    String campaignId, {
+    required String receiverId,
+    String messageUrl = '',
+    EtherAmount? amount,
+  }) async {
+    logger.info('sendMessage: $campaignId, $receiverId, $messageUrl');
+    await _interactWithSendTransactionGuard(
+      () => connector.sendTransactionViaContract(
+        contract,
+        'send',
+        value: amount,
+        params: <dynamic>[
+          EthereumAddress.fromHex(campaignId),
+          EthereumAddress.fromHex(receiverId),
+          messageUrl,
+        ],
+      ),
+    );
+  }
+
   Future<List<BigInt>> getMessageIds(
     String campaignId,
     String accountId,
@@ -222,6 +259,9 @@ class GreetingRepository {
       throw NetworkException(failureReason: e.toString());
     } on RecoverableException catch (e) {
       logger.warning(e.toString());
+      rethrow;
+      // ignore: avoid_catches_without_on_clauses
+    } catch (_) {
       rethrow;
     }
   }
