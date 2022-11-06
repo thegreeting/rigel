@@ -1,5 +1,6 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:altair/application/config/color_scheme.dart';
+import 'package:altair/domain/entity/campaign/campaign.entity.dart';
 import 'package:altair/interface_adapter/repository/greeting.repository.dart';
 import 'package:altair/presentation/atom/avatar.dart';
 import 'package:altair/presentation/atom/caption_text.dart';
@@ -56,7 +57,33 @@ class HomePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(campaign.name),
+        title: TextButton(
+          child: TitleText(campaign.name),
+          onPressed: () async {
+            final campaigns = await ref.watch(campaignsProvider.future);
+            final selectedCampaign = await showConfirmationDialog<ShallowCampaign>(
+              context: context,
+              title: 'Select a campaign',
+              actions: [
+                ...campaigns.map(
+                  (e) => AlertDialogAction(
+                    key: e,
+                    label: e.name,
+                  ),
+                )
+              ],
+            );
+            if (campaign != selectedCampaign) {
+              ref
+                  .read(currentCampaignProvider.notifier)
+                  .update((state) => selectedCampaign);
+              await showOkAlertDialog(
+                context: context,
+                message: 'Campaign switched to ${selectedCampaign!.name}',
+              );
+            }
+          },
+        ),
         automaticallyImplyLeading: false,
         actions: [
           EthereumAddressText(myWalletAccount.id),
