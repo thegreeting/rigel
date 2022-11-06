@@ -19,7 +19,7 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
       - name: Disable CORS
-        run: dart pub global activate flutter_cors
+        run: dart pub global activate flutter_cors && fluttercors --disable
       - name: Build
         run: flutter build web
       - uses: FirebaseExtended/action-hosting-deploy@v0
