@@ -1,10 +1,13 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:altair/application/config/color_scheme.dart';
+import 'package:altair/interface_adapter/repository/greeting.repository.dart';
 import 'package:altair/presentation/atom/avatar.dart';
 import 'package:altair/presentation/atom/caption_text.dart';
+import 'package:altair/presentation/atom/simple_info.dart';
 import 'package:altair/presentation/molecule/exception_info.dart';
 import 'package:altair/presentation/molecule/loading_info.dart';
 import 'package:altair/usecase/message.vm.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,6 +25,7 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final campaignAsyncValue = ref.watch(currentCampaignProvider);
     final myWalletAccount = ref.watch(myWalletAccountProvider);
+    final messageType = ref.watch(currentMessageTypeProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -58,20 +62,62 @@ class HomePage extends ConsumerWidget {
           ),
           const Gap(16),
         ],
+        bottom: PreferredSize(
+          preferredSize: const Size.fromHeight(44),
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 16),
+            child: CupertinoSlidingSegmentedControl<MessageType>(
+              groupValue: messageType,
+              children: const {
+                MessageType.incoming: Text('Incoming'),
+                MessageType.sent: Text('Sent'),
+              },
+              onValueChanged: (value) {
+                if (value != null) {
+                  ref
+                      .read(currentMessageTypeProvider.notifier)
+                      .update((state) => value);
+                }
+              },
+            ),
+          ),
+        ),
       ),
       body: campaignAsyncValue.when(
         data: (campaign) {
-          final messagesAsyncValue = ref.watch(messagesProviders(campaign.id));
+          final messageType = ref.watch(currentMessageTypeProvider);
+          final messagesProvider = (() {
+            switch (messageType) {
+              case MessageType.incoming:
+                return incomingMessagesProviders(campaign.id);
+              case MessageType.sent:
+                return sentMessagesProviders(campaign.id);
+            }
+          })();
+          final messagesAsyncValue = ref.watch(messagesProvider);
           return messagesAsyncValue.when(
             data: (messages) {
               if (messages.isEmpty) {
-                return const Center(
-                  child: Text('No messages yet'),
+                return Padding(
+                  padding: const EdgeInsets.all(44),
+                  child: Column(
+                    children: [
+                      const SimpleInfo(
+                        message: 'No messages yet',
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          return ref.refresh(messagesProvider);
+                        },
+                        child: const Text('Reload'),
+                      )
+                    ],
+                  ),
                 );
               }
               return RefreshIndicator(
                 onRefresh: () async {
-                  return ref.refresh(messagesProviders(campaign.id));
+                  return ref.refresh(messagesProvider);
                 },
                 child: ListView.builder(
                   physics: const AlwaysScrollableScrollPhysics(),
@@ -90,8 +136,9 @@ class HomePage extends ConsumerWidget {
                           child: Column(
                             children: [
                               ListTile(
-                                title:
-                                    TitleText('#${message.id} ${message.greetingWord}'),
+                                title: TitleText(
+                                  '#${message.id} ${message.greetingWord}',
+                                ),
                                 subtitle: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -125,7 +172,7 @@ class HomePage extends ConsumerWidget {
             error: (error, stackTrace) => RecoverableExceptionInfo.withStackTrace(
               error,
               stackTrace,
-              onPressed: () => ref.refresh(messagesProviders(campaign.id)),
+              onPressed: () => ref.refresh(incomingMessagesProviders(campaign.id)),
             ),
           );
         },
