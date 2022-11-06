@@ -1,4 +1,5 @@
 import 'package:altair/logger.dart';
+import 'package:ens_dart/ens_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
@@ -13,6 +14,13 @@ import '../interface_adapter/repository/greeting.repository.dart';
 final ethereumConnectorProvider = Provider<EthereumConnector>((ref) {
   return EthereumConnector();
 });
+
+final ensProvider = Provider<Ens>(
+  (ref) {
+    final connector = ref.watch(ethereumConnectorProvider);
+    return initEns(connector);
+  },
+);
 
 final theGreetingFacadeContractAddressProvider = Provider<EthereumAddress>((ref) {
   // this is overritten while app startup. see also main.dart
@@ -103,6 +111,7 @@ class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {
 }
 
 Future<EthereumAddress> loadTheGreetingFacadeContractAddress() async {
-  return getTheGreetingContractAddressByENS(EthereumConnector());
+  final connector = EthereumConnector();
+  return getTheGreetingContractAddressByENS(connector, initEns(connector));
   // return getTheGreetingContractAddressViaProxy(EthereumConnector());
 }

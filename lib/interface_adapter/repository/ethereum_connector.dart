@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:altair/application/config/constant.dart';
 import 'package:altair/logger.dart';
+import 'package:ens_dart/ens_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
@@ -70,7 +71,7 @@ class EthereumConnector implements WalletConnector {
 
   @override
   Future<SessionStatus?> connect(BuildContext context) async {
-    return _connector.connect(context, chainId: 5);
+    return _connector.connect(context, chainId: AppConstant.chainId);
   }
 
   @override
@@ -160,7 +161,7 @@ class EthereumConnector implements WalletConnector {
           ),
           parameters: params,
         ),
-        chainId: 5,
+        chainId: AppConstant.chainId,
       );
       logger.info(result);
       // ignore: avoid_catches_without_on_clauses
@@ -211,4 +212,14 @@ class EthereumConnector implements WalletConnector {
   );
 
   Web3Client get client => _ethereum;
+}
+
+Ens initEns(EthereumConnector connector) {
+  final client = connector.client;
+  const isMainnet = AppConstant.chainId == 1;
+
+  final ensResolverAddress =
+      isMainnet ? null : EthereumAddress.fromHex(AppConstant.goerliEnsResolverAddress);
+  final ens = Ens(client: client, address: ensResolverAddress);
+  return ens;
 }
