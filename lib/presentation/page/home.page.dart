@@ -3,6 +3,7 @@ import 'package:altair/application/config/color_scheme.dart';
 import 'package:altair/interface_adapter/repository/greeting.repository.dart';
 import 'package:altair/presentation/atom/avatar.dart';
 import 'package:altair/presentation/atom/caption_text.dart';
+import 'package:altair/presentation/atom/ethereum_address.dart';
 import 'package:altair/presentation/atom/simple_info.dart';
 import 'package:altair/presentation/molecule/exception_info.dart';
 import 'package:altair/presentation/molecule/loading_info.dart';
@@ -43,8 +44,8 @@ class HomePage extends ConsumerWidget {
           error: (_, __) => const Text('Error'),
         ),
         automaticallyImplyLeading: false,
-        centerTitle: true,
         actions: [
+          EthereumAddressText(myWalletAccount.id),
           IconButton(
             icon: SizedBox.square(
               dimension: 36,

@@ -111,7 +111,16 @@ class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {
 }
 
 Future<EthereumAddress> loadTheGreetingFacadeContractAddress() async {
-  final connector = EthereumConnector();
-  return getTheGreetingContractAddressByENS(connector, initEns(connector));
-  // return getTheGreetingContractAddressViaProxy(EthereumConnector());
+  final ens = initEns(EthereumConnector());
+  return getTheGreetingContractAddressByENS(ens);
+}
+
+Future<EthereumAddress> getAddressWithENSName(String name) async {
+  final ens = initEns(EthereumConnector());
+  return ens.withName(name).getAddress();
+}
+
+Future<String> getENSNameWithAddress(EthereumAddress address) async {
+  final ens = initEns(EthereumConnector());
+  return ens.withAddress(address).getName();
 }

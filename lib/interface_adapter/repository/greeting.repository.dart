@@ -241,16 +241,8 @@ Future<EthereumAddress> getTheGreetingContractAddressViaProxy(
 }
 
 Future<EthereumAddress> getTheGreetingContractAddressByENS(
-  EthereumConnector connector,
   Ens ens,
 ) async {
-  final client = connector.client;
-  final chainId = await client.getChainId();
-  final isMainnet = chainId.toInt() == 1;
-
-  final ensResolverAddress =
-      isMainnet ? null : EthereumAddress.fromHex(AppConstant.goerliEnsResolverAddress);
-  final ens = Ens(client: client, address: ensResolverAddress);
   final address =
       await ens.withName(AppConstant.theGreetingFacadeContractName).getAddress();
 
