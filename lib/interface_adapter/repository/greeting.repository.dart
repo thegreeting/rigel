@@ -254,7 +254,5 @@ Future<EthereumAddress> getTheGreetingContractAddressByENS(
   final address =
       await ens.withName(AppConstant.theGreetingFacadeContractName).getAddress();
 
-  final name =
-      await ens.withAddress('0x76803a3a11398e79FaC41Ad949EC61De2281B586').getName();
   return address;
 }

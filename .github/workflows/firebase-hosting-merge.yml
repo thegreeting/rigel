@@ -21,7 +21,7 @@ jobs:
       - name: Disable CORS
         run: dart pub global activate flutter_cors && fluttercors --disable
       - name: Build
-        run: flutter build web --release
+        run: flutter build web --release --web-renderer html
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
