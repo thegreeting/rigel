@@ -5,9 +5,11 @@ class TitleText extends StatelessWidget {
   const TitleText(
     this.value, {
     super.key,
+    this.style,
   });
 
   final String value;
+  final TextStyle? style;
   @override
   Widget build(BuildContext context) {
     return DefaultTextStyle(
@@ -15,11 +17,11 @@ class TitleText extends StatelessWidget {
         context,
         material: (data) => data.textTheme.titleMedium!,
         cupertino: (data) => data.textTheme.navTitleTextStyle,
-      ),
+      ).merge(style),
       child: Text(
         value,
-        style: const TextStyle(
-          fontSize: 18,
+        style: TextStyle(
+          fontSize: style?.fontSize ?? 18,
           fontWeight: FontWeight.w800,
         ),
       ),
