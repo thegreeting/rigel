@@ -33,3 +33,13 @@ class NeedToSelectGreetingWord extends UserActivityException {
           code: 1,
         );
 }
+
+class InsufficientBalance extends UserActivityException {
+  InsufficientBalance()
+      : super(
+          failureReason: 'Insufficient balance',
+          recoverySuggestion: 'Check your balance and try later.',
+          recoveryOptions: const ['OK'],
+          code: 1,
+        );
+}
