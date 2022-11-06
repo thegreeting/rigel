@@ -23,3 +23,13 @@ class NeedToAuthenticate extends UserActivityException {
           code: 1,
         );
 }
+
+class NeedToSelectGreetingWord extends UserActivityException {
+  NeedToSelectGreetingWord()
+      : super(
+          failureReason: 'Need to select GreetingWord',
+          recoverySuggestion: 'Select your GreetingWord from our list to continue.',
+          recoveryOptions: const ['Continue'],
+          code: 1,
+        );
+}

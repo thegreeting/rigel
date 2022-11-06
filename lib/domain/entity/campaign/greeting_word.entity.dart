@@ -11,7 +11,10 @@ class GreetingWord with _$GreetingWord {
     required String name,
     String? description,
   }) = _GreetingWord;
+  const GreetingWord._();
 
   factory GreetingWord.fromJson(Map<String, dynamic> json) =>
       _$GreetingWordFromJson(json);
+
+  int get index => int.parse(id);
 }

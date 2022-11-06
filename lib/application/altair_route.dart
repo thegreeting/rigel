@@ -21,12 +21,16 @@ final router = GoRouter(
           ),
         ),
         GoRoute(
-          path: 'select_greeting_word',
-          builder: (context, state) => const SelectGreetingWordPage(),
+          path: 'campaigns/:campaignId/select_greeting_word',
+          builder: (context, state) => SelectGreetingWordPage(
+            campaignId: state.params['campaignId']!,
+          ),
         ),
         GoRoute(
-          path: 'compose',
-          builder: (context, state) => const ComposePage(),
+          path: 'campaigns/:campaignId/compose',
+          builder: (context, state) => ComposePage(
+            campaignId: state.params['campaignId']!,
+          ),
         ),
       ],
     ),

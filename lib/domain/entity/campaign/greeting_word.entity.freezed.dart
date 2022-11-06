@@ -119,9 +119,10 @@ class __$$_GreetingWordCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_GreetingWord implements _GreetingWord {
+class _$_GreetingWord extends _GreetingWord {
   const _$_GreetingWord(
-      {required this.id, required this.name, this.description});
+      {required this.id, required this.name, this.description})
+      : super._();
 
   factory _$_GreetingWord.fromJson(Map<String, dynamic> json) =>
       _$$_GreetingWordFromJson(json);
@@ -168,11 +169,12 @@ class _$_GreetingWord implements _GreetingWord {
   }
 }
 
-abstract class _GreetingWord implements GreetingWord {
+abstract class _GreetingWord extends GreetingWord {
   const factory _GreetingWord(
       {required final String id,
       required final String name,
       final String? description}) = _$_GreetingWord;
+  const _GreetingWord._() : super._();
 
   factory _GreetingWord.fromJson(Map<String, dynamic> json) =
       _$_GreetingWord.fromJson;

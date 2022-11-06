@@ -6,6 +6,8 @@ import 'package:altair/presentation/atom/caption_text.dart';
 import 'package:altair/presentation/atom/simple_info.dart';
 import 'package:altair/presentation/molecule/exception_info.dart';
 import 'package:altair/presentation/molecule/loading_info.dart';
+import 'package:altair/presentation/util/ui_guard.dart';
+import 'package:altair/usecase/greeting_word.vm.dart';
 import 'package:altair/usecase/message.vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -183,11 +185,58 @@ class HomePage extends ConsumerWidget {
           onPressed: () => ref.refresh(currentCampaignProvider),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.create),
-        onPressed: () {
-          context.push('/select_greeting_word');
-        },
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          campaignAsyncValue.when(
+            data: (campaign) {
+              final selectedGreetingWordAsyncValue =
+                  ref.watch(selectedGreetingWordStateNotifierProvider(campaign.id));
+              return selectedGreetingWordAsyncValue.when(
+                data: (word) => SizedBox(
+                  width: 120,
+                  child: Text(
+                    'Your selected word is "${word.name}"',
+                    maxLines: 2,
+                  ),
+                ),
+                loading: Container.new,
+                error: (e, __) => const SizedBox(
+                  width: 160,
+                  child: Text(
+                    'Select your GreetingWord to compose message ->',
+                    maxLines: 3,
+                  ),
+                ),
+              );
+            },
+            loading: Container.new,
+            error: (_, __) => Container(),
+          ),
+          const Gap(16),
+          FloatingActionButton(
+            child: const Icon(Icons.create),
+            onPressed: () async {
+              final campaign = await ref.read(currentCampaignProvider.future);
+              final ok = await easyUIGuard(
+                context,
+                () async {
+                  final wordAsyncValue =
+                      ref.read(selectedGreetingWordStateNotifierProvider(campaign.id));
+                  return wordAsyncValue.hasValue;
+                },
+                message: 'Checking your selected GreetingWord on the blockchain...',
+              );
+
+              if (ok) {
+                context.push('/campaigns/${campaign.id}/compose');
+              } else {
+                context.push('/campaigns/${campaign.id}/select_greeting_word');
+              }
+            },
+          ),
+        ],
       ),
     );
   }
