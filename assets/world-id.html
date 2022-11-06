@@ -9,23 +9,6 @@
 
 <body>
   <div id="world-id-container"></div>
-  <script>
-
-    document.addEventListener("DOMContentLoaded", async function () {
-      console.log("From World-ID");
-      worldID.init('world-id-container', {
-        debug: true, // to aid with debugging, remove in production
-        enable_telemetry: true,
-        action_id: 'wid_staging_16a48f71d4da3d5afda8350c4d33d148', // obtain this from developer.worldcoin.org
-        signal: 'your_signal',
-        on_success: (proof) => { 
-          console.log(JSON.stringify(proof))
-          passProofJsonString(JSON.stringify(proof))
-        },
-        on_error: (error) => console.error(error),
-      })
-    });
-  </script>
 </body>
 
 </html>

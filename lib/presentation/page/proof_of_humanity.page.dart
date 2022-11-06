@@ -1,8 +1,6 @@
 import 'dart:math';
 
-import 'package:altair/presentation/template/loading.template.page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:webviewx/webviewx.dart';
 
 class WorldIdPage extends StatelessWidget {
@@ -10,14 +8,7 @@ class WorldIdPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: FutureBuilder<String>(
-        future: rootBundle.loadString('world-id.html'),
-        builder: (context, snapshot) => snapshot.hasData
-            ? WebViewXPage(initialContent: snapshot.data)
-            : const LoadingPage(),
-      ),
-    );
+    return const WebViewXPage();
   }
 }
 
@@ -35,7 +26,41 @@ class WebViewXPage extends StatefulWidget {
 
 class WebViewXPageState extends State<WebViewXPage> {
   late WebViewXController<dynamic> webviewController;
-  final initialContent = '<h4>Loading Content...<h4>';
+  final initialContent = '''
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset=utf-8>
+  <title>World ID</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script type="text/javascript" src="https://unpkg.com/@worldcoin/id/dist/world-id.js"></script>
+</head>
+
+<body>
+  <div id="world-id-container"></div>
+  <script>
+
+    document.addEventListener("DOMContentLoaded", async function () {
+      console.log("From World-ID");
+      worldID.init('world-id-container', {
+        debug: true, // to aid with debugging, remove in production
+        enable_telemetry: true,
+        action_id: 'wid_staging_16a48f71d4da3d5afda8350c4d33d148', // obtain this from developer.worldcoin.org
+        signal: 'your_signal',
+        on_success: (proof) => { 
+          console.log(JSON.stringify(proof))
+          passProofJsonString(JSON.stringify(proof))
+        },
+        on_error: (error) => console.error(error),
+      })
+    });
+  </script>
+</body>
+
+</html>
+''';
   final executeJsErrorMessage =
       'Failed to execute this task because the current content is (probably) URL that allows iframe embedding, on Web.\n\n'
       'A short reason for this is that, when a normal URL is embedded in the iframe, you do not actually own that content so you cant call your custom functions\n'
