@@ -25,21 +25,28 @@ class EthereumAddressText extends ConsumerWidget {
       child: FutureBuilder(
         future: isAddress
             ? getENSNameWithAddress(EthereumAddress.fromHex(addressOrName))
-            : Future.value(addressOrName.substring(0, 6)),
+            : Future.value(buildDisplayAddressText(addressOrName)),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            final maybeName = snapshot.data!;
             return Text(
-              snapshot.data!,
+              maybeName.startsWith('0x')
+                  ? buildDisplayAddressText(maybeName)
+                  : maybeName,
               style: TextStyle(
                 color: AppPalette.scheme.primary.maybeResolve(context),
                 fontWeight: FontWeight.bold,
               ),
             );
           } else {
-            return Text(addressOrName.substring(0, 6));
+            return Text(buildDisplayAddressText(addressOrName));
           }
         },
       ),
     );
+  }
+
+  String buildDisplayAddressText(String address) {
+    return address.substring(0, 8);
   }
 }
