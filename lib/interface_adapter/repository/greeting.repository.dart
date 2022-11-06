@@ -227,6 +227,31 @@ class GreetingRepository {
     );
   }
 
+  Future<void> verifyHumanity() async {
+    logger.info('verifyHumanity');
+    await _interactWithSendTransactionGuard(
+      () => connector.sendTransactionViaContract(
+        contract,
+        'verifyHumanity',
+        params: <dynamic>[],
+      ),
+    );
+  }
+
+  Future<bool> isHumanityVerified(String callerId) async {
+    logger.info('isHumanityVerified');
+    final result = await _interactWithCallContractGuard(
+      () => connector.callContract(
+        contract,
+        'isHumanityVerified',
+        params: <dynamic>[
+          EthereumAddress.fromHex(callerId),
+        ],
+      ),
+    );
+    return result[0] as bool;
+  }
+
   Future<List<dynamic>> _interactWithCallContractGuard(
     Future<List<dynamic>> Function() callback,
   ) async {
