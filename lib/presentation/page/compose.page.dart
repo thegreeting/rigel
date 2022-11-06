@@ -106,6 +106,7 @@ class ComposePage extends ConsumerWidget {
                                   addressOrName,
                                 ))
                                   .hex;
+                          logger.fine(value);
                           ref.read(toAddressProvider.notifier).update((state) => value);
                           // ignore: avoid_catches_without_on_clauses
                         } catch (e) {
