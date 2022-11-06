@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset=utf-8>
+  <title>World ID</title>
+  <script type="text/javascript" src="https://unpkg.com/@worldcoin/id/dist/world-id.js"></script>
+</head>
+
+<body>
+  <div id="world-id-container"></div>
+  <script>
+
+    document.addEventListener("DOMContentLoaded", async function () {
+      worldID.init('world-id-container', {
+        debug: true, // to aid with debugging, remove in production
+        enable_telemetry: true,
+        action_id: 'wid_staging_16a48f71d4da3d5afda8350c4d33d148', // obtain this from developer.worldcoin.org
+        signal: 'your_signal',
+        on_success: (proof) => console.log(proof),
+        on_error: (error) => console.error(error),
+      })
+      try {
+        const result = await worldID.enable(); // <- Send 'result' to your backend or sm
+        console.log("result", result);
+      } catch (failure) {
+        console.warn("World ID verification failed:", failure);
+        // Re-activate here so your end user can try again
+      }
+    });
+  </script>
+</body>
+
+</html>

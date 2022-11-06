@@ -1,4 +1,5 @@
 import 'package:altair/presentation/page/compose.page.dart';
+import 'package:altair/presentation/page/proof_of_humanity.page.dart';
 import 'package:altair/presentation/page/select_greeting_word.page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -13,6 +14,10 @@ final router = GoRouter(
       path: '/',
       builder: (context, state) => const WelcomePage(),
       routes: [
+        GoRoute(
+          path: 'proof_of_humanity',
+          builder: (context, state) => const WorldIdPage(),
+        ),
         GoRoute(
           path: 'home',
           pageBuilder: (context, state) => const MaterialPage<HomePage>(

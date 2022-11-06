@@ -1,5 +1,4 @@
-import 'package:flutter/widgets.dart';
-import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
+import 'package:flutter/material.dart';
 
 import '../molecule/loading_info.dart';
 
@@ -13,8 +12,8 @@ class LoadingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PlatformScaffold(
-      appBar: PlatformAppBar(),
+    return Scaffold(
+      appBar: AppBar(),
       body: LoadingInfo(message: message),
     );
   }

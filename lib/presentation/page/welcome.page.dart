@@ -40,6 +40,13 @@ class WelcomePage extends ConsumerWidget {
               style: TextStyle(fontSize: 20),
             ),
             const Gap(32),
+            TextButton(
+              child: const Text('Proof of Humanity to save price!'),
+              onPressed: () {
+                context.push('/proof_of_humanity');
+              },
+            ),
+            const Gap(16),
             ElevatedButton(
               onPressed: () {
                 ref.read(connectionStateProvider.notifier).connect(

@@ -39,7 +39,7 @@ class ComposePage extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Write message'),
+        title: const Text('Your message'),
         actions: [
           TextButton(
             onPressed: () async {
