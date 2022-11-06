@@ -18,8 +18,10 @@ jobs:
           version: 3.3.7
       - name: Install dependencies
         run: flutter pub get
+      - name: Disable CORS
+        run: dart pub global activate flutter_cors
       - name: Build
-        run: flutter build web --web-renderer html
+        run: flutter build web
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
