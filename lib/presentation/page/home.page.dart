@@ -130,7 +130,11 @@ class HomePage extends ConsumerWidget {
           );
         },
         loading: () => const LoadingInfo(message: 'Loading campaign...'),
-        error: RecoverableExceptionInfo.withStackTrace,
+        error: (error, stackTrace) => RecoverableExceptionInfo.withStackTrace(
+          error,
+          stackTrace,
+          onPressed: () => ref.refresh(currentCampaignProvider),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.create),

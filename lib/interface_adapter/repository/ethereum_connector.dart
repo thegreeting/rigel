@@ -129,7 +129,7 @@ class EthereumConnector implements WalletConnector {
         function: contract.function(functionName),
         params: params,
       );
-      logger.info(result);
+      logger.info('callContract $functionName result: $result');
       return result;
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {

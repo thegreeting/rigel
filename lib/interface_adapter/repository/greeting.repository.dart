@@ -10,6 +10,14 @@ import '../../domain/entity/account/wallet_account.entity.dart';
 import '../../logger.dart';
 import 'greeting.contract.dart';
 
+enum MessageType {
+  incoming(0),
+  sent(1);
+
+  const MessageType(this.value);
+  final int value;
+}
+
 class GreetingRepository {
   GreetingRepository(
     this.connector,
@@ -20,6 +28,7 @@ class GreetingRepository {
   final DeployedContract contract;
 
   Future<List<ShallowCampaign>> getShallowCampaigns() async {
+    logger.info('getShallowCampaigns');
     final result = await connector.callContract(
       contract,
       'getCampaignListAndName',
@@ -37,10 +46,47 @@ class GreetingRepository {
       logger.info('id: $id, name: $name');
       campaigns.add(ShallowCampaign(id: id.hex, name: name));
     }
+    logger.info('getShallowCampaigns: $campaigns');
     return campaigns;
   }
 
-  Future<Message> getMessageById(String campaignId, int id) async {
+  Future<List<BigInt>> getMessageIds(
+    String campaignId,
+    String accountId,
+    MessageType type,
+  ) async {
+    logger.info('campaignId: $campaignId, accountId: $accountId, type: $type');
+    final result = await (() async {
+      logger.info('getMessageIdsOfCampaign');
+      try {
+        return connector.callContract(
+          contract,
+          'getMessageIdsOfCampaign',
+          params: <dynamic>[
+            EthereumAddress.fromHex(campaignId),
+            EthereumAddress.fromHex(accountId),
+            BigInt.from(type.value),
+          ],
+        );
+      } on RPCError catch (e) {
+        logger.warning(e.toString());
+        if (e.errorCode == 3) {
+          throw NotFound();
+        }
+        throw NetworkException();
+        // ignore: avoid_catches_without_on_clauses
+      } catch (e) {
+        throw NetworkException(failureReason: e.toString());
+      }
+    })();
+
+    final idsRaw = result[0] as List<dynamic>;
+
+    final messageIds = List<BigInt>.from(idsRaw);
+    return messageIds;
+  }
+
+  Future<Message> getMessageById(String campaignId, BigInt id) async {
     logger.info('🙋 getMessageById: $id of campaign: $campaignId');
     final messageRaws = await (() async {
       try {
@@ -49,7 +95,7 @@ class GreetingRepository {
           'getMessageByIdOfCampaign',
           params: <dynamic>[
             EthereumAddress.fromHex(campaignId),
-            BigInt.from(id),
+            id,
           ],
         );
       } on RPCError catch (e) {
