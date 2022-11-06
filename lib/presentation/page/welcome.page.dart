@@ -52,6 +52,16 @@ class WelcomePage extends ConsumerWidget {
             const Gap(16),
             if (connectionState != WalletConnectionState.disconnected)
               CaptionText(transactionStateToString(connectionState)),
+            const Gap(44),
+            const Image(
+              image: AssetImage('assets/icon/metamask.png'),
+              width: 64,
+            ),
+            const Gap(8),
+            const CaptionText(
+              'Scan QR code with Metamask mobile\n(sendTransaction might fail in others)',
+              textAlign: TextAlign.center,
+            ),
           ],
         ),
       ),

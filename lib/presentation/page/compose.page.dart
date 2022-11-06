@@ -1,5 +1,6 @@
 import 'package:altair/presentation/atom/simple_info.dart';
 import 'package:altair/presentation/atom/title_text.dart';
+import 'package:altair/presentation/template/loading.template.page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,7 +26,7 @@ class ComposePage extends ConsumerWidget {
 
     if (myWalletAccount == null) {
       context.go('/');
-      return const Placeholder();
+      return const LoadingPage();
     }
 
     return Scaffold(

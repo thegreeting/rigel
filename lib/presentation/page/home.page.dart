@@ -6,6 +6,7 @@ import 'package:altair/presentation/atom/caption_text.dart';
 import 'package:altair/presentation/atom/simple_info.dart';
 import 'package:altair/presentation/molecule/exception_info.dart';
 import 'package:altair/presentation/molecule/loading_info.dart';
+import 'package:altair/presentation/template/loading.template.page.dart';
 import 'package:altair/presentation/util/ui_guard.dart';
 import 'package:altair/usecase/greeting_word.vm.dart';
 import 'package:altair/usecase/message.vm.dart';
@@ -31,7 +32,7 @@ class HomePage extends ConsumerWidget {
 
     if (myWalletAccount == null) {
       context.go('/');
-      return const Placeholder();
+      return const LoadingPage();
     }
 
     return Scaffold(
