@@ -61,7 +61,7 @@ class HomePage extends ConsumerWidget {
           child: TitleText(campaign.name),
           onPressed: () async {
             final campaigns = await ref.watch(campaignsProvider.future);
-            final selectedCampaign = await showConfirmationDialog<ShallowCampaign>(
+            final selectedCampaign = await showConfirmationDialog<ShallowCampaign?>(
               context: context,
               title: 'Select a campaign',
               actions: [
@@ -73,13 +73,13 @@ class HomePage extends ConsumerWidget {
                 )
               ],
             );
-            if (campaign != selectedCampaign) {
+            if (selectedCampaign != null && campaign != selectedCampaign) {
               ref
                   .read(currentCampaignProvider.notifier)
                   .update((state) => selectedCampaign);
               await showOkAlertDialog(
                 context: context,
-                message: 'Campaign switched to ${selectedCampaign!.name}',
+                message: 'Campaign switched to ${selectedCampaign.name}',
               );
             }
           },
