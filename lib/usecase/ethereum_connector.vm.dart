@@ -122,5 +122,10 @@ Future<EthereumAddress> getAddressWithENSName(String name) async {
 
 Future<String> getENSNameWithAddress(EthereumAddress address) async {
   final ens = initEns(EthereumConnector());
-  return ens.withAddress(address).getName();
+  try {
+    return await ens.withAddress(address).getName();
+    // ignore: avoid_catching_errors
+  } on RangeError catch (_) {
+    return address.hex;
+  }
 }

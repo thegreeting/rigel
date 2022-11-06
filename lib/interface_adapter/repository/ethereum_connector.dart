@@ -144,6 +144,7 @@ class EthereumConnector implements WalletConnector {
   Future<void> sendTransactionViaContract(
     DeployedContract contract,
     String functionName, {
+    EtherAmount? value,
     List<dynamic> params = const <dynamic>[],
   }) async {
     final sender = EthereumAddress.fromHex(_connector.connector.session.accounts[0]);
@@ -155,6 +156,7 @@ class EthereumConnector implements WalletConnector {
           contract: contract,
           function: contract.function(functionName),
           from: sender,
+          value: value,
           nonce: await _ethereum.getTransactionCount(
             sender,
             atBlock: const BlockNum.pending(),
