@@ -136,9 +136,9 @@ class HomePage extends ConsumerWidget {
                       padding: const EdgeInsets.all(16),
                       child: Card(
                         elevation: 0,
-                        color: AppPalette.scheme.primaryContainer
+                        color: AppPalette.scheme.secondaryContainer
                             .maybeResolve(context)!
-                            .withOpacity(.4),
+                            .withOpacity(.2),
                         child: Padding(
                           padding: const EdgeInsets.all(32),
                           child: Column(
@@ -146,21 +146,21 @@ class HomePage extends ConsumerWidget {
                               ListTile(
                                 title: TitleText(
                                   '#${message.id} ${message.greetingWord}',
+                                  style: const TextStyle(fontSize: 44),
                                 ),
                                 subtitle: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const CaptionText('from: '),
-                                    Expanded(
-                                      child: Text(
-                                        message.sender.name,
-                                        maxLines: 2,
-                                      ),
+                                    messageType == MessageType.incoming
+                                        ? const CaptionText('from: ')
+                                        : const CaptionText('to: '),
+                                    EthereumAddressText(
+                                      messageType == MessageType.incoming
+                                          ? message.sender.name
+                                          : message.recipient.name,
                                     ),
                                   ],
                                 ),
                               ),
-                              const Gap(4),
                               Row(
                                 children: [
                                   const CaptionText('Resonanced?: '),

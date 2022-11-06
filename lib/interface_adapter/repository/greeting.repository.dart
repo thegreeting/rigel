@@ -213,11 +213,11 @@ class GreetingRepository {
       id: messageRaw[0].toString(),
       description: 'Retrieve from IPFS',
       dateCreated: DateTime.now(),
-      recipient: WalletAccount(
+      sender: WalletAccount(
         id: messageRaw[1].toString(),
         name: messageRaw[1].toString(),
       ),
-      sender: WalletAccount(
+      recipient: WalletAccount(
         id: messageRaw[2].toString(),
         name: messageRaw[2].toString(),
       ),
