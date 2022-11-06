@@ -84,7 +84,7 @@ class SelectGreetingWordPage extends ConsumerWidget {
                                   'Persisting to the blockchain...\nChack your wallet app to confirm the transaction.',
                             );
                             if (ok) {
-                              context.push('/compose');
+                              context.push('/campaigns/$campaignId/compose');
                             }
                           },
                         ),
