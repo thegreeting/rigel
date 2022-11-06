@@ -1,11 +1,11 @@
 {
-  "name": "altair",
-  "short_name": "altair",
+  "name": "The Greeting",
+  "short_name": "Greeting",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#FFFFFF",
   "theme_color": "#31C48D",
-  "description": "A new Flutter project.",
+  "description": "Your web3 postcards - simple but authentic",
   "orientation": "portrait-primary",
   "prefer_related_applications": false,
   "icons": [

@@ -45,27 +45,23 @@ class HomePage extends ConsumerWidget {
         centerTitle: true,
         actions: [
           IconButton(
-            icon: myWalletAccount == null
-                ? const Icon(Icons.person)
-                : SizedBox.square(
-                    dimension: 36,
-                    child: Avatar.fromWalletAccount(myWalletAccount),
-                  ),
-            onPressed: myWalletAccount == null
-                ? null
-                : () async {
-                    final ok = await showOkCancelAlertDialog(
-                      context: context,
-                      title: 'Your Wallet address is',
-                      message: myWalletAccount.id,
-                      okLabel: 'Disconnect',
-                      isDestructiveAction: true,
-                    );
-                    if (ok == OkCancelResult.ok) {
-                      await ref.read(connectionStateProvider.notifier).disconnect();
-                      context.go('/');
-                    }
-                  },
+            icon: SizedBox.square(
+              dimension: 36,
+              child: Avatar.fromWalletAccount(myWalletAccount),
+            ),
+            onPressed: () async {
+              final ok = await showOkCancelAlertDialog(
+                context: context,
+                title: 'Your Wallet address is',
+                message: myWalletAccount.id,
+                okLabel: 'Disconnect',
+                isDestructiveAction: true,
+              );
+              if (ok == OkCancelResult.ok) {
+                await ref.read(connectionStateProvider.notifier).disconnect();
+                context.go('/');
+              }
+            },
           ),
           const Gap(16),
         ],
@@ -190,58 +186,60 @@ class HomePage extends ConsumerWidget {
           onPressed: () => ref.refresh(currentCampaignProvider),
         ),
       ),
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          campaignAsyncValue.when(
-            data: (campaign) {
-              final selectedGreetingWordAsyncValue =
-                  ref.watch(selectedGreetingWordStateNotifierProvider(campaign.id));
-              return selectedGreetingWordAsyncValue.when(
-                data: (word) => SizedBox(
-                  width: 120,
-                  child: Text(
-                    'Your selected word is "${word.name}"',
-                    maxLines: 2,
+      floatingActionButton: SafeArea(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            campaignAsyncValue.when(
+              data: (campaign) {
+                final selectedGreetingWordAsyncValue =
+                    ref.watch(selectedGreetingWordStateNotifierProvider(campaign.id));
+                return selectedGreetingWordAsyncValue.when(
+                  data: (word) => SizedBox(
+                    width: 120,
+                    child: Text(
+                      'Your selected word is "${word.name}"',
+                      maxLines: 2,
+                    ),
                   ),
-                ),
-                loading: Container.new,
-                error: (e, __) => const SizedBox(
-                  width: 160,
-                  child: Text(
-                    'Select your GreetingWord to compose message ->',
-                    maxLines: 3,
+                  loading: Container.new,
+                  error: (e, __) => const SizedBox(
+                    width: 160,
+                    child: Text(
+                      'Select your GreetingWord to compose message ->',
+                      maxLines: 3,
+                    ),
                   ),
-                ),
-              );
-            },
-            loading: Container.new,
-            error: (_, __) => Container(),
-          ),
-          const Gap(16),
-          FloatingActionButton(
-            child: const Icon(Icons.create),
-            onPressed: () async {
-              final campaign = await ref.read(currentCampaignProvider.future);
-              final ok = await easyUIGuard(
-                context,
-                () async {
-                  final wordAsyncValue =
-                      ref.read(selectedGreetingWordStateNotifierProvider(campaign.id));
-                  return wordAsyncValue.hasValue;
-                },
-                message: 'Checking your selected GreetingWord on the blockchain...',
-              );
+                );
+              },
+              loading: Container.new,
+              error: (_, __) => Container(),
+            ),
+            const Gap(16),
+            FloatingActionButton(
+              child: const Icon(Icons.create),
+              onPressed: () async {
+                final campaign = await ref.read(currentCampaignProvider.future);
+                final ok = await easyUIGuard(
+                  context,
+                  () async {
+                    final wordAsyncValue = ref
+                        .read(selectedGreetingWordStateNotifierProvider(campaign.id));
+                    return wordAsyncValue.hasValue;
+                  },
+                  message: 'Checking your selected GreetingWord on the blockchain...',
+                );
 
-              if (ok) {
-                context.push('/campaigns/${campaign.id}/compose');
-              } else {
-                context.push('/campaigns/${campaign.id}/select_greeting_word');
-              }
-            },
-          ),
-        ],
+                if (ok) {
+                  context.push('/campaigns/${campaign.id}/compose');
+                } else {
+                  context.push('/campaigns/${campaign.id}/select_greeting_word');
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
