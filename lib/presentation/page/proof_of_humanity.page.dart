@@ -1,14 +1,20 @@
 import 'dart:math';
 
+import 'package:altair/usecase/ethereum_connector.vm.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webviewx/webviewx.dart';
 
-class WorldIdPage extends StatelessWidget {
+class WorldIdPage extends ConsumerWidget {
   const WorldIdPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const WebViewXPage();
+  Widget build(BuildContext context, WidgetRef ref) {
+    return WebViewXPage(
+      onVerified: () {
+        ref.read(hasVerifiedPerson.notifier).update((state) => true);
+      },
+    );
   }
 }
 
@@ -16,9 +22,11 @@ class WebViewXPage extends StatefulWidget {
   const WebViewXPage({
     super.key,
     this.initialContent,
+    this.onVerified,
   });
 
   final String? initialContent;
+  final VoidCallback? onVerified;
 
   @override
   WebViewXPageState createState() => WebViewXPageState();
@@ -106,7 +114,11 @@ class WebViewXPageState extends State<WebViewXPage> {
       dartCallBacks: {
         DartCallback(
           name: 'passProofJsonString',
-          callBack: (dynamic msg) => {showAlertDialog(msg.toString(), context)},
+          callBack: (dynamic msg) {
+            // TODO(knaoe): verify with REST API
+            widget.onVerified?.call();
+            return {showAlertDialog(msg.toString(), context)};
+          },
         ),
       },
       navigationDelegate: (navigation) {
