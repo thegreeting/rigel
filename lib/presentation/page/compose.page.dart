@@ -72,11 +72,13 @@ class ComposePage extends ConsumerWidget {
                       receiverId: toAddress,
                       amount: pricePerMessageAmount,
                     );
+                    await Future<void>.delayed(const Duration(seconds: 10));
                   });
                   return true;
                 },
                 message: 'Sending...\nCheck your connected wallet to confirm.',
               );
+              context.go('/home');
             },
             child: const Text('Send'),
           ),
