@@ -17,6 +17,7 @@ import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:web3dart/web3dart.dart';
 
 import '../../usecase/campaign.vm.dart';
 import '../../usecase/ethereum_connector.vm.dart';
@@ -52,10 +53,12 @@ class HomePage extends ConsumerWidget {
               child: Avatar.fromWalletAccount(myWalletAccount),
             ),
             onPressed: () async {
+              final currentBalance = await ref.read(myWalletAmountProvider.future);
               final ok = await showOkCancelAlertDialog(
                 context: context,
-                title: 'Your Wallet address is',
-                message: myWalletAccount.id,
+                title: 'Your Wallet',
+                message:
+                    '${myWalletAccount.id}\nbalance: ${currentBalance.getValueInUnit(EtherUnit.ether)} ETH',
                 okLabel: 'Disconnect',
                 isDestructiveAction: true,
               );

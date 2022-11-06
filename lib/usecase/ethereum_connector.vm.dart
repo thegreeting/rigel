@@ -61,15 +61,27 @@ final myWalletAddressProvider = Provider<EthereumAddress?>((ref) {
     return null;
   }
 });
+
 final isWalletConnectedProvider = Provider<bool>((ref) {
   return ref.watch(myWalletAddressProvider) != null;
 });
+
 final myWalletAccountProvider = Provider<WalletAccount?>((ref) {
   final address = ref.watch(myWalletAddressProvider);
   if (address == null) {
     return null;
   }
   return WalletAccount.fromWalletAddress(address);
+});
+
+final myWalletAmountProvider = FutureProvider<EtherAmount>((ref) async {
+  final address = ref.watch(myWalletAddressProvider);
+  if (address == null) {
+    return EtherAmount.zero();
+  }
+  final connector = ref.watch(ethereumConnectorProvider);
+  final amount = await connector.client.getBalance(address);
+  return amount;
 });
 
 class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {

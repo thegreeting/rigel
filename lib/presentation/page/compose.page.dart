@@ -14,6 +14,8 @@ import '../../usecase/compose.vm.dart';
 import '../../usecase/ethereum_connector.vm.dart';
 import '../../usecase/greeting_word.vm.dart';
 
+final toAddressProvider = StateProvider<String?>((ref) => null);
+
 class ComposePage extends ConsumerWidget {
   const ComposePage({
     super.key,
