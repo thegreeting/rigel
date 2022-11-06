@@ -12,7 +12,6 @@ import 'package:web3dart/web3dart.dart';
 
 import '../../domain/entity/account/wallet_account.entity.dart';
 import '../../logger.dart';
-import 'greeting.contract.dart';
 
 enum MessageType {
   incoming(0),
@@ -226,18 +225,6 @@ class GreetingRepository {
       rethrow;
     }
   }
-}
-
-@Deprecated('Use [getTheGreetingContractAddressByENS] instead')
-Future<EthereumAddress> getTheGreetingContractAddressViaProxy(
-  EthereumConnector connector,
-) async {
-  final results = await connector.callContract(
-    theGreetingProxyContract,
-    'getImplementationAddress',
-  );
-  final address = results[0] as EthereumAddress;
-  return address;
 }
 
 Future<EthereumAddress> getTheGreetingContractAddressByENS(
