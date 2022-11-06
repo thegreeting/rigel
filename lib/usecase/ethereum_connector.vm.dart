@@ -103,5 +103,6 @@ class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {
 }
 
 Future<EthereumAddress> loadTheGreetingFacadeContractAddress() async {
-  return getTheGreetingContractAddressViaProxy(EthereumConnector());
+  return getTheGreetingContractAddressByENS(EthereumConnector());
+  // return getTheGreetingContractAddressViaProxy(EthereumConnector());
 }

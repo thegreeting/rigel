@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:altair/application/config/constant.dart';
 import 'package:altair/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -199,8 +200,15 @@ class EthereumConnector implements WalletConnector {
   String get coinName => 'Eth';
 
   final _ethereum = Web3Client(
-    'https://goerli.infura.io/v3/0229596fa248411caabc2cbec5499aa5',
+    AppConstant.ethGoerliRpcUrl,
     Client(),
+    // socketConnector: () {
+    //   return IOWebSocketChannel.connect(
+    //     AppConstant.ethGoerliWsUrl,
+    //   ).cast<String>();
+    // },
+    // ,}
   );
-  // final _ethereum = Web3Client('https://mainnet.infura.io/v3/fd88f3e465e14e6198863596706440ba', Client());
+
+  Web3Client get client => _ethereum;
 }

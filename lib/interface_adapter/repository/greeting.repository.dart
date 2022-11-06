@@ -1,9 +1,11 @@
+import 'package:altair/application/config/constant.dart';
 import 'package:altair/domain/entity/campaign/campaign.entity.dart';
 import 'package:altair/domain/entity/campaign/greeting_word.entity.dart';
 import 'package:altair/domain/entity/exception/network_exception.entity.dart';
 import 'package:altair/domain/entity/exception/util/recoverable_exception.entity.dart';
 import 'package:altair/domain/entity/messsage/message.entity.dart';
 import 'package:altair/interface_adapter/repository/ethereum_connector.dart';
+import 'package:ens_dart/ens_dart.dart';
 import 'package:quiver/iterables.dart';
 import 'package:web3dart/json_rpc.dart';
 import 'package:web3dart/web3dart.dart';
@@ -226,6 +228,7 @@ class GreetingRepository {
   }
 }
 
+@Deprecated('Use [getTheGreetingContractAddressByENS] instead')
 Future<EthereumAddress> getTheGreetingContractAddressViaProxy(
   EthereumConnector connector,
 ) async {
@@ -234,5 +237,20 @@ Future<EthereumAddress> getTheGreetingContractAddressViaProxy(
     'getImplementationAddress',
   );
   final address = results[0] as EthereumAddress;
+  return address;
+}
+
+Future<EthereumAddress> getTheGreetingContractAddressByENS(
+  EthereumConnector connector,
+) async {
+  final client = connector.client;
+  final chainId = await client.getChainId();
+  final isMainnet = chainId.toInt() == 1;
+
+  final ensResolverAddress =
+      isMainnet ? null : EthereumAddress.fromHex(AppConstant.goerliEnsResolverAddress);
+  final ens = Ens(client: client, address: ensResolverAddress);
+  final address =
+      await ens.withName(AppConstant.theGreetingFacadeContractName).getAddress();
   return address;
 }

@@ -8,12 +8,6 @@ Future<void> configureMain() async {
   timeago.setDefaultLocale('en_short');
 
   if (kDebugMode) {
-    logger
-      ..info('Configure MAIN for DEBUG MODE')
-      ..fine('🔥 Firebase Analytics is disabled in DEBUG MODE');
-  }
-
-  if (isTestLab) {
-    logger.fine('🔥 Firebase Analytics is disabled in TEST LAB');
+    logger.info('Configure MAIN for DEBUG MODE');
   }
 }
