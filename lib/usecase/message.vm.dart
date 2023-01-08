@@ -43,6 +43,8 @@ Future<PaginatedFetchResult<Message>> innerFetchNextItems(
     messageIds.map((id) => repo.getMessageById(campaignId, id)),
   );
 
+  messages.sort((a, b) => int.parse(b.id).compareTo(int.parse(a.id)));
+
   return PaginatedFetchResult(
     entities: [
       ...messages,
