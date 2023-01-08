@@ -141,7 +141,3 @@ Future<String> getENSNameWithAddress(EthereumAddress address) async {
     return address.hex;
   }
 }
-
-final hasVerifiedPerson = StateProvider<bool>((ref) {
-  return false;
-});

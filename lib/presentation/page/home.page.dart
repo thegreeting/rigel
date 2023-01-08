@@ -100,12 +100,11 @@ class HomePage extends ConsumerWidget {
             ),
             onPressed: () async {
               final currentBalance = await ref.read(myWalletAmountProvider.future);
-              final hasVerified = ref.read(hasVerifiedPerson);
               final ok = await showOkCancelAlertDialog(
                 context: context,
                 title: 'Your Wallet',
                 message:
-                    '${myWalletAccount.id}\nbalance: ${currentBalance.getValueInUnit(EtherUnit.ether)} ETH\nverified humanity: $hasVerified',
+                    '${myWalletAccount.id}\nbalance: ${currentBalance.getValueInUnit(EtherUnit.ether)} ETH',
                 okLabel: 'Disconnect',
                 isDestructiveAction: true,
               );
