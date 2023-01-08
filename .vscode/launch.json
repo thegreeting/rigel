@@ -5,7 +5,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "🐦 Altair",
+      "name": "🐦 Rigel",
       "request": "launch",
       "type": "dart",
       "args": [
