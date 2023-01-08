@@ -12,7 +12,7 @@ final incomingMessagesProviders = StateNotifierProvider.family<
     PaginationNotifier<Message>, AsyncValue<List<Message>>, String>(
   (ref, campaignId) => PaginationNotifier<Message>(
     fetchNextItems: (meta) {
-      return innterFetchNextItems(meta, ref, campaignId, MessageType.incoming);
+      return innerFetchNextItems(meta, ref, campaignId, MessageType.incoming);
     },
   )..init(),
 );
@@ -21,12 +21,12 @@ final sentMessagesProviders = StateNotifierProvider.family<PaginationNotifier<Me
     AsyncValue<List<Message>>, String>(
   (ref, campaignId) => PaginationNotifier<Message>(
     fetchNextItems: (meta) {
-      return innterFetchNextItems(meta, ref, campaignId, MessageType.sent);
+      return innerFetchNextItems(meta, ref, campaignId, MessageType.sent);
     },
   )..init(),
 );
 
-Future<PaginatedFetchResult<Message>> innterFetchNextItems(
+Future<PaginatedFetchResult<Message>> innerFetchNextItems(
   PaginationMeta meta,
   Ref ref,
   String campaignId,
