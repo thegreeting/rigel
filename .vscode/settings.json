@@ -23,10 +23,8 @@
       "source.sortMembers": false,
     },
   },
-  "dart.flutterSdkPath": "~/.asdf/installs/flutter/3.3.7-stable",
+  "dart.flutterSdkPath": "~/.asdf/installs/flutter/3.3.10-stable",
   "dart.lineLength": 88,
   "dart.runPubGetOnPubspecChanges": "always",
-  "cSpell.words": [
-    "Miyazaki"
-  ],
+  "cSpell.words": [],
 }
