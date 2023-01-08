@@ -14,7 +14,7 @@ const _myDynamicOnSecondaryColor = CupertinoDynamicColor.withBrightness(
   color: CupertinoColors.black,
   darkColor: CupertinoColors.black,
 );
-const _myDynamicSecondaryColor = CupertinoColors.systemTeal;
+const _myDynamicSecondaryColor = CupertinoColors.systemGrey5;
 
 const _myDynamicOnSurfaceColor = CupertinoDynamicColor.withBrightness(
   color: CupertinoColors.black,
