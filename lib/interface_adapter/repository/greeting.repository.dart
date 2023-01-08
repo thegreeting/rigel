@@ -146,14 +146,14 @@ class GreetingRepository {
     return EtherAmount.inWei(price);
   }
 
-  Future<void> sendMessage(
+  Future<String> sendMessage(
     String campaignId, {
     required String receiverId,
     String messageUrl = '',
     EtherAmount? amount,
   }) async {
     logger.info('sendMessage: $campaignId, $receiverId, $messageUrl');
-    await _interactWithSendTransactionGuard(
+    final txHash = await _interactWithSendTransactionGuard(
       () => connector.sendTransactionViaContract(
         contract,
         'send',
@@ -165,6 +165,7 @@ class GreetingRepository {
         ],
       ),
     );
+    return txHash;
   }
 
   Future<List<BigInt>> getMessageIds(
@@ -270,8 +271,8 @@ class GreetingRepository {
     }
   }
 
-  Future<void> _interactWithSendTransactionGuard(
-    Future<void> Function() callback,
+  Future<String> _interactWithSendTransactionGuard(
+    Future<String> Function() callback,
   ) async {
     try {
       return await callback();

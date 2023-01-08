@@ -141,7 +141,7 @@ class EthereumConnector implements WalletConnector {
     }
   }
 
-  Future<void> sendTransactionViaContract(
+  Future<String> sendTransactionViaContract(
     DeployedContract contract,
     String functionName, {
     EtherAmount? value,
@@ -149,8 +149,9 @@ class EthereumConnector implements WalletConnector {
   }) async {
     final sender = EthereumAddress.fromHex(_connector.connector.session.accounts[0]);
     final credentials = WalletConnectEthereumCredentials(provider: _provider);
+    var txHash = '';
     try {
-      final result = await _ethereum.sendTransaction(
+      txHash = await _ethereum.sendTransaction(
         credentials,
         Transaction.callContract(
           contract: contract,
@@ -165,12 +166,13 @@ class EthereumConnector implements WalletConnector {
         ),
         chainId: AppConstant.chainId,
       );
-      logger.info(result);
+      logger.info(txHash);
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       logger.severe('Error: $e');
       rethrow;
     }
+    return txHash;
   }
 
   @override

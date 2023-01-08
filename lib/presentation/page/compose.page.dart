@@ -174,6 +174,7 @@ class ComposePage extends ConsumerWidget {
       ..info('to: $toAddress')
       ..info('body: $body');
 
+    var txHash = '';
     await easyUIGuard(
       context,
       () async {
@@ -187,16 +188,24 @@ class ComposePage extends ConsumerWidget {
             throw Exception('To address is not set');
           }
 
-          await repo.sendMessage(
+          txHash = await repo.sendMessage(
             campaignId,
             receiverId: toAddress,
             amount: pricePerMessageAmount,
           );
-          await Future<void>.delayed(const Duration(seconds: 10));
         });
         return true;
       },
       message: 'Sending...\nCheck your connected wallet to confirm.',
+    );
+
+    await easyUIGuard(
+      context,
+      () async {
+        await Future<void>.delayed(const Duration(seconds: 5));
+        return true;
+      },
+      message: 'Confirming...\n$txHash',
     );
     context.go('/home');
   }
