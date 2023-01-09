@@ -59,7 +59,7 @@ class SelectedGreetingWordStateNotifier
     await repo.setGreetingWordForWallet(campaignId, word.index);
 
     // wait for transaction to be confirmed.
-    await Future<void>.delayed(const Duration(seconds: 10));
+    await Future<void>.delayed(const Duration(seconds: 5));
 
     final confirmedWord = await retry(
       () async {

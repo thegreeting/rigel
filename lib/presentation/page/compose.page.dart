@@ -176,7 +176,7 @@ class ComposePage extends ConsumerWidget {
 
     final messageUrl = await (() async {
       if (body != null) {
-        final metadata = await buildMetadata(ref, body);
+        final metadata = await buildMetadata(ref, campaignId, body);
         return storeMetadataOnDecentralizedStorage(metadata);
       } else {
         return '';
