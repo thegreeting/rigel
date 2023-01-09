@@ -9,14 +9,16 @@ mixin App {
   static bool isDebugMode = kDebugMode;
   static String version = '0.0.0';
   static String buildNumber = '0';
-  static Flavor flavor = Flavor.production;
+  static Flavor flavor = Flavor.mainnet;
+  static bool isTestnet = false;
 }
 
-Future<void> configureDelta(Flavor flavor) async {
+Future<void> configureRigel(Flavor flavor) async {
   final packageInfo = await PackageInfo.fromPlatform();
   App.version = packageInfo.version;
   App.buildNumber = packageInfo.buildNumber;
   logger.info('App.version: ${App.version}(${App.buildNumber})');
   App.flavor = flavor;
+  App.isTestnet = App.flavor == Flavor.testnet;
   logger.info('App.flavor: ${App.flavor}');
 }

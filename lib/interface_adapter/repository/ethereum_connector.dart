@@ -55,9 +55,10 @@ class EthereumConnector implements WalletConnector {
         bridge: 'https://bridge.walletconnect.org',
         clientMeta: const PeerMeta(
           name: 'The Greeting',
-          description: 'simple but authentic greetings',
+          description: 'Your web3 postcards - simple but authentic.',
           url: 'https://walletconnect.org',
           icons: [
+            // TODO(knaoe): use the real icon
             'https://gblobscdn.gitbook.com/spaces%2F-LJJeCjcLrr53DcT1Ml7%2Favatar.png?alt=media'
           ],
         ),
@@ -71,7 +72,7 @@ class EthereumConnector implements WalletConnector {
 
   @override
   Future<SessionStatus?> connect(BuildContext context) async {
-    return _connector.connect(context, chainId: AppConstant.chainId);
+    return _connector.connect(context, chainId: AppConstant.getChainId());
   }
 
   @override
@@ -164,7 +165,7 @@ class EthereumConnector implements WalletConnector {
           ),
           parameters: params,
         ),
-        chainId: AppConstant.chainId,
+        chainId: AppConstant.getChainId(),
       );
       logger.info(txHash);
       // ignore: avoid_catches_without_on_clauses
@@ -206,7 +207,7 @@ class EthereumConnector implements WalletConnector {
   String get coinName => 'Eth';
 
   final _ethereum = Web3Client(
-    AppConstant.ethGoerliRpcUrl,
+    AppConstant.getEthRpcUrl(),
     Client(),
     // socketConnector: () {
     //   return IOWebSocketChannel.connect(
@@ -219,9 +220,9 @@ class EthereumConnector implements WalletConnector {
   Web3Client get client => _ethereum;
 }
 
-Ens initEns(EthereumConnector connector) {
+Ens initEns(EthereumConnector connector, {int chainId = 1}) {
   final client = connector.client;
-  const isMainnet = AppConstant.chainId == 1;
+  final isMainnet = chainId == 1;
 
   final ensResolverAddress =
       isMainnet ? null : EthereumAddress.fromHex(AppConstant.goerliEnsResolverAddress);

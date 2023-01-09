@@ -14,5 +14,17 @@
       ],
       "internalConsoleOptions": "openOnSessionStart"
     },
+    {
+      "name": "🐦 Rigel Testnet",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "--dart-define=FLAVOR=testnet",
+        "--dart-define=HIDE_DEBUG_MENU=true",
+        // "--profile",
+        // "--release",
+      ],
+      "internalConsoleOptions": "openOnSessionStart"
+    },
   ]
 }

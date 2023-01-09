@@ -1,3 +1,4 @@
+import 'package:altair/application/config/constant.dart';
 import 'package:altair/logger.dart';
 import 'package:ens_dart/ens_dart.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import '../domain/state/connection.state.dart';
 import '../interface_adapter/repository/ethereum_connector.dart';
 import '../interface_adapter/repository/greeting.contract.dart';
 import '../interface_adapter/repository/greeting.repository.dart';
+import '../util/flavor.provider.dart';
 
 final ethereumConnectorProvider = Provider<EthereumConnector>((ref) {
   return EthereumConnector();
@@ -17,8 +19,10 @@ final ethereumConnectorProvider = Provider<EthereumConnector>((ref) {
 
 final ensProvider = Provider<Ens>(
   (ref) {
+    final flavor = ref.watch(flavorProvider);
+    final chainId = AppConstant.getChainId(flavor);
     final connector = ref.watch(ethereumConnectorProvider);
-    return initEns(connector);
+    return initEns(connector, chainId: chainId);
   },
 );
 
