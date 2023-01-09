@@ -211,6 +211,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.4"
+  dio:
+    dependency: transitive
+    description:
+      name: dio
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.6"
   dotenv:
     dependency: transitive
     description:
@@ -429,6 +436,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.3"
+  ipfs_client_flutter:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "64c28d267d9e840484f40136df32ba0f995dca17"
+      url: "https://github.com/raviganwal/ipfs_client_flutter"
+    source: git
+    version: "1.0.5"
   js:
     dependency: transitive
     description:

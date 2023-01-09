@@ -62,6 +62,24 @@ final myWalletAddressProvider = Provider<EthereumAddress?>((ref) {
   }
 });
 
+final walletDisplayAddressOrNameProviders =
+    FutureProvider.family<String, String>((ref, address) async {
+  final maybeName = await getENSNameWithAddress(EthereumAddress.fromHex(address));
+  if (maybeName.startsWith('0x')) {
+    return buildDisplayAddressText(address);
+  } else {
+    return maybeName;
+  }
+});
+
+final myWalletAddressOrNameProvider = FutureProvider<String?>((ref) {
+  final address = ref.watch(myWalletAddressProvider);
+  if (address == null) {
+    return null;
+  }
+  return ref.watch(walletDisplayAddressOrNameProviders(address.hex).future);
+});
+
 final isWalletConnectedProvider = Provider<bool>((ref) {
   return ref.watch(myWalletAddressProvider) != null;
 });
@@ -140,4 +158,8 @@ Future<String> getENSNameWithAddress(EthereumAddress address) async {
   } on RangeError catch (_) {
     return address.hex;
   }
+}
+
+String buildDisplayAddressText(String address) {
+  return address.substring(0, 8);
 }

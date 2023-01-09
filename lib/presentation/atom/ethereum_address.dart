@@ -3,50 +3,38 @@ import 'package:altair/usecase/ethereum_connector.vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:web3dart/web3dart.dart';
 
 class EthereumAddressText extends ConsumerWidget {
-  const EthereumAddressText(this.addressOrName, {super.key});
+  const EthereumAddressText(this.address, {super.key});
 
-  final String addressOrName;
+  final String address;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final isAddress = addressOrName.startsWith('0x');
+    final displayAddressOrNameAsyncValue =
+        ref.watch(walletDisplayAddressOrNameProviders(address));
 
     return TextButton(
       onPressed: () async {
-        if (isAddress) {
-          await launchUrl(
-            Uri.parse('https://goerli.etherscan.io/address/$addressOrName'),
-          );
-        } else {}
+        await launchUrl(
+          Uri.parse(
+            'https://goerli.etherscan.io/address/$address',
+          ), // TODO(knaoe): mainnet support
+        );
       },
-      child: FutureBuilder(
-        future: isAddress
-            ? getENSNameWithAddress(EthereumAddress.fromHex(addressOrName))
-            : Future.value(buildDisplayAddressText(addressOrName)),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final maybeName = snapshot.data!;
-            return Text(
-              maybeName.startsWith('0x')
-                  ? buildDisplayAddressText(maybeName)
-                  : maybeName,
-              style: TextStyle(
-                color: AppPalette.scheme.primary.maybeResolve(context),
-                fontWeight: FontWeight.bold,
-              ),
-            );
-          } else {
-            return Text(buildDisplayAddressText(addressOrName));
-          }
+      child: displayAddressOrNameAsyncValue.when(
+        data: (addressOrName) {
+          return Text(
+            addressOrName,
+            style: TextStyle(
+              color: AppPalette.scheme.primary.maybeResolve(context),
+              fontWeight: FontWeight.bold,
+            ),
+          );
         },
+        loading: () => Text(buildDisplayAddressText(address)),
+        error: (_, __) => Text(buildDisplayAddressText(address)),
       ),
     );
-  }
-
-  String buildDisplayAddressText(String address) {
-    return address.substring(0, 8);
   }
 }

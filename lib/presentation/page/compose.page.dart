@@ -174,6 +174,15 @@ class ComposePage extends ConsumerWidget {
       ..info('to: $toAddress')
       ..info('body: $body');
 
+    final messageUrl = await (() async {
+      if (body != null) {
+        final metadata = await buildMetadata(ref, body);
+        return storeMetadataOnDecentralizedStorage(metadata);
+      } else {
+        return '';
+      }
+    })();
+
     var txHash = '';
     await easyUIGuard(
       context,
@@ -192,6 +201,7 @@ class ComposePage extends ConsumerWidget {
             campaignId,
             receiverId: toAddress,
             amount: pricePerMessageAmount,
+            messageUrl: messageUrl,
           );
         });
         return true;
