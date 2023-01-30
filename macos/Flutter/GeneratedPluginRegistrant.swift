@@ -8,7 +8,7 @@ import Foundation
 import dynamic_color
 import macos_ui
 import package_info
-import path_provider_macos
+import path_provider_foundation
 import sqflite
 import url_launcher_macos
 

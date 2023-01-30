@@ -146,7 +146,7 @@ class ComposePage extends ConsumerWidget {
               pricePerMessageInWeiAsyncValue.when(
                 data: (price) => Center(
                   child: Text(
-                    '${price.getValueInUnit(EtherUnit.ether).toString()} ETH/message',
+                    '${price.getValueInUnit(EtherUnit.ether)} ETH/message',
                   ),
                 ),
                 loading: PlatformCircularProgressIndicator.new,

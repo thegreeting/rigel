@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-export 'package:flutter/cupertino.dart' show CupertinoDynamicColor, CupertinoColors;
+export 'package:flutter/cupertino.dart' show CupertinoColors, CupertinoDynamicColor;
 
 const _myDynamicOnPrimaryColor = CupertinoDynamicColor.withBrightness(
   color: CupertinoColors.white,
@@ -80,10 +80,10 @@ class AppTheme extends StatelessWidget {
           ),
         ),
         textTheme: TextTheme(
-          subtitle1: TextStyle(
+          titleMedium: TextStyle(
             color: AppPalette.scheme.onBackground.maybeResolve(context),
           ),
-          caption: TextStyle(
+          bodySmall: TextStyle(
             color: AppPalette.scheme.onSurfaceVariant.maybeResolve(context),
           ),
         ),

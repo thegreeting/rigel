@@ -19,7 +19,7 @@ class CaptionText extends StatelessWidget {
     return DefaultTextStyle(
       style: platformThemeData<TextStyle>(
         context,
-        material: (data) => data.textTheme.caption!.merge(style),
+        material: (data) => data.textTheme.bodySmall!.merge(style),
         cupertino: (data) => data.textTheme.textStyle
             .copyWith(
               fontSize: 14,

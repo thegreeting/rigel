@@ -45,6 +45,20 @@ class WalletConnectEthereumCredentials extends CustomTransactionSender {
   }) {
     throw UnimplementedError();
   }
+
+  @override
+  // TODO(knaoe): implement address
+  EthereumAddress get address => throw UnimplementedError();
+
+  @override
+  MsgSignature signToEcSignature(
+    Uint8List payload, {
+    int? chainId,
+    bool isEIP1559 = false,
+  }) {
+    // TODO(knaoe): implement signToEcSignature
+    throw UnimplementedError();
+  }
 }
 
 class EthereumConnector implements WalletConnector {
@@ -96,7 +110,7 @@ class EthereumConnector implements WalletConnector {
     final recipient = EthereumAddress.fromHex(address);
 
     final etherAmount =
-        EtherAmount.fromUnitAndValue(EtherUnit.szabo, (amount * 1000 * 1000).toInt());
+        EtherAmount.fromInt(EtherUnit.szabo, (amount * 1000 * 1000).toInt());
 
     final transaction = Transaction(
       to: recipient,
