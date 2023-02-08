@@ -1,5 +1,3 @@
-import 'package:altair/presentation/atom/caption_text.dart';
-import 'package:altair/presentation/atom/title_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
@@ -7,63 +5,104 @@ import 'package:go_router/go_router.dart';
 
 import '../../domain/state/connection.state.dart';
 import '../../usecase/ethereum_connector.vm.dart';
+import '../../util/flavor.provider.dart';
+import '../atom/caption_text.dart';
+import '../atom/title_text.dart';
 
 class WelcomePage extends ConsumerWidget {
   const WelcomePage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final flavor = ref.watch(flavorProvider);
     final connectionState = ref.watch(connectionStateProvider);
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Image(
-              image: AssetImage('assets/icon/theGreetingLauncher.png'),
-              width: 200,
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Gap(88),
+                  const Image(
+                    image: AssetImage('assets/icon/theGreetingLauncher.png'),
+                    width: 200,
+                  ),
+                  const Gap(32),
+                  const TitleText(
+                    'The Greeting',
+                    style: TextStyle(fontSize: 32),
+                  ),
+                  const Gap(16),
+                  const CaptionText(
+                    'Your web3 postcards',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  const Gap(4),
+                  const CaptionText(
+                    ' simple but authentic',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  const Gap(32),
+                  ElevatedButton(
+                    onPressed: () {
+                      ref.read(connectionStateProvider.notifier).connect(
+                            onCallConnect: (connector) => connector.connect(context),
+                            onConnected: () => context.push('/home'),
+                          );
+                    },
+                    child: const Text('Connect Wallet', style: TextStyle(fontSize: 20)),
+                  ),
+                  const Gap(16),
+                  if (connectionState != WalletConnectionState.disconnected)
+                    CaptionText(transactionStateToString(connectionState)),
+                  const Spacer(),
+                  const Image(
+                    image: AssetImage('assets/icon/metamask.png'),
+                    width: 64,
+                  ),
+                  const Gap(8),
+                  const CaptionText(
+                    'Scan QR code with MetaMask mobile\n(sendTransaction might fail in others)',
+                    textAlign: TextAlign.center,
+                  ),
+                  const Gap(16),
+                ],
+              ),
             ),
-            const Gap(32),
-            const TitleText(
-              'The Greeting',
-              style: TextStyle(fontSize: 32),
+          ),
+          SafeArea(
+            child: Align(
+              alignment: Alignment.topRight,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: DropdownMenu<Flavor>(
+                  initialSelection: flavor,
+                  inputDecorationTheme: const InputDecorationTheme(
+                    filled: true,
+                  ),
+                  dropdownMenuEntries: const [
+                    DropdownMenuEntry(
+                      value: Flavor.mainnet,
+                      label: 'Mainnnet',
+                    ),
+                    DropdownMenuEntry(
+                      value: Flavor.testnet,
+                      label: 'Testnet(Goerli)',
+                    ),
+                  ],
+                  onSelected: (value) {
+                    if (value != null) {
+                      ref.read(flavorProvider.notifier).update((state) => value);
+                    }
+                  },
+                ),
+              ),
             ),
-            const Gap(16),
-            const CaptionText(
-              'Your web3 postcards',
-              style: TextStyle(fontSize: 20),
-            ),
-            const Gap(4),
-            const CaptionText(
-              ' simple but authentic',
-              style: TextStyle(fontSize: 20),
-            ),
-            const Gap(32),
-            ElevatedButton(
-              onPressed: () {
-                ref.read(connectionStateProvider.notifier).connect(
-                      onCallConnect: (connector) => connector.connect(context),
-                      onConnected: () => context.push('/home'),
-                    );
-              },
-              child: const Text('Connect Wallet', style: TextStyle(fontSize: 20)),
-            ),
-            const Gap(16),
-            if (connectionState != WalletConnectionState.disconnected)
-              CaptionText(transactionStateToString(connectionState)),
-            const Gap(44),
-            const Image(
-              image: AssetImage('assets/icon/metamask.png'),
-              width: 64,
-            ),
-            const Gap(8),
-            const CaptionText(
-              'Scan QR code with MetaMask mobile\n(sendTransaction might fail in others)',
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
