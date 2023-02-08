@@ -23,6 +23,15 @@ class NotFound extends NetworkException {
         );
 }
 
+class ContractNotFound extends NetworkException {
+  ContractNotFound()
+      : super(
+          failureReason: 'Contract not found',
+          recoverySuggestion: 'It may be invalid.',
+          code: 404,
+        );
+}
+
 class ServerError extends NetworkException {
   ServerError()
       : super(

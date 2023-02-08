@@ -2,7 +2,7 @@ import 'package:altair/domain/entity/exception/general_exception.entity.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 
-import '../../application/config/config.dart';
+import '../../application/config/status.dart';
 import '../../domain/entity/exception/util/recoverable_exception.entity.dart';
 import '../../util/array.extention.dart';
 import '../atom/simple_info.dart';

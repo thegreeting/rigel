@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../util/flavor.provider.dart';
 import 'altair_route.dart';
+import 'config/status.dart';
 
 class AltairApp extends ConsumerWidget {
   const AltairApp({super.key});

@@ -234,9 +234,10 @@ class EthereumConnector implements WalletConnector {
   Web3Client get client => _ethereum;
 }
 
-Ens initEns(EthereumConnector connector, {int chainId = 1}) {
+Ens initEns(EthereumConnector connector, {int? chainId}) {
   final client = connector.client;
-  final isMainnet = chainId == 1;
+  final resolvedChainId = chainId ?? AppConstant.getChainId();
+  final isMainnet = resolvedChainId == 1;
 
   final ensResolverAddress =
       isMainnet ? null : EthereumAddress.fromHex(AppConstant.goerliEnsResolverAddress);

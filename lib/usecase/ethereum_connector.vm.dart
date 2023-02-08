@@ -27,7 +27,7 @@ final ensProvider = Provider<Ens>(
 );
 
 final theGreetingFacadeContractAddressProvider = Provider<EthereumAddress>((ref) {
-  // this is overritten while app startup. see also main.dart
+  /// this is overritten while app startup. see also [lib/main.dart]
   return EthereumAddress.fromHex('0x7cD6D292680ba5a776ECA7F062B0eE0c717e6F0A');
 });
 

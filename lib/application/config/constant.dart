@@ -1,5 +1,6 @@
-import 'package:altair/application/config/config.dart';
 import 'package:altair/util/flavor.provider.dart';
+
+import 'status.dart';
 
 mixin AppConstant {
   static const String theGreetingFacadeContractName = 'facade.thegreeting.eth';
