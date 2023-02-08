@@ -5,7 +5,7 @@
 #
 #  Created by Kenichi Naoe on 2022/02/18.
 #  
-flutter_version=`cat ../../.tool-versions | sed -nre 's/^[^0-9]*(([0-9]+\.)*[0-9]+(-([0-9]+\.)*[0-9a-zA-Z]+)?).*/\1/p' | sed 's/-stable//'`
+flutter_version=`cat ../../.tool-versions | sed -nre 's/^flutter [^0-9]*(([0-9]+\.)*[0-9]+(-([0-9]+\.)*[0-9a-zA-Z]+)?).*/\1/p' | sed 's/-stable//'`
 echo "Flutter version: `echo $flutter_version`"
 
 echo "🔵 install cocoapods"
