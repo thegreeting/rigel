@@ -1,6 +1,5 @@
 import 'package:altair/application/altair_main.dart';
-import 'package:altair/logger.dart';
-import 'package:altair/usecase/ethereum_connector.vm.dart';
+import 'package:altair/util/flavor.provider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -9,16 +8,11 @@ import 'config_main.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await configureMain();
-  final theGreetingFacadeContractAddress = await loadTheGreetingFacadeContractAddress();
-  logger.info(
-    '🟢 The Greeting Facade Contract Address loaded: $theGreetingFacadeContractAddress',
-  );
+  final initialFlavor = loadFlavor();
   runApp(
     ProviderScope(
       overrides: [
-        theGreetingFacadeContractAddressProvider.overrideWithValue(
-          theGreetingFacadeContractAddress,
-        ),
+        flavorProvider.overrideWith((_) => initialFlavor),
       ],
       child: const AltairApp(),
     ),

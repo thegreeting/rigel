@@ -12,7 +12,7 @@ final bodyProvider = StateProvider<String?>((ref) => null);
 
 final currentPricePerMessageInWeiProvider =
     FutureProvider.family<EtherAmount, String>((ref, campaignId) async {
-  final repository = ref.watch(greetingRepositoryProvider);
+  final repository = await ref.watch(greetingRepositoryProvider.future);
   return repository.getPricePerMessageInWei(campaignId);
 });
 
@@ -30,7 +30,7 @@ Future<Map<String, dynamic>> buildMetadata(
 
   final selectedGreetingWord = await (() async {
     if (!selectedGreetingWordAsyncValue.hasValue) {
-      final repo = ref.read(greetingRepositoryProvider);
+      final repo = await ref.read(greetingRepositoryProvider.future);
       return repo.getSelectedGreetingWord(campaignId, senderAddress.hex);
     } else {
       return selectedGreetingWordAsyncValue.value;

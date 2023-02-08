@@ -25,7 +25,6 @@ class WelcomePage extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Gap(88),
                   const Image(
                     image: AssetImage('assets/icon/theGreetingLauncher.png'),
                     width: 200,
@@ -53,22 +52,14 @@ class WelcomePage extends ConsumerWidget {
                             onConnected: () => context.push('/home'),
                           );
                     },
-                    child: const Text('Connect Wallet', style: TextStyle(fontSize: 20)),
+                    child: const Text(
+                      'Sign in with Wallet',
+                      style: TextStyle(fontSize: 20),
+                    ),
                   ),
                   const Gap(16),
                   if (connectionState != WalletConnectionState.disconnected)
                     CaptionText(transactionStateToString(connectionState)),
-                  const Spacer(),
-                  const Image(
-                    image: AssetImage('assets/icon/metamask.png'),
-                    width: 64,
-                  ),
-                  const Gap(8),
-                  const CaptionText(
-                    'Scan QR code with MetaMask mobile\n(sendTransaction might fail in others)',
-                    textAlign: TextAlign.center,
-                  ),
-                  const Gap(16),
                 ],
               ),
             ),

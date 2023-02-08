@@ -13,27 +13,49 @@ import '../interface_adapter/repository/greeting.contract.dart';
 import '../interface_adapter/repository/greeting.repository.dart';
 import '../util/flavor.provider.dart';
 
+final isTestnetProvider =
+    Provider<bool>((ref) => ref.watch(flavorProvider) != Flavor.mainnet);
+
+final ethChainIdProvider = Provider<int>((ref) {
+  final flavor = ref.watch(flavorProvider);
+  return AppConstant.getChainId(flavor);
+});
+
+final ethRpcUrlProvider = Provider<String>((ref) {
+  final flavor = ref.watch(flavorProvider);
+  return AppConstant.getEthRpcUrl(flavor);
+});
+
 final ethereumConnectorProvider = Provider<EthereumConnector>((ref) {
-  return EthereumConnector();
+  final ethChainId = ref.watch(ethChainIdProvider);
+  final ethRpcUrl = ref.watch(ethRpcUrlProvider);
+  return EthereumConnector(
+    chainId: ethChainId,
+    rpcUrl: ethRpcUrl,
+  );
 });
 
 final ensProvider = Provider<Ens>(
   (ref) {
-    final flavor = ref.watch(flavorProvider);
-    final chainId = AppConstant.getChainId(flavor);
     final connector = ref.watch(ethereumConnectorProvider);
-    return initEns(connector, chainId: chainId);
+    return initEns(connector);
   },
 );
 
-final theGreetingFacadeContractAddressProvider = Provider<EthereumAddress>((ref) {
-  /// this is overritten while app startup. see also [lib/main.dart]
-  return EthereumAddress.fromHex('0x7cD6D292680ba5a776ECA7F062B0eE0c717e6F0A');
+final theGreetingFacadeContractAddressProvider =
+    FutureProvider<EthereumAddress>((ref) async {
+  final ens = ref.watch(ensProvider);
+  final address = await getTheGreetingContractAddressByENS(ens);
+  logger.info(
+    '🟢 The Greeting Facade Contract Address: $address',
+  );
+  return address;
 });
 
-final theGreetingFacadeDeployedContractProvider = Provider<DeployedContract>(
-  (ref) {
-    final contractAddress = ref.watch(theGreetingFacadeContractAddressProvider);
+final theGreetingFacadeDeployedContractProvider = FutureProvider<DeployedContract>(
+  (ref) async {
+    final contractAddress =
+        await ref.watch(theGreetingFacadeContractAddressProvider.future);
     return DeployedContract(
       ContractAbi.fromJson(theGreetingContractAbi, 'The Greeting'),
       contractAddress,
@@ -41,10 +63,10 @@ final theGreetingFacadeDeployedContractProvider = Provider<DeployedContract>(
   },
 );
 
-final greetingRepositoryProvider = Provider<GreetingRepository>((ref) {
+final greetingRepositoryProvider = FutureProvider<GreetingRepository>((ref) async {
   return GreetingRepository(
     ref.watch(ethereumConnectorProvider),
-    ref.watch(theGreetingFacadeDeployedContractProvider),
+    await ref.watch(theGreetingFacadeDeployedContractProvider.future),
   );
 });
 
@@ -68,7 +90,7 @@ final myWalletAddressProvider = Provider<EthereumAddress?>((ref) {
 
 final walletDisplayAddressOrNameProviders =
     FutureProvider.family<String, String>((ref, address) async {
-  final maybeName = await getENSNameWithAddress(EthereumAddress.fromHex(address));
+  final maybeName = await getENSNameWithAddress(ref, EthereumAddress.fromHex(address));
   if (maybeName.startsWith('0x')) {
     return buildDisplayAddressText(address);
   } else {
@@ -140,22 +162,17 @@ class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {
 
   Future<void> disconnect() async {
     state = WalletConnectionState.disconnected;
-    connector = EthereumConnector();
+    connector = ref.refresh(ethereumConnectorProvider);
   }
 }
 
-Future<EthereumAddress> loadTheGreetingFacadeContractAddress() async {
-  final ens = initEns(EthereumConnector());
-  return getTheGreetingContractAddressByENS(ens);
-}
-
-Future<EthereumAddress> getAddressWithENSName(String name) async {
-  final ens = initEns(EthereumConnector());
+Future<EthereumAddress> getAddressWithENSName(WidgetRef ref, String name) async {
+  final ens = ref.watch(ensProvider);
   return ens.withName(name).getAddress();
 }
 
-Future<String> getENSNameWithAddress(EthereumAddress address) async {
-  final ens = initEns(EthereumConnector());
+Future<String> getENSNameWithAddress(Ref ref, EthereumAddress address) async {
+  final ens = ref.watch(ensProvider);
   try {
     return await ens.withAddress(address).getName();
     // ignore: avoid_catching_errors

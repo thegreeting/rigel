@@ -1,7 +1,5 @@
 import 'package:altair/util/flavor.provider.dart';
 
-import 'status.dart';
-
 mixin AppConstant {
   static const String theGreetingFacadeContractName = 'facade.thegreeting.eth';
   static const String ethMainnetRpcUrl =
@@ -11,9 +9,8 @@ mixin AppConstant {
   static const String goerliEnsResolverAddress =
       '0xE264d5bb84bA3b8061ADC38D3D76e6674aB91852';
 
-  static String getEthRpcUrl([Flavor? flavor]) {
-    final resolvedFlavor = flavor ?? App.flavor;
-    switch (resolvedFlavor) {
+  static String getEthRpcUrl(Flavor flavor) {
+    switch (flavor) {
       case Flavor.testnet:
         return ethGoerliRpcUrl;
       case Flavor.mainnet:
@@ -21,9 +18,8 @@ mixin AppConstant {
     }
   }
 
-  static int getChainId([Flavor? flavor]) {
-    final resolvedFlavor = flavor ?? App.flavor;
-    switch (resolvedFlavor) {
+  static int getChainId(Flavor flavor) {
+    switch (flavor) {
       case Flavor.testnet:
         return 5; // Goerli
       case Flavor.mainnet:

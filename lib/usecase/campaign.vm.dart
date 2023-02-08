@@ -35,6 +35,6 @@ final currentCampaignProvider = StateProvider<ShallowCampaign?>((ref) {
 });
 
 final campaignsProvider = FutureProvider<List<ShallowCampaign>>((ref) async {
-  final repository = ref.watch(greetingRepositoryProvider);
+  final repository = await ref.watch(greetingRepositoryProvider.future);
   return repository.getShallowCampaigns();
 });

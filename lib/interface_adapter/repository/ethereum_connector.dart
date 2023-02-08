@@ -63,7 +63,10 @@ class WalletConnectEthereumCredentials extends CustomTransactionSender {
 
 class EthereumConnector implements WalletConnector {
   // TODO(knaoe): chainId should be configurable
-  EthereumConnector() {
+  EthereumConnector({
+    required this.chainId,
+    required this.rpcUrl,
+  }) {
     _connector = WalletConnectQrCodeModal(
       connector: WalletConnect(
         bridge: 'https://bridge.walletconnect.org',
@@ -80,13 +83,28 @@ class EthereumConnector implements WalletConnector {
     );
 
     _provider = EthereumWalletConnectProvider(_connector.connector);
+
+    _ethereum = Web3Client(
+      rpcUrl,
+      Client(),
+      // socketConnector: () {
+      //   return IOWebSocketChannel.connect(
+      //     AppConstant.ethGoerliWsUrl,
+      //   ).cast<String>();
+      // },
+      // ,}
+    );
   }
+
+  final int chainId;
+  final String rpcUrl;
   late final WalletConnectQrCodeModal _connector;
   late final EthereumWalletConnectProvider _provider;
+  late final Web3Client _ethereum;
 
   @override
   Future<SessionStatus?> connect(BuildContext context) async {
-    return _connector.connect(context, chainId: AppConstant.getChainId());
+    return _connector.connect(context, chainId: chainId);
   }
 
   @override
@@ -179,7 +197,7 @@ class EthereumConnector implements WalletConnector {
           ),
           parameters: params,
         ),
-        chainId: AppConstant.getChainId(),
+        chainId: chainId,
       );
       logger.info(txHash);
       // ignore: avoid_catches_without_on_clauses
@@ -220,24 +238,12 @@ class EthereumConnector implements WalletConnector {
   @override
   String get coinName => 'Eth';
 
-  final _ethereum = Web3Client(
-    AppConstant.getEthRpcUrl(),
-    Client(),
-    // socketConnector: () {
-    //   return IOWebSocketChannel.connect(
-    //     AppConstant.ethGoerliWsUrl,
-    //   ).cast<String>();
-    // },
-    // ,}
-  );
-
   Web3Client get client => _ethereum;
 }
 
-Ens initEns(EthereumConnector connector, {int? chainId}) {
+Ens initEns(EthereumConnector connector) {
   final client = connector.client;
-  final resolvedChainId = chainId ?? AppConstant.getChainId();
-  final isMainnet = resolvedChainId == 1;
+  final isMainnet = connector.chainId == 1;
 
   final ensResolverAddress =
       isMainnet ? null : EthereumAddress.fromHex(AppConstant.goerliEnsResolverAddress);

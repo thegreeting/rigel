@@ -11,7 +11,7 @@ import 'ethereum_connector.vm.dart';
 
 final greetingWordsProviders =
     FutureProvider.family<List<GreetingWord>, String>((ref, campaignId) async {
-  final repo = ref.watch(greetingRepositoryProvider);
+  final repo = await ref.watch(greetingRepositoryProvider.future);
   final words = await repo.getGreetingWords(campaignId);
   return words;
 });
@@ -19,7 +19,7 @@ final greetingWordsProviders =
 final selectedGreetingWordStateNotifierProvider = StateNotifierProvider.family<
     SelectedGreetingWordStateNotifier, AsyncValue<GreetingWord>, String>(
   (ref, campaignId) {
-    final repo = ref.watch(greetingRepositoryProvider);
+    final repo = ref.watch(greetingRepositoryProvider.future);
     final sender = ref.watch(myWalletAccountProvider);
 
     return SelectedGreetingWordStateNotifier(
@@ -39,7 +39,7 @@ class SelectedGreetingWordStateNotifier
   }) : super(const AsyncValue.loading());
 
   final String campaignId;
-  final GreetingRepository repo;
+  final Future<GreetingRepository> repo;
   final WalletAccount? sender;
   bool isWaitingForTransactionConfirmation = false;
 
@@ -56,7 +56,7 @@ class SelectedGreetingWordStateNotifier
 
   Future<void> select(GreetingWord word) async {
     isWaitingForTransactionConfirmation = true;
-    await repo.setGreetingWordForWallet(campaignId, word.index);
+    await (await repo).setGreetingWordForWallet(campaignId, word.index);
 
     // wait for transaction to be confirmed.
     await Future<void>.delayed(const Duration(seconds: 5));
@@ -75,7 +75,7 @@ class SelectedGreetingWordStateNotifier
   }
 
   Future<GreetingWord> _fetchSelectedGreetingWord() async {
-    final word = await repo.getSelectedGreetingWord(campaignId, sender!.id);
+    final word = await (await repo).getSelectedGreetingWord(campaignId, sender!.id);
     if (word == null) {
       throw NeedToSelectGreetingWord();
     }

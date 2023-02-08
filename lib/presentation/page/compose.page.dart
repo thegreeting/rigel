@@ -98,6 +98,7 @@ class ComposePage extends ConsumerWidget {
                             final value = isAddress
                                 ? addressOrName
                                 : (await getAddressWithENSName(
+                                    ref,
                                     addressOrName,
                                   ))
                                     .hex;
@@ -163,7 +164,7 @@ class ComposePage extends ConsumerWidget {
   }
 
   Future<void> onSend(BuildContext context, WidgetRef ref) async {
-    final repo = ref.read(greetingRepositoryProvider);
+    final repo = await ref.read(greetingRepositoryProvider.future);
     final pricePerMessageAmount =
         await ref.read(currentPricePerMessageInWeiProvider(campaignId).future);
     final currentBalanceAmount = await ref.read(myWalletAmountProvider.future);

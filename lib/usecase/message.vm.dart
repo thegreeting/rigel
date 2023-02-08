@@ -32,7 +32,7 @@ Future<PaginatedFetchResult<Message>> innerFetchNextItems(
   String campaignId,
   MessageType type,
 ) async {
-  final repo = ref.watch(greetingRepositoryProvider);
+  final repo = await ref.watch(greetingRepositoryProvider.future);
   final messageIds = await repo.getMessageIds(
     campaignId,
     ref.watch(myWalletAccountProvider)!.id,

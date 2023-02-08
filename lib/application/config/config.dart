@@ -4,12 +4,11 @@ import '../../logger.dart';
 import '../../util/flavor.provider.dart';
 import 'status.dart';
 
-Future<void> configureRigel(Flavor overrideFlavor) async {
+Future<void> configureRigel(Flavor flavor) async {
   final packageInfo = await PackageInfo.fromPlatform();
   App.version = packageInfo.version;
   App.buildNumber = packageInfo.buildNumber;
-  App.flavor = overrideFlavor;
   logger
     ..info('App.version: ${App.version}(${App.buildNumber})')
-    ..info('App.flavor: ${App.flavor}');
+    ..info('App.flavor: $flavor');
 }
