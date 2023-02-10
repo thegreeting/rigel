@@ -13,6 +13,8 @@ _$_Message _$$_MessageFromJson(Map<String, dynamic> json) => _$_Message(
       name: json['name'] as String?,
       description: json['description'] as String,
       url: json['url'] as String?,
+      image: ImageObject.fromJson(json['image'] as Map<String, dynamic>),
+      author: Person.fromJson(json['author'] as Map<String, dynamic>),
       contentReferenceTime: json['content_reference_time'] == null
           ? null
           : DateTime.parse(json['content_reference_time'] as String),
@@ -41,6 +43,8 @@ Map<String, dynamic> _$$_MessageToJson(_$_Message instance) =>
       'name': instance.name,
       'description': instance.description,
       'url': instance.url,
+      'image': instance.image,
+      'author': instance.author,
       'content_reference_time':
           instance.contentReferenceTime?.toIso8601String(),
       'date_created': instance.dateCreated.toIso8601String(),

@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'message.entity.dart';
 
@@ -24,9 +24,11 @@ mixin _$Message {
   String get id => throw _privateConstructorUsedError;
   String? get name => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
-  String? get url =>
-      throw _privateConstructorUsedError; // required ImageObject image, // representative image
+  String? get url => throw _privateConstructorUsedError;
+  ImageObject get image =>
+      throw _privateConstructorUsedError; // representative image
 // https://schema.org/CreativeWork
+  Person get author => throw _privateConstructorUsedError;
   DateTime? get contentReferenceTime => throw _privateConstructorUsedError;
   DateTime get dateCreated =>
       throw _privateConstructorUsedError; // https://schema.org/Message
@@ -54,6 +56,8 @@ abstract class $MessageCopyWith<$Res> {
       String? name,
       String description,
       String? url,
+      ImageObject image,
+      Person author,
       DateTime? contentReferenceTime,
       DateTime dateCreated,
       DateTime? dateRead,
@@ -65,6 +69,8 @@ abstract class $MessageCopyWith<$Res> {
       bool isResonanced,
       MessageStatus status});
 
+  $ImageObjectCopyWith<$Res> get image;
+  $PersonCopyWith<$Res> get author;
   $WalletAccountCopyWith<$Res> get recipient;
   $WalletAccountCopyWith<$Res> get sender;
 }
@@ -86,6 +92,8 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
     Object? name = freezed,
     Object? description = null,
     Object? url = freezed,
+    Object? image = null,
+    Object? author = null,
     Object? contentReferenceTime = freezed,
     Object? dateCreated = null,
     Object? dateRead = freezed,
@@ -114,6 +122,14 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String?,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as ImageObject,
+      author: null == author
+          ? _value.author
+          : author // ignore: cast_nullable_to_non_nullable
+              as Person,
       contentReferenceTime: freezed == contentReferenceTime
           ? _value.contentReferenceTime
           : contentReferenceTime // ignore: cast_nullable_to_non_nullable
@@ -159,6 +175,22 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
 
   @override
   @pragma('vm:prefer-inline')
+  $ImageObjectCopyWith<$Res> get image {
+    return $ImageObjectCopyWith<$Res>(_value.image, (value) {
+      return _then(_value.copyWith(image: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $PersonCopyWith<$Res> get author {
+    return $PersonCopyWith<$Res>(_value.author, (value) {
+      return _then(_value.copyWith(author: value) as $Val);
+    });
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
   $WalletAccountCopyWith<$Res> get recipient {
     return $WalletAccountCopyWith<$Res>(_value.recipient, (value) {
       return _then(_value.copyWith(recipient: value) as $Val);
@@ -186,6 +218,8 @@ abstract class _$$_MessageCopyWith<$Res> implements $MessageCopyWith<$Res> {
       String? name,
       String description,
       String? url,
+      ImageObject image,
+      Person author,
       DateTime? contentReferenceTime,
       DateTime dateCreated,
       DateTime? dateRead,
@@ -197,6 +231,10 @@ abstract class _$$_MessageCopyWith<$Res> implements $MessageCopyWith<$Res> {
       bool isResonanced,
       MessageStatus status});
 
+  @override
+  $ImageObjectCopyWith<$Res> get image;
+  @override
+  $PersonCopyWith<$Res> get author;
   @override
   $WalletAccountCopyWith<$Res> get recipient;
   @override
@@ -217,6 +255,8 @@ class __$$_MessageCopyWithImpl<$Res>
     Object? name = freezed,
     Object? description = null,
     Object? url = freezed,
+    Object? image = null,
+    Object? author = null,
     Object? contentReferenceTime = freezed,
     Object? dateCreated = null,
     Object? dateRead = freezed,
@@ -245,6 +285,14 @@ class __$$_MessageCopyWithImpl<$Res>
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String?,
+      image: null == image
+          ? _value.image
+          : image // ignore: cast_nullable_to_non_nullable
+              as ImageObject,
+      author: null == author
+          ? _value.author
+          : author // ignore: cast_nullable_to_non_nullable
+              as Person,
       contentReferenceTime: freezed == contentReferenceTime
           ? _value.contentReferenceTime
           : contentReferenceTime // ignore: cast_nullable_to_non_nullable
@@ -297,6 +345,8 @@ class _$_Message implements _Message {
       this.name,
       required this.description,
       this.url,
+      required this.image,
+      required this.author,
       this.contentReferenceTime,
       required this.dateCreated,
       this.dateRead,
@@ -320,8 +370,12 @@ class _$_Message implements _Message {
   final String description;
   @override
   final String? url;
-// required ImageObject image, // representative image
+  @override
+  final ImageObject image;
+// representative image
 // https://schema.org/CreativeWork
+  @override
+  final Person author;
   @override
   final DateTime? contentReferenceTime;
   @override
@@ -349,7 +403,7 @@ class _$_Message implements _Message {
 
   @override
   String toString() {
-    return 'Message(id: $id, name: $name, description: $description, url: $url, contentReferenceTime: $contentReferenceTime, dateCreated: $dateCreated, dateRead: $dateRead, dateReceived: $dateReceived, dateSent: $dateSent, recipient: $recipient, sender: $sender, greetingWord: $greetingWord, isResonanced: $isResonanced, status: $status)';
+    return 'Message(id: $id, name: $name, description: $description, url: $url, image: $image, author: $author, contentReferenceTime: $contentReferenceTime, dateCreated: $dateCreated, dateRead: $dateRead, dateReceived: $dateReceived, dateSent: $dateSent, recipient: $recipient, sender: $sender, greetingWord: $greetingWord, isResonanced: $isResonanced, status: $status)';
   }
 
   @override
@@ -362,6 +416,8 @@ class _$_Message implements _Message {
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.url, url) || other.url == url) &&
+            (identical(other.image, image) || other.image == image) &&
+            (identical(other.author, author) || other.author == author) &&
             (identical(other.contentReferenceTime, contentReferenceTime) ||
                 other.contentReferenceTime == contentReferenceTime) &&
             (identical(other.dateCreated, dateCreated) ||
@@ -390,6 +446,8 @@ class _$_Message implements _Message {
       name,
       description,
       url,
+      image,
+      author,
       contentReferenceTime,
       dateCreated,
       dateRead,
@@ -421,6 +479,8 @@ abstract class _Message implements Message {
       final String? name,
       required final String description,
       final String? url,
+      required final ImageObject image,
+      required final Person author,
       final DateTime? contentReferenceTime,
       required final DateTime dateCreated,
       final DateTime? dateRead,
@@ -442,8 +502,12 @@ abstract class _Message implements Message {
   String get description;
   @override
   String? get url;
-  @override // required ImageObject image, // representative image
+  @override
+  ImageObject get image;
+  @override // representative image
 // https://schema.org/CreativeWork
+  Person get author;
+  @override
   DateTime? get contentReferenceTime;
   @override
   DateTime get dateCreated;

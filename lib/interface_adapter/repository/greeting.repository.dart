@@ -1,16 +1,21 @@
+import 'dart:convert';
+
 import 'package:altair/application/config/constant.dart';
 import 'package:altair/domain/entity/campaign/campaign.entity.dart';
 import 'package:altair/domain/entity/campaign/greeting_word.entity.dart';
 import 'package:altair/domain/entity/exception/network_exception.entity.dart';
 import 'package:altair/domain/entity/exception/util/recoverable_exception.entity.dart';
 import 'package:altair/domain/entity/messsage/message.entity.dart';
+import 'package:altair/domain/entity/primitive/person.entity.dart';
 import 'package:altair/interface_adapter/repository/ethereum_connector.dart';
 import 'package:ens_dart/ens_dart.dart';
+import 'package:http/http.dart' as http;
 import 'package:quiver/iterables.dart';
 import 'package:web3dart/json_rpc.dart';
 import 'package:web3dart/web3dart.dart';
 
 import '../../domain/entity/account/wallet_account.entity.dart';
+import '../../domain/entity/primitive/image_object.entity.dart';
 import '../../logger.dart';
 
 enum MessageType {
@@ -210,21 +215,55 @@ class GreetingRepository {
     }
 
     final messageRaw = messagesRaw[0] as List<dynamic>;
+    final sender = messageRaw[1].toString(); // address
+    final recipient = messageRaw[2].toString(); // address
+    final greetingWord = messageRaw[3].toString();
+    final messageUrl = messageRaw[4].toString() == '' ? null : messageRaw[4].toString();
+    final status = MessageStatus.fromValue((messageRaw[5] as BigInt).toInt());
+    final isResonanced = messageRaw[6] as bool;
+
+    String? description;
+    String? imageUrl;
+    if (messageUrl != null) {
+      logger.info('messageUrl: $messageUrl');
+      final ipfsContentId = messageUrl.split('/')[2];
+      final ipfsContentUrl = '${AppConstant.ipfsGatewayUrl}$ipfsContentId';
+      logger.info('ipfsContentUrl: $ipfsContentUrl');
+      // get json content by http request.
+      // TODO(knaoe): consider Retry.
+      final response = await http.get(Uri.parse(ipfsContentUrl));
+      final json = jsonDecode(response.body) as Map<String, dynamic>;
+      logger.info('content: $json');
+      description = json['description'] as String?;
+      imageUrl = json['image'] as String?;
+    }
     return Message(
-      id: messageRaw[0].toString(),
-      description: 'Retrieve from IPFS',
+      id: id.toString(),
+      description: description ?? '',
       dateCreated: DateTime.now(),
+      author: Person(
+        id: sender,
+        name: sender,
+      ),
+      image: imageUrl != null
+          ? ImageObject(
+              id: imageUrl,
+              contentUrl: imageUrl,
+              width: 512,
+              height: 512, // TODO(knaoe): get image size.
+            )
+          : ImageObject.dummy(id: id.toString()),
       sender: WalletAccount(
-        id: messageRaw[1].toString(),
-        name: messageRaw[1].toString(),
+        id: sender,
+        name: sender,
       ),
       recipient: WalletAccount(
-        id: messageRaw[2].toString(),
-        name: messageRaw[2].toString(),
+        id: recipient,
+        name: recipient,
       ),
-      greetingWord: messageRaw[3].toString(),
-      status: MessageStatus.fromValue((messageRaw[5] as BigInt).toInt()),
-      isResonanced: messageRaw[6] as bool,
+      greetingWord: greetingWord,
+      status: status,
+      isResonanced: isResonanced,
     );
   }
 

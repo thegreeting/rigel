@@ -3,7 +3,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'wallet_account.entity.dart';
+part of 'person.entity.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,12 +14,12 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-WalletAccount _$WalletAccountFromJson(Map<String, dynamic> json) {
-  return _WalletAccount.fromJson(json);
+Person _$PersonFromJson(Map<String, dynamic> json) {
+  return _Person.fromJson(json);
 }
 
 /// @nodoc
-mixin _$WalletAccount {
+mixin _$Person {
 // https://schema.org/Thing
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
@@ -30,15 +30,13 @@ mixin _$WalletAccount {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $WalletAccountCopyWith<WalletAccount> get copyWith =>
-      throw _privateConstructorUsedError;
+  $PersonCopyWith<Person> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $WalletAccountCopyWith<$Res> {
-  factory $WalletAccountCopyWith(
-          WalletAccount value, $Res Function(WalletAccount) then) =
-      _$WalletAccountCopyWithImpl<$Res, WalletAccount>;
+abstract class $PersonCopyWith<$Res> {
+  factory $PersonCopyWith(Person value, $Res Function(Person) then) =
+      _$PersonCopyWithImpl<$Res, Person>;
   @useResult
   $Res call(
       {String id,
@@ -50,9 +48,9 @@ abstract class $WalletAccountCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$WalletAccountCopyWithImpl<$Res, $Val extends WalletAccount>
-    implements $WalletAccountCopyWith<$Res> {
-  _$WalletAccountCopyWithImpl(this._value, this._then);
+class _$PersonCopyWithImpl<$Res, $Val extends Person>
+    implements $PersonCopyWith<$Res> {
+  _$PersonCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -99,11 +97,9 @@ class _$WalletAccountCopyWithImpl<$Res, $Val extends WalletAccount>
 }
 
 /// @nodoc
-abstract class _$$_WalletAccountCopyWith<$Res>
-    implements $WalletAccountCopyWith<$Res> {
-  factory _$$_WalletAccountCopyWith(
-          _$_WalletAccount value, $Res Function(_$_WalletAccount) then) =
-      __$$_WalletAccountCopyWithImpl<$Res>;
+abstract class _$$_PersonCopyWith<$Res> implements $PersonCopyWith<$Res> {
+  factory _$$_PersonCopyWith(_$_Person value, $Res Function(_$_Person) then) =
+      __$$_PersonCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -116,11 +112,10 @@ abstract class _$$_WalletAccountCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$_WalletAccountCopyWithImpl<$Res>
-    extends _$WalletAccountCopyWithImpl<$Res, _$_WalletAccount>
-    implements _$$_WalletAccountCopyWith<$Res> {
-  __$$_WalletAccountCopyWithImpl(
-      _$_WalletAccount _value, $Res Function(_$_WalletAccount) _then)
+class __$$_PersonCopyWithImpl<$Res>
+    extends _$PersonCopyWithImpl<$Res, _$_Person>
+    implements _$$_PersonCopyWith<$Res> {
+  __$$_PersonCopyWithImpl(_$_Person _value, $Res Function(_$_Person) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -133,7 +128,7 @@ class __$$_WalletAccountCopyWithImpl<$Res>
     Object? image = freezed,
     Object? nameForAvatar = freezed,
   }) {
-    return _then(_$_WalletAccount(
+    return _then(_$_Person(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -164,18 +159,17 @@ class __$$_WalletAccountCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_WalletAccount extends _WalletAccount {
-  const _$_WalletAccount(
+class _$_Person implements _Person {
+  const _$_Person(
       {required this.id,
       required this.name,
       this.description,
       this.url,
       this.image,
-      this.nameForAvatar})
-      : super._();
+      this.nameForAvatar});
 
-  factory _$_WalletAccount.fromJson(Map<String, dynamic> json) =>
-      _$$_WalletAccountFromJson(json);
+  factory _$_Person.fromJson(Map<String, dynamic> json) =>
+      _$$_PersonFromJson(json);
 
 // https://schema.org/Thing
   @override
@@ -194,14 +188,14 @@ class _$_WalletAccount extends _WalletAccount {
 
   @override
   String toString() {
-    return 'WalletAccount(id: $id, name: $name, description: $description, url: $url, image: $image, nameForAvatar: $nameForAvatar)';
+    return 'Person(id: $id, name: $name, description: $description, url: $url, image: $image, nameForAvatar: $nameForAvatar)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_WalletAccount &&
+            other is _$_Person &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.description, description) ||
@@ -220,29 +214,27 @@ class _$_WalletAccount extends _WalletAccount {
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_WalletAccountCopyWith<_$_WalletAccount> get copyWith =>
-      __$$_WalletAccountCopyWithImpl<_$_WalletAccount>(this, _$identity);
+  _$$_PersonCopyWith<_$_Person> get copyWith =>
+      __$$_PersonCopyWithImpl<_$_Person>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_WalletAccountToJson(
+    return _$$_PersonToJson(
       this,
     );
   }
 }
 
-abstract class _WalletAccount extends WalletAccount {
-  const factory _WalletAccount(
+abstract class _Person implements Person {
+  const factory _Person(
       {required final String id,
       required final String name,
       final String? description,
       final String? url,
       final String? image,
-      final String? nameForAvatar}) = _$_WalletAccount;
-  const _WalletAccount._() : super._();
+      final String? nameForAvatar}) = _$_Person;
 
-  factory _WalletAccount.fromJson(Map<String, dynamic> json) =
-      _$_WalletAccount.fromJson;
+  factory _Person.fromJson(Map<String, dynamic> json) = _$_Person.fromJson;
 
   @override // https://schema.org/Thing
   String get id;
@@ -258,6 +250,6 @@ abstract class _WalletAccount extends WalletAccount {
   String? get nameForAvatar;
   @override
   @JsonKey(ignore: true)
-  _$$_WalletAccountCopyWith<_$_WalletAccount> get copyWith =>
+  _$$_PersonCopyWith<_$_Person> get copyWith =>
       throw _privateConstructorUsedError;
 }

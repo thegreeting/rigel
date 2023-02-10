@@ -8,6 +8,7 @@ mixin AppConstant {
       'https://goerli.infura.io/v3/989337b06e1a4ad1a200faec47c291ce';
   static const String goerliEnsResolverAddress =
       '0xE264d5bb84bA3b8061ADC38D3D76e6674aB91852';
+  static const String ipfsGatewayUrl = 'https://greeting.infura-ipfs.io/ipfs/';
 
   static String getEthRpcUrl(Flavor flavor) {
     switch (flavor) {

@@ -20,6 +20,7 @@ import 'package:web3dart/web3dart.dart';
 
 import '../../usecase/campaign.vm.dart';
 import '../../usecase/ethereum_connector.vm.dart';
+import '../atom/single_image.dart';
 import '../atom/title_text.dart';
 import '../util/ui_guard.dart';
 
@@ -174,32 +175,47 @@ class HomePage extends ConsumerWidget {
                         .maybeResolve(context)!
                         .withOpacity(.2),
                     child: Padding(
-                      padding: const EdgeInsets.all(32),
+                      padding: const EdgeInsets.all(16),
                       child: Column(
                         children: [
                           ListTile(
-                            title: TitleText(
-                              '#${message.id} ${message.greetingWord}',
-                              style: const TextStyle(fontSize: 44),
+                            leading: SingleImage(
+                              message.image,
+                              width: 100,
+                              height: 100,
                             ),
-                            subtitle: Row(
+                            title: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                messageType == MessageType.incoming
-                                    ? const CaptionText('from: ')
-                                    : const CaptionText('to: '),
-                                EthereumAddressText(
-                                  messageType == MessageType.incoming
-                                      ? message.sender.name
-                                      : message.recipient.name,
+                                TitleText(
+                                  '#${message.id} ${message.greetingWord}',
+                                  style: const TextStyle(fontSize: 24),
+                                ),
+                                Text(message.description),
+                              ],
+                            ),
+                            subtitle: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    messageType == MessageType.incoming
+                                        ? const CaptionText('from: ')
+                                        : const CaptionText('to: '),
+                                    EthereumAddressText(
+                                      messageType == MessageType.incoming
+                                          ? message.sender.name
+                                          : message.recipient.name,
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    const CaptionText('Resonanced?: '),
+                                    Text(message.isResonanced.toString()),
+                                  ],
                                 ),
                               ],
                             ),
-                          ),
-                          Row(
-                            children: [
-                              const CaptionText('Resonanced?: '),
-                              Text(message.isResonanced.toString()),
-                            ],
                           ),
                         ],
                       ),

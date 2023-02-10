@@ -1,6 +1,9 @@
 import 'package:altair/domain/entity/account/wallet_account.entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../primitive/image_object.entity.dart';
+import '../primitive/person.entity.dart';
+
 part 'message.entity.freezed.dart';
 part 'message.entity.g.dart';
 
@@ -23,8 +26,9 @@ class Message with _$Message {
     String? name,
     required String description,
     String? url,
-    // required ImageObject image, // representative image
+    required ImageObject image, // representative image
     // https://schema.org/CreativeWork
+    required Person author,
     DateTime? contentReferenceTime,
     required DateTime dateCreated,
     // https://schema.org/Message
