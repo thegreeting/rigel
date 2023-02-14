@@ -232,7 +232,8 @@ class GreetingRepository {
       // get json content by http request.
       // TODO(knaoe): consider Retry.
       final response = await http.get(Uri.parse(ipfsContentUrl));
-      final json = jsonDecode(response.body) as Map<String, dynamic>;
+      final responseBody = utf8.decode(response.bodyBytes);
+      final json = jsonDecode(responseBody) as Map<String, dynamic>;
       logger.info('content: $json');
       description = json['description'] as String?;
       imageUrl = json['image'] as String?;
