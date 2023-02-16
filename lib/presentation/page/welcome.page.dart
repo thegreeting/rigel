@@ -69,22 +69,21 @@ class WelcomePage extends ConsumerWidget {
               alignment: Alignment.topRight,
               child: Padding(
                 padding: const EdgeInsets.all(16),
-                child: DropdownMenu<Flavor>(
-                  initialSelection: flavor,
-                  inputDecorationTheme: const InputDecorationTheme(
-                    filled: true,
-                  ),
-                  dropdownMenuEntries: const [
-                    DropdownMenuEntry(
+                child: DropdownButton(
+                  value: flavor,
+                  focusColor: Colors.transparent,
+                  underline: const SizedBox.shrink(),
+                  items: const [
+                    DropdownMenuItem(
                       value: Flavor.mainnet,
-                      label: 'Mainnnet',
+                      child: Text('Mainnet'),
                     ),
-                    DropdownMenuEntry(
+                    DropdownMenuItem(
                       value: Flavor.testnet,
-                      label: 'Testnet(Goerli)',
+                      child: Text('Testnet(Goerli)'),
                     ),
                   ],
-                  onSelected: (value) {
+                  onChanged: (value) {
                     if (value != null) {
                       ref.read(flavorProvider.notifier).update((state) => value);
                     }
