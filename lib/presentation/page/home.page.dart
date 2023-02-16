@@ -1,9 +1,6 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:altair/application/config/color_scheme.dart';
 import 'package:altair/domain/entity/campaign/campaign.entity.dart';
-import 'package:altair/interface_adapter/repository/greeting.repository.dart';
 import 'package:altair/presentation/atom/avatar.dart';
-import 'package:altair/presentation/atom/caption_text.dart';
 import 'package:altair/presentation/atom/ethereum_address.dart';
 import 'package:altair/presentation/atom/simple_info.dart';
 import 'package:altair/presentation/molecule/exception_info.dart';
@@ -16,12 +13,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:simple_grid/simple_grid.dart';
 import 'package:web3dart/web3dart.dart';
 
+import '../../domain/entity/messsage/message_type.enum.dart';
 import '../../usecase/campaign.vm.dart';
 import '../../usecase/ethereum_connector.vm.dart';
-import '../atom/single_image.dart';
 import '../atom/title_text.dart';
+import '../molecule/message_caed.consumer.dart';
 import '../util/ui_guard.dart';
 
 class HomePage extends ConsumerWidget {
@@ -162,67 +161,22 @@ class HomePage extends ConsumerWidget {
             onRefresh: () async {
               return ref.refresh(messagesProvider);
             },
-            child: ListView.builder(
+            child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
-              itemCount: messages.length,
-              itemBuilder: (context, index) {
-                final message = messages[index];
-                return Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Card(
-                    elevation: 0,
-                    color: AppPalette.scheme.secondaryContainer
-                        .maybeResolve(context)!
-                        .withOpacity(.2),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        children: [
-                          ListTile(
-                            leading: SingleImage(
-                              message.image,
-                              width: 100,
-                              height: 100,
-                            ),
-                            title: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                TitleText(
-                                  '#${message.id} ${message.greetingWord}',
-                                  style: const TextStyle(fontSize: 24),
-                                ),
-                                Text(message.description),
-                              ],
-                            ),
-                            subtitle: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    messageType == MessageType.incoming
-                                        ? const CaptionText('from: ')
-                                        : const CaptionText('to: '),
-                                    EthereumAddressText(
-                                      messageType == MessageType.incoming
-                                          ? message.sender.name
-                                          : message.recipient.name,
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    const CaptionText('Resonanced?: '),
-                                    Text(message.isResonanced.toString()),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
+              child: SpGrid(
+                padding: const EdgeInsets.all(16),
+                children: [
+                  for (final message in messages)
+                    SpGridItem(
+                      xs: 6,
+                      sm: 4,
+                      lg: 3,
+                      child: messageType == MessageType.incoming
+                          ? IncomingMessageCard.fromEntity(message)
+                          : OutgoingMessageCard.fromEntity(message),
                     ),
-                  ),
-                );
-              },
+                ],
+              ),
             ),
           );
         },

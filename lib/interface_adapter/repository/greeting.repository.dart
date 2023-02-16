@@ -15,16 +15,9 @@ import 'package:web3dart/json_rpc.dart';
 import 'package:web3dart/web3dart.dart';
 
 import '../../domain/entity/account/wallet_account.entity.dart';
+import '../../domain/entity/messsage/message_type.enum.dart';
 import '../../domain/entity/primitive/image_object.entity.dart';
 import '../../logger.dart';
-
-enum MessageType {
-  incoming(0),
-  sent(1);
-
-  const MessageType(this.value);
-  final int value;
-}
 
 class GreetingRepository {
   GreetingRepository(

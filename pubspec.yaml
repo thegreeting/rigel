@@ -47,6 +47,7 @@ dependencies:
   package_info: ^2.0.2
   quiver: ^3.1.0
   retry: ^3.1.0
+  simple_grid: ^0.1.2
   simple_logger: ^1.9.0+1
   timeago_flutter: ^1.2.0
   url_launcher: ^6.1.6

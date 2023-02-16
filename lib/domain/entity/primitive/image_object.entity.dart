@@ -39,7 +39,7 @@ class ImageObject with _$ImageObject {
       ImageObject(
         id: id,
         contentUrl:
-            'https://placehold.jp/fff/512x512.png?text=NoImage&css=%7B%22font-weight%22%3A%22%20bold%22%2C%22background%22%3A%22%20-webkit-gradient(linear%2C%20left%20top%2C%20right%20bottom%2C%20from(%2377bb41)%2C%20to(%23ebf38f))%22%7D',
+            'https://placehold.jp/fff/512x512.png?text=NoImage&css=%7B%22font-weight%22%3A%22%20bold%22%2C%22background%22%3A%22%20-webkit-gradient(linear%2C%20left%20top%2C%20right%20bottom%2C%20from(%23bbbbbb)%2C%20to(%23ebebeb))%22%7D',
         width: 512,
         height: 512,
       );

@@ -841,6 +841,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.3"
+  simple_grid:
+    dependency: "direct main"
+    description:
+      name: simple_grid
+      sha256: "5ff6c51bac658c87761b484c95e344933dfcaf7496b237a62a74f2d6a5a3d7ce"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.1.2"
   simple_logger:
     dependency: "direct main"
     description:

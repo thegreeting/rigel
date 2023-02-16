@@ -2,7 +2,7 @@ import 'package:altair/domain/entity/messsage/message.entity.dart';
 import 'package:altair/usecase/util/pagination_notifier.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../interface_adapter/repository/greeting.repository.dart';
+import '../domain/entity/messsage/message_type.enum.dart';
 import 'ethereum_connector.vm.dart';
 
 final currentMessageTypeProvider =
