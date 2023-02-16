@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../application/config/constant.dart';
+import '../../util/flavor.provider.dart';
+
 class EthereumAddressText extends ConsumerWidget {
   const EthereumAddressText(this.address, {super.key});
 
@@ -11,6 +14,7 @@ class EthereumAddressText extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final flavor = ref.watch(flavorProvider);
     final displayAddressOrNameAsyncValue =
         ref.watch(walletDisplayAddressOrNameProviders(address));
 
@@ -18,8 +22,8 @@ class EthereumAddressText extends ConsumerWidget {
       onPressed: () async {
         await launchUrl(
           Uri.parse(
-            'https://goerli.etherscan.io/address/$address',
-          ), // TODO(knaoe): mainnet support
+            '${AppConstant.getEtherscanUrl(flavor)}/address/$address',
+          ),
         );
       },
       child: displayAddressOrNameAsyncValue.when(

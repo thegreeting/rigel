@@ -174,7 +174,13 @@ Future<EthereumAddress> getAddressWithENSName(WidgetRef ref, String name) async 
 Future<String> getENSNameWithAddress(Ref ref, EthereumAddress address) async {
   final ens = ref.watch(ensProvider);
   try {
-    return await ens.withAddress(address).getName();
+    final name = await ens.withAddress(address).getName();
+    if (name != '') {
+      return name;
+    } else {
+      logger.warning('No ENS name found for address: ${address.hex}');
+      return address.hex;
+    }
     // ignore: avoid_catching_errors
   } on RangeError catch (_) {
     return address.hex;

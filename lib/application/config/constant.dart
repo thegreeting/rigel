@@ -27,4 +27,13 @@ mixin AppConstant {
         return 1;
     }
   }
+
+  static String getEtherscanUrl(Flavor flavor) {
+    switch (flavor) {
+      case Flavor.testnet:
+        return 'https://goerli.etherscan.io';
+      case Flavor.mainnet:
+        return 'https://etherscan.io';
+    }
+  }
 }
