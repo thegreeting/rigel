@@ -1,6 +1,6 @@
-import 'package:altair/domain/entity/account/wallet_account.entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
+import '../account/wallet_account.entity.dart';
 import '../primitive/image_object.entity.dart';
 import '../primitive/person.entity.dart';
 

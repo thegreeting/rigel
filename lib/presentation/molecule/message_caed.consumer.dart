@@ -1,12 +1,12 @@
-import 'package:altair/domain/entity/account/wallet_account.entity.dart';
-import 'package:altair/domain/entity/primitive/image_object.entity.dart';
-import 'package:altair/presentation/atom/ethereum_address.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 
 import '../../application/config/color_scheme.dart';
+import '../../domain/entity/account/wallet_account.entity.dart';
 import '../../domain/entity/messsage/message.entity.dart';
+import '../../domain/entity/primitive/image_object.entity.dart';
+import '../atom/ethereum_address.dart';
 import '../atom/single_image.dart';
 import '../atom/title_text.dart';
 

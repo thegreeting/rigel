@@ -1,11 +1,11 @@
-import 'package:altair/domain/entity/account/wallet_account.entity.dart';
-import 'package:altair/domain/entity/campaign/greeting_word.entity.dart';
-import 'package:altair/interface_adapter/repository/greeting.repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retry/retry.dart';
 import 'package:web3dart/json_rpc.dart';
 
+import '../domain/entity/account/wallet_account.entity.dart';
+import '../domain/entity/campaign/greeting_word.entity.dart';
 import '../domain/entity/exception/user_activity_exception.entity.dart';
+import '../interface_adapter/repository/greeting.repository.dart';
 import '../logger.dart';
 import 'ethereum_connector.vm.dart';
 

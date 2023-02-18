@@ -1,7 +1,8 @@
 import 'dart:convert' show jsonDecode, jsonEncode;
 
-import 'package:altair/logger.dart';
 import 'package:ipfs_client_flutter/ipfs_client_flutter.dart';
+
+import '../../logger.dart';
 
 class IpfsConnector {
   IpfsConnector({IpfsClient? client})

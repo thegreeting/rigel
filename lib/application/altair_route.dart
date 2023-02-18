@@ -1,9 +1,9 @@
-import 'package:altair/presentation/page/compose.page.dart';
-import 'package:altair/presentation/page/select_greeting_word.page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../presentation/page/compose.page.dart';
 import '../presentation/page/home.page.dart';
+import '../presentation/page/select_greeting_word.page.dart';
 import '../presentation/page/welcome.page.dart';
 
 final router = GoRouter(

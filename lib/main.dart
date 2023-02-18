@@ -1,9 +1,9 @@
-import 'package:altair/application/altair_main.dart';
-import 'package:altair/util/flavor.provider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'application/altair_main.dart';
 import 'config_main.dart';
+import 'util/flavor.provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

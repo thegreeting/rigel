@@ -1,7 +1,7 @@
-import 'package:altair/usecase/ethereum_connector.vm.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../domain/entity/campaign/campaign.entity.dart';
+import 'ethereum_connector.vm.dart';
 
 final currentCampaignProvider = StateProvider<ShallowCampaign?>((ref) {
   final campaigns = ref.watch(campaignsProvider);

@@ -1,16 +1,16 @@
-import 'package:altair/application/config/constant.dart';
-import 'package:altair/logger.dart';
 import 'package:ens_dart/ens_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:walletconnect_dart/walletconnect_dart.dart';
 import 'package:web3dart/web3dart.dart';
 
+import '../application/config/constant.dart';
 import '../domain/entity/account/wallet_account.entity.dart';
 import '../domain/state/connection.state.dart';
 import '../interface_adapter/repository/ethereum_connector.dart';
 import '../interface_adapter/repository/greeting.contract.dart';
 import '../interface_adapter/repository/greeting.repository.dart';
+import '../logger.dart';
 import '../util/flavor.provider.dart';
 
 final isTestnetProvider =

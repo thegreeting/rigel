@@ -1,4 +1,4 @@
-import 'package:altair/util/flavor.provider.dart';
+import '../../util/flavor.provider.dart';
 
 mixin AppConstant {
   static const String theGreetingFacadeContractName = 'facade.thegreeting.eth';

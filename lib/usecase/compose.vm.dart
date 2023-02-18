@@ -1,10 +1,10 @@
-import 'package:altair/logger.dart';
-import 'package:altair/usecase/greeting_word.vm.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:web3dart/web3dart.dart';
 
 import '../interface_adapter/repository/ipfs_connector.dart';
+import '../logger.dart';
 import 'ethereum_connector.vm.dart';
+import 'greeting_word.vm.dart';
 
 final toAddressProvider = StateProvider<String?>((ref) => null);
 

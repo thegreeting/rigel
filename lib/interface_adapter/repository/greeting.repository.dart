@@ -1,23 +1,23 @@
 import 'dart:convert';
 
-import 'package:altair/application/config/constant.dart';
-import 'package:altair/domain/entity/campaign/campaign.entity.dart';
-import 'package:altair/domain/entity/campaign/greeting_word.entity.dart';
-import 'package:altair/domain/entity/exception/network_exception.entity.dart';
-import 'package:altair/domain/entity/exception/util/recoverable_exception.entity.dart';
-import 'package:altair/domain/entity/messsage/message.entity.dart';
-import 'package:altair/domain/entity/primitive/person.entity.dart';
-import 'package:altair/interface_adapter/repository/ethereum_connector.dart';
 import 'package:ens_dart/ens_dart.dart';
 import 'package:http/http.dart' as http;
 import 'package:quiver/iterables.dart';
 import 'package:web3dart/json_rpc.dart';
 import 'package:web3dart/web3dart.dart';
 
+import '../../application/config/constant.dart';
 import '../../domain/entity/account/wallet_account.entity.dart';
+import '../../domain/entity/campaign/campaign.entity.dart';
+import '../../domain/entity/campaign/greeting_word.entity.dart';
+import '../../domain/entity/exception/network_exception.entity.dart';
+import '../../domain/entity/exception/util/recoverable_exception.entity.dart';
+import '../../domain/entity/messsage/message.entity.dart';
 import '../../domain/entity/messsage/message_type.enum.dart';
 import '../../domain/entity/primitive/image_object.entity.dart';
+import '../../domain/entity/primitive/person.entity.dart';
 import '../../logger.dart';
+import 'ethereum_connector.dart';
 
 class GreetingRepository {
   GreetingRepository(

@@ -21,6 +21,7 @@
       "source.fixAll": true,
       "source.organizeImports": false,
       "source.sortMembers": false,
+      "quickFix.flutter.addMissingFlutterImport": true,
     },
   },
   "dart.flutterSdkPath": "~/.asdf/installs/flutter/3.7.3-stable",

@@ -26,5 +26,6 @@ linter:
   rules:
     lines_longer_than_80_chars: false
     use_build_context_synchronously: false
+    prefer_relative_imports: true
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options

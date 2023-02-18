@@ -1,8 +1,9 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:altair/domain/entity/exception/user_activity_exception.entity.dart';
-import 'package:altair/domain/entity/exception/util/recoverable_exception.entity.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../domain/entity/exception/user_activity_exception.entity.dart';
+import '../../domain/entity/exception/util/recoverable_exception.entity.dart';
 
 typedef OptionSelectedCallback = void Function(Object error);
 

@@ -1,11 +1,11 @@
-import 'package:altair/application/config/color_scheme.dart';
-import 'package:altair/application/config/config.dart';
-import 'package:altair/usecase/ethereum_connector.vm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../usecase/ethereum_connector.vm.dart';
 import '../util/flavor.provider.dart';
 import 'altair_route.dart';
+import 'config/color_scheme.dart';
+import 'config/config.dart';
 
 class AltairApp extends ConsumerWidget {
   const AltairApp({super.key});

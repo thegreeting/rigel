@@ -1,15 +1,15 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:altair/presentation/atom/simple_info.dart';
-import 'package:altair/presentation/molecule/exception_info.dart';
-import 'package:altair/presentation/molecule/loading_info.dart';
-import 'package:altair/presentation/util/ui_guard.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../usecase/greeting_word.vm.dart';
+import '../atom/simple_info.dart';
 import '../atom/title_text.dart';
+import '../molecule/exception_info.dart';
+import '../molecule/loading_info.dart';
+import '../util/ui_guard.dart';
 
 class SelectGreetingWordPage extends ConsumerWidget {
   const SelectGreetingWordPage({

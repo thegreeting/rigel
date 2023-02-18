@@ -1,10 +1,3 @@
-import 'package:altair/application/config/color_scheme.dart';
-import 'package:altair/domain/entity/exception/user_activity_exception.entity.dart';
-import 'package:altair/logger.dart';
-import 'package:altair/presentation/atom/caption_text.dart';
-import 'package:altair/presentation/atom/simple_info.dart';
-import 'package:altair/presentation/atom/title_text.dart';
-import 'package:altair/presentation/template/loading.template.page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,9 +5,16 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:web3dart/web3dart.dart';
 
+import '../../application/config/color_scheme.dart';
+import '../../domain/entity/exception/user_activity_exception.entity.dart';
+import '../../logger.dart';
 import '../../usecase/compose.vm.dart';
 import '../../usecase/ethereum_connector.vm.dart';
 import '../../usecase/greeting_word.vm.dart';
+import '../atom/caption_text.dart';
+import '../atom/simple_info.dart';
+import '../atom/title_text.dart';
+import '../template/loading.template.page.dart';
 import '../util/exception_guard.dart';
 import '../util/ui_guard.dart';
 

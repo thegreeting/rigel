@@ -1,7 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:altair/application/config/constant.dart';
-import 'package:altair/logger.dart';
 import 'package:ens_dart/ens_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -10,6 +8,8 @@ import 'package:walletconnect_qrcode_modal_dart/walletconnect_qrcode_modal_dart.
 import 'package:web3dart/crypto.dart';
 import 'package:web3dart/web3dart.dart';
 
+import '../../application/config/constant.dart';
+import '../../logger.dart';
 import 'wallet_connector.dart';
 
 class WalletConnectEthereumCredentials extends CustomTransactionSender {

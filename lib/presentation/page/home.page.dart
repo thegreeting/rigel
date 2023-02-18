@@ -1,13 +1,4 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
-import 'package:altair/domain/entity/campaign/campaign.entity.dart';
-import 'package:altair/presentation/atom/avatar.dart';
-import 'package:altair/presentation/atom/ethereum_address.dart';
-import 'package:altair/presentation/atom/simple_info.dart';
-import 'package:altair/presentation/molecule/exception_info.dart';
-import 'package:altair/presentation/molecule/loading_info.dart';
-import 'package:altair/presentation/template/loading.template.page.dart';
-import 'package:altair/usecase/greeting_word.vm.dart';
-import 'package:altair/usecase/message.vm.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -16,11 +7,20 @@ import 'package:go_router/go_router.dart';
 import 'package:simple_grid/simple_grid.dart';
 import 'package:web3dart/web3dart.dart';
 
+import '../../domain/entity/campaign/campaign.entity.dart';
 import '../../domain/entity/messsage/message_type.enum.dart';
 import '../../usecase/campaign.vm.dart';
 import '../../usecase/ethereum_connector.vm.dart';
+import '../../usecase/greeting_word.vm.dart';
+import '../../usecase/message.vm.dart';
+import '../atom/avatar.dart';
+import '../atom/ethereum_address.dart';
+import '../atom/simple_info.dart';
 import '../atom/title_text.dart';
+import '../molecule/exception_info.dart';
+import '../molecule/loading_info.dart';
 import '../molecule/message_caed.consumer.dart';
+import '../template/loading.template.page.dart';
 import '../util/ui_guard.dart';
 
 class HomePage extends ConsumerWidget {
