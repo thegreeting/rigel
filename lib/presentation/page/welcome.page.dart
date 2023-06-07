@@ -76,7 +76,8 @@ class WelcomePage extends ConsumerWidget {
                   items: const [
                     DropdownMenuItem(
                       value: Flavor.mainnet,
-                      child: Text('Mainnet'),
+                      enabled: false,
+                      child: Text('Mainnet(Not yet)'),
                     ),
                     DropdownMenuItem(
                       value: Flavor.testnet,
