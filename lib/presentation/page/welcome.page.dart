@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../../application/config/constant.dart';
 import '../../domain/state/connection.state.dart';
 import '../../usecase/ethereum_connector.vm.dart';
 import '../../util/flavor.provider.dart';
@@ -69,26 +71,38 @@ class WelcomePage extends ConsumerWidget {
               alignment: Alignment.topRight,
               child: Padding(
                 padding: const EdgeInsets.all(16),
-                child: DropdownButton(
-                  value: flavor,
-                  focusColor: Colors.transparent,
-                  underline: const SizedBox.shrink(),
-                  items: const [
-                    DropdownMenuItem(
-                      value: Flavor.mainnet,
-                      enabled: false,
-                      child: Text('Mainnet(Not yet)'),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    TextButton(
+                      onPressed: () {
+                        launchUrl(Uri.parse(AppConstant.aboutThisProjectUrl));
+                      },
+                      child: const Text('About'),
                     ),
-                    DropdownMenuItem(
-                      value: Flavor.testnet,
-                      child: Text('Testnet(Goerli)'),
+                    const Gap(16),
+                    DropdownButton(
+                      value: flavor,
+                      focusColor: Colors.transparent,
+                      underline: const SizedBox.shrink(),
+                      items: const [
+                        DropdownMenuItem(
+                          value: Flavor.mainnet,
+                          enabled: false,
+                          child: Text('Mainnet(Not yet)'),
+                        ),
+                        DropdownMenuItem(
+                          value: Flavor.testnet,
+                          child: Text('Testnet(Goerli)'),
+                        ),
+                      ],
+                      onChanged: (value) {
+                        if (value != null) {
+                          ref.read(flavorProvider.notifier).update((state) => value);
+                        }
+                      },
                     ),
                   ],
-                  onChanged: (value) {
-                    if (value != null) {
-                      ref.read(flavorProvider.notifier).update((state) => value);
-                    }
-                  },
                 ),
               ),
             ),

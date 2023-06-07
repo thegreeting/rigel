@@ -10,6 +10,8 @@ mixin AppConstant {
       '0xE264d5bb84bA3b8061ADC38D3D76e6674aB91852';
   static const String ipfsGatewayUrl = 'https://greeting.infura-ipfs.io/ipfs/';
 
+  static const String aboutThisProjectUrl = 'https://about.greeting.network/';
+
   static String getEthRpcUrl(Flavor flavor) {
     switch (flavor) {
       case Flavor.testnet:
