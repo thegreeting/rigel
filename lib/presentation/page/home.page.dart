@@ -224,9 +224,9 @@ class HomePage extends ConsumerWidget {
                 );
 
                 if (ok) {
-                  context.push('/campaigns/${campaign.id}/compose');
+                  await context.push('/campaigns/${campaign.id}/compose');
                 } else {
-                  context.push('/campaigns/${campaign.id}/select_greeting_word');
+                  await context.push('/campaigns/${campaign.id}/select_greeting_word');
                 }
               },
             ),

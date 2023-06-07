@@ -23,13 +23,13 @@ final router = GoRouter(
         GoRoute(
           path: 'campaigns/:campaignId/select_greeting_word',
           builder: (context, state) => SelectGreetingWordPage(
-            campaignId: state.params['campaignId']!,
+            campaignId: state.pathParameters['campaignId']!,
           ),
         ),
         GoRoute(
           path: 'campaigns/:campaignId/compose',
           builder: (context, state) => ComposePage(
-            campaignId: state.params['campaignId']!,
+            campaignId: state.pathParameters['campaignId']!,
           ),
         ),
       ],
