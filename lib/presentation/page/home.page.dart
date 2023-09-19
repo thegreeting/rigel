@@ -70,7 +70,7 @@ class HomePage extends ConsumerWidget {
                     key: e,
                     label: e.name,
                   ),
-                )
+                ),
               ],
             );
             if (selectedCampaign != null && campaign != selectedCampaign) {
@@ -152,7 +152,7 @@ class HomePage extends ConsumerWidget {
                       return ref.refresh(messagesProvider);
                     },
                     child: const Text('Reload'),
-                  )
+                  ),
                 ],
               ),
             );

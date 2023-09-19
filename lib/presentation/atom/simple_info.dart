@@ -29,7 +29,7 @@ class SimpleInfo extends StatelessWidget {
             TitleText(
               title!,
             ),
-            const SizedBox(height: 8)
+            const SizedBox(height: 8),
           ],
           Text(
             message,

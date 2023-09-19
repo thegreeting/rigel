@@ -76,7 +76,7 @@ class EthereumConnector implements WalletConnector {
           url: 'https://walletconnect.org',
           icons: [
             // TODO(knaoe): use the real icon
-            'https://gblobscdn.gitbook.com/spaces%2F-LJJeCjcLrr53DcT1Ml7%2Favatar.png?alt=media'
+            'https://gblobscdn.gitbook.com/spaces%2F-LJJeCjcLrr53DcT1Ml7%2Favatar.png?alt=media',
           ],
         ),
       ),
