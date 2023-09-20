@@ -24,7 +24,7 @@
       "quickFix.flutter.addMissingFlutterImport": true,
     },
   },
-  "dart.flutterSdkPath": "~/.asdf/installs/flutter/3.7.12-stable",
+  "dart.flutterSdkPath": "~/.asdf/installs/flutter/3.10.6-stable",
   "dart.lineLength": 88,
   "dart.runPubGetOnPubspecChanges": "always",
   "cSpell.words": [],

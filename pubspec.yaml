@@ -20,7 +20,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.18.4 <3.0.0"
+  sdk: ">=2.19.0 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -29,7 +29,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
-  adaptive_dialog: ^1.8.0+1
+  adaptive_dialog: ^1.9.0+1
   cached_network_image: ^3.2.2
   cupertino_icons: ^1.0.2
   ens_dart: ^1.0.0
@@ -52,7 +52,7 @@ dependencies:
   timeago_flutter: ^3.4.0
   url_launcher: ^6.1.6
   walletconnect_dart: ^0.0.11
-  walletconnect_qrcode_modal_dart: ^0.4.1
+  walletconnect_qrcode_modal_dart: ^0.4.2
   web3dart: ^2.6.1
 
 dev_dependencies:
@@ -63,8 +63,8 @@ dev_dependencies:
     sdk: flutter
   freezed: ^2.2.1
   json_serializable: ^6.5.4
-  pedantic_mono: ^1.20.0
-  web3dart_builders: ^0.0.2 # workaround https://github.com/xclud/web3dart/issues/50 run `rm ~/.asdf/installs/flutter/3.3.7-stable/.pub-cache/hosted/pub.dartlang.org/web3dart-2.4.1/build.yaml`
+  pedantic_mono: ^1.21.1
+  web3dart_builders: ^0.0.7 # workaround https://github.com/xclud/web3dart/issues/50 run `rm ~/.asdf/installs/flutter/3.3.7-stable/.pub-cache/hosted/pub.dartlang.org/web3dart-2.4.1/build.yaml`
 
 flutter_icons:
   android: "launcher_icon"
