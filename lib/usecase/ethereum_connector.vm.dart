@@ -1,7 +1,6 @@
 import 'package:ens_dart/ens_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:walletconnect_dart/walletconnect_dart.dart';
 import 'package:web3dart/web3dart.dart';
 
 import '../application/config/constant.dart';
@@ -16,9 +15,9 @@ import '../util/flavor.provider.dart';
 final isTestnetProvider =
     Provider<bool>((ref) => ref.watch(flavorProvider) != Flavor.mainnet);
 
-final ethChainIdProvider = Provider<int>((ref) {
+final ethChainIdInNamespaceProvider = Provider<String>((ref) {
   final flavor = ref.watch(flavorProvider);
-  return AppConstant.getChainId(flavor);
+  return AppConstant.getChainIdInNamespace(flavor);
 });
 
 final ethRpcUrlProvider = Provider<String>((ref) {
@@ -27,18 +26,17 @@ final ethRpcUrlProvider = Provider<String>((ref) {
 });
 
 final ethereumConnectorProvider = Provider<EthereumConnector>((ref) {
-  final ethChainId = ref.watch(ethChainIdProvider);
-  final ethRpcUrl = ref.watch(ethRpcUrlProvider);
+  final chainIdInNamespace = ref.watch(ethChainIdInNamespaceProvider);
   return EthereumConnector(
-    chainId: ethChainId,
-    rpcUrl: ethRpcUrl,
+    chainIdInNamespace: chainIdInNamespace,
   );
 });
 
 final ensProvider = Provider<Ens>(
   (ref) {
     final connector = ref.watch(ethereumConnectorProvider);
-    return initEns(connector);
+    final ethRpcUrl = ref.watch(ethRpcUrlProvider);
+    return initEns(connector, ethRpcUrl);
   },
 );
 
@@ -124,7 +122,7 @@ final myWalletAmountProvider = FutureProvider<EtherAmount>((ref) async {
     return EtherAmount.zero();
   }
   final connector = ref.watch(ethereumConnectorProvider);
-  final amount = await connector.client.getBalance(address);
+  final amount = await connector.getBalance();
   return amount;
 });
 
@@ -138,7 +136,7 @@ class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {
   EthereumConnector connector;
 
   Future<void> connect({
-    required Future<SessionStatus?> Function(EthereumConnector connector) onCallConnect,
+    required Future<dynamic> Function(EthereumConnector connector) onCallConnect,
     VoidCallback? onConnected,
   }) async {
     state = WalletConnectionState.connecting;
@@ -147,7 +145,6 @@ class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {
       if (session != null) {
         logger.info('Session connected: $session');
         state = WalletConnectionState.connected;
-        logger.info('Wallet address: ${session.accounts.first}');
         await Future<void>.delayed(Duration.zero);
         onConnected?.call();
       } else {

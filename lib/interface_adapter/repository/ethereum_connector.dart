@@ -1,131 +1,93 @@
-import 'dart:typed_data';
-
 import 'package:ens_dart/ens_dart.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
-import 'package:walletconnect_dart/walletconnect_dart.dart';
-import 'package:walletconnect_qrcode_modal_dart/walletconnect_qrcode_modal_dart.dart';
-import 'package:web3dart/crypto.dart';
+import 'package:http/http.dart' as http;
+import 'package:walletconnect_flutter_v2/walletconnect_flutter_v2.dart';
+import 'package:walletconnect_modal_flutter/walletconnect_modal_flutter.dart';
 import 'package:web3dart/web3dart.dart';
 
 import '../../application/config/constant.dart';
 import '../../logger.dart';
+import 'utils/web3dart_extension.dart';
 import 'wallet_connector.dart';
 
-class WalletConnectEthereumCredentials extends CustomTransactionSender {
-  WalletConnectEthereumCredentials({required this.provider});
+// class WalletConnectEthereumCredentials extends CustomTransactionSender {
+//   WalletConnectEthereumCredentials({required this.provider});
 
-  final EthereumWalletConnectProvider provider;
+//   final Web3App provider;
 
-  @override
-  Future<EthereumAddress> extractAddress() {
-    throw UnimplementedError();
-  }
+//   @override
+//   Future<String> sendTransaction(Transaction transaction) async {
+//     ethSendTransaction
+//     final hash = await provider.sendTransaction(
+//       from: transaction.from!.hex,
+//       to: transaction.to?.hex,
+//       data: transaction.data,
+//       gas: transaction.maxGas,
+//       gasPrice: transaction.gasPrice?.getInWei,
+//       value: transaction.value?.getInWei,
+//       nonce: transaction.nonce,
+//     );
 
-  @override
-  Future<String> sendTransaction(Transaction transaction) async {
-    final hash = await provider.sendTransaction(
-      from: transaction.from!.hex,
-      to: transaction.to?.hex,
-      data: transaction.data,
-      gas: transaction.maxGas,
-      gasPrice: transaction.gasPrice?.getInWei,
-      value: transaction.value?.getInWei,
-      nonce: transaction.nonce,
-    );
-
-    return hash;
-  }
-
-  @override
-  Future<MsgSignature> signToSignature(
-    Uint8List payload, {
-    int? chainId,
-    bool isEIP1559 = false,
-  }) {
-    throw UnimplementedError();
-  }
-
-  @override
-  // TODO(knaoe): implement address
-  EthereumAddress get address => throw UnimplementedError();
-
-  @override
-  MsgSignature signToEcSignature(
-    Uint8List payload, {
-    int? chainId,
-    bool isEIP1559 = false,
-  }) {
-    // TODO(knaoe): implement signToEcSignature
-    throw UnimplementedError();
-  }
-}
+//     return hash;
+//   }
+// }
 
 class EthereumConnector implements WalletConnector {
   // TODO(knaoe): chainId should be configurable
   EthereumConnector({
-    required this.chainId,
-    required this.rpcUrl,
+    required this.chainIdInNamespace,
   }) {
-    _connector = WalletConnectQrCodeModal(
-      connector: WalletConnect(
-        bridge: 'https://bridge.walletconnect.org',
-        clientMeta: const PeerMeta(
-          name: 'The Greeting',
-          description: 'Your web3 postcards - simple but authentic.',
-          url: 'https://walletconnect.org',
-          icons: [
-            // TODO(knaoe): use the real icon
-            'https://gblobscdn.gitbook.com/spaces%2F-LJJeCjcLrr53DcT1Ml7%2Favatar.png?alt=media',
-          ],
+    service = WalletConnectModalService(
+      projectId: AppConstant.walletConnectV2ProjectId,
+      metadata: const PairingMetadata(
+        name: 'The Greeting',
+        description: 'Your web3 postcards - simple but authentic.',
+        url: 'https://greeting.network',
+        icons: [
+          // TODO(knaoe): replace logo.
+          'https://greeting.network/favicon.png',
+        ],
+        redirect: Redirect(
+          native: 'greeting://',
+          universal: 'https://greeting.network',
         ),
       ),
+      requiredNamespaces: {
+        'eip155': const RequiredNamespace(
+          methods: [
+            'personal_sign',
+            'eth_signTypedData',
+            'eth_sendTransaction',
+          ],
+          events: [
+            'chainChanges',
+            'accountsChanges',
+          ],
+          chains: [
+            'eip155:1',
+            'eip155:5',
+          ],
+        ),
+      },
     );
-
-    _provider = EthereumWalletConnectProvider(_connector.connector);
-
-    _ethereum = Web3Client(
-      rpcUrl,
-      Client(),
-      // socketConnector: () {
-      //   return IOWebSocketChannel.connect(
-      //     AppConstant.ethGoerliWsUrl,
-      //   ).cast<String>();
-      // },
-      // ,}
-    );
+    service.init();
   }
 
-  final int chainId;
-  final String rpcUrl;
-  late final WalletConnectQrCodeModal _connector;
-  late final EthereumWalletConnectProvider _provider;
-  late final Web3Client _ethereum;
+  final String chainIdInNamespace;
+  late final WalletConnectModalService service;
 
   @override
-  Future<SessionStatus?> connect(BuildContext context) async {
-    return _connector.connect(context, chainId: chainId);
+  Future<void> connect(BuildContext context) async {
+    return service.open(context: context);
   }
-
-  @override
-  void registerListeners(
-    OnConnectRequest? onConnect,
-    OnSessionUpdate? onSessionUpdate,
-    OnDisconnect? onDisconnect,
-  ) =>
-      _connector.registerListeners(
-        onConnect: onConnect,
-        onSessionUpdate: onSessionUpdate,
-        onDisconnect: onDisconnect,
-      );
 
   @override
   Future<String?> sendAmount({
     required String recipientAddress,
     required double amount,
   }) async {
-    final sender = EthereumAddress.fromHex(_connector.connector.session.accounts[0]);
-    final recipient = EthereumAddress.fromHex(address);
+    final sender = EthereumAddress.fromHex(address);
+    final recipient = EthereumAddress.fromHex(recipientAddress);
 
     final etherAmount =
         EtherAmount.fromInt(EtherUnit.szabo, (amount * 1000 * 1000).toInt());
@@ -138,17 +100,20 @@ class EthereumConnector implements WalletConnector {
       value: etherAmount,
     );
 
-    final credentials = WalletConnectEthereumCredentials(provider: _provider);
-
     try {
-      final txBytes = await _ethereum.sendTransaction(credentials, transaction);
-      return txBytes;
+      final txBytes = await service.web3App?.request(
+        topic: 'topic',
+        chainId: 'eip155:$chainIdInNamespace',
+        request: SessionRequestParams(
+          method: 'eth_sendTransaction',
+          params: [transaction.toJson()],
+        ),
+      );
+      return txBytes as String?;
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       logger.severe('Error: $e');
     }
-
-    await _connector.killSession();
 
     return null;
   }
@@ -158,14 +123,22 @@ class EthereumConnector implements WalletConnector {
     String functionName, {
     List<dynamic> params = const <dynamic>[],
   }) async {
+    final transaction = Transaction.callContract(
+      contract: contract,
+      function: contract.function(functionName),
+      parameters: params,
+    );
     try {
-      final result = await _ethereum.call(
-        contract: contract,
-        function: contract.function(functionName),
-        params: params,
+      final result = await service.web3App?.request(
+        topic: 'topic',
+        chainId: 'eip155:$chainIdInNamespace',
+        request: SessionRequestParams(
+          method: 'eth_sendTransaction',
+          params: [transaction.toJson(fromAddress: address)],
+        ),
       );
       logger.info('callContract $functionName result: $result');
-      return result;
+      return result as List<dynamic>;
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       logger.severe('Error: $e');
@@ -180,42 +153,43 @@ class EthereumConnector implements WalletConnector {
     EtherAmount? value,
     List<dynamic> params = const <dynamic>[],
   }) async {
-    final sender = EthereumAddress.fromHex(_connector.connector.session.accounts[0]);
-    final credentials = WalletConnectEthereumCredentials(provider: _provider);
-    var txHash = '';
+    final sender = EthereumAddress.fromHex(address);
+
+    final transaction = Transaction.callContract(
+      contract: contract,
+      function: contract.function(functionName),
+      from: sender,
+      value: value,
+      parameters: params,
+      // nonce: await _ethereum.getTransactionCount(
+      //   sender,
+      //   atBlock: const BlockNum.pending(),
+      // ),
+    );
     try {
-      txHash = await _ethereum.sendTransaction(
-        credentials,
-        Transaction.callContract(
-          contract: contract,
-          function: contract.function(functionName),
-          from: sender,
-          value: value,
-          nonce: await _ethereum.getTransactionCount(
-            sender,
-            atBlock: const BlockNum.pending(),
-          ),
-          parameters: params,
+      final txHash = await service.web3App?.request(
+        topic: 'topic',
+        chainId: 'eip155:$chainIdInNamespace',
+        request: SessionRequestParams(
+          method: 'eth_sendTransaction',
+          params: [transaction.toJson()],
         ),
-        chainId: chainId,
       );
       logger.info(txHash);
       // ignore: avoid_catches_without_on_clauses
-    } catch (e) {
+      return txHash as String;
+    } on Exception catch (e) {
       logger.severe('Error: $e');
       rethrow;
     }
-    return txHash;
   }
 
   @override
-  Future<void> openWalletApp() async => _connector.openWalletApp();
+  Future<void> openWalletApp() async => service.launchCurrentWallet();
 
   @override
-  Future<double> getBalance() async {
-    final address = EthereumAddress.fromHex(_connector.connector.session.accounts[0]);
-    final amount = await _ethereum.getBalance(address);
-    return amount.getValueInUnit(EtherUnit.ether);
+  Future<EtherAmount> getBalance() async {
+    throw UnimplementedError();
   }
 
   @override
@@ -233,20 +207,29 @@ class EthereumConnector implements WalletConnector {
   String get faucetUrl => 'https://faucet.dimensions.network/';
 
   @override
-  String get address => _connector.connector.session.accounts[0];
+  String get address {
+    final senderAddress = service.address;
+    if (senderAddress == null) {
+      throw Exception('senderAddress is null');
+    }
+    return senderAddress;
+  }
 
   @override
   String get coinName => 'Eth';
 
-  Web3Client get client => _ethereum;
+  IWeb3App? get client => service.web3App;
 }
 
-Ens initEns(EthereumConnector connector) {
-  final client = connector.client;
-  final isMainnet = connector.chainId == 1;
+Ens initEns(EthereumConnector connector, String ethRpcUrl) {
+  final isMainnet = connector.chainIdInNamespace == '1';
 
   final ensResolverAddress =
       isMainnet ? null : EthereumAddress.fromHex(AppConstant.goerliEnsResolverAddress);
-  final ens = Ens(client: client, address: ensResolverAddress);
+  final ethClient = Web3Client(
+    ethRpcUrl,
+    http.Client(),
+  );
+  final ens = Ens(client: ethClient, address: ensResolverAddress);
   return ens;
 }

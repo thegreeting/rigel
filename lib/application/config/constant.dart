@@ -11,6 +11,7 @@ mixin AppConstant {
   static const String ipfsGatewayUrl = 'https://greeting.infura-ipfs.io/ipfs/';
 
   static const String aboutThisProjectUrl = 'https://about.greeting.network/';
+  static const String walletConnectV2ProjectId = 'b60d8d8dc10c4f903466f0515f1b19e8';
 
   static String getEthRpcUrl(Flavor flavor) {
     switch (flavor) {
@@ -21,13 +22,17 @@ mixin AppConstant {
     }
   }
 
-  static int getChainId(Flavor flavor) {
+  static String getChainId(Flavor flavor) {
     switch (flavor) {
       case Flavor.testnet:
-        return 5; // Goerli
+        return 'eip155:5'; // Goerli
       case Flavor.mainnet:
-        return 1;
+        return 'eip155:1';
     }
+  }
+
+  static String getChainIdInNamespace(Flavor flavor) {
+    return getChainId(flavor).split(':')[1];
   }
 
   static String getEtherscanUrl(Flavor flavor) {

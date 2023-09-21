@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:walletconnect_modal_flutter/walletconnect_modal_flutter.dart';
 
 import '../../application/config/constant.dart';
 import '../../domain/state/connection.state.dart';
@@ -18,6 +18,7 @@ class WelcomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final flavor = ref.watch(flavorProvider);
     final connectionState = ref.watch(connectionStateProvider);
+    final connector = ref.watch(ethereumConnectorProvider);
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -47,18 +48,19 @@ class WelcomePage extends ConsumerWidget {
                     style: TextStyle(fontSize: 20),
                   ),
                   const Gap(32),
-                  ElevatedButton(
-                    onPressed: () {
-                      ref.read(connectionStateProvider.notifier).connect(
-                            onCallConnect: (connector) => connector.connect(context),
-                            onConnected: () => context.push('/home'),
-                          );
-                    },
-                    child: const Text(
-                      'Sign in with Wallet',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ),
+                  WalletConnectModalConnect(service: connector.service),
+                  // ElevatedButton(
+                  //   onPressed: () {
+                  //     ref.read(connectionStateProvider.notifier).connect(
+                  //           onCallConnect: (connector) => connector.connect(context),
+                  //           onConnected: () => context.push('/home'),
+                  //         );
+                  //   },
+                  //   child: const Text(
+                  //     'Sign in with Wallet',
+                  //     style: TextStyle(fontSize: 20),
+                  //   ),
+                  // ),
                   const Gap(16),
                   if (connectionState != WalletConnectionState.disconnected)
                     CaptionText(transactionStateToString(connectionState)),

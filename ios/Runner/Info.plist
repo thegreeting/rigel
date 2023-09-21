@@ -49,5 +49,22 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>metamask</string>
+		<string>rainbow</string>
+		<string>trust</string>
+	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+			<dict>
+					<key>CFBundleURLSchemes</key>
+					<array>
+							<string>greeting</string>
+					</array>
+					<key>CFBundleURLName</key>
+					<string>network.greeting.altair</string> <!-- Change this package name to be your package -->
+			</dict>
+	</array>
 </dict>
 </plist>
