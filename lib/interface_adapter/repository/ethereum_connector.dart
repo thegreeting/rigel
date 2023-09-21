@@ -65,9 +65,24 @@ class EthereumConnector implements WalletConnector {
           ],
           chains: [
             'eip155:1',
-            'eip155:5',
           ],
         ),
+      },
+      optionalNamespaces: {
+        'eip155': const RequiredNamespace(
+          methods: [
+            'personal_sign',
+            'eth_signTypedData',
+            'eth_sendTransaction',
+          ],
+          events: [
+            'chainChanges',
+            'accountsChanges',
+          ],
+          chains: [
+            'eip155:5',
+          ],
+        )
       },
     );
     service.init();
