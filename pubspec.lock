@@ -309,10 +309,10 @@ packages:
     dependency: transitive
     description:
       name: eip1559
-      sha256: de454d6321bd753eb79116e9ec4f8df20895c2e97f9a3839a032f3a728985516
+      sha256: c2b81ac85f3e0e71aaf558201dd9a4600f051ece7ebacd0c5d70065c9b458004
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.1"
+    version: "0.6.2"
   eip55:
     dependency: transitive
     description:
@@ -324,10 +324,11 @@ packages:
   ens_dart:
     dependency: "direct main"
     description:
-      name: ens_dart
-      sha256: "552226610f9dd5cc3cb5da1d295124528c0e912cbe0843f064bdf70c6fd051e6"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: "3c62d441cee157febf9de7a3fe0cc5edcdb6fb3a"
+      resolved-ref: "3c62d441cee157febf9de7a3fe0cc5edcdb6fb3a"
+      url: "https://github.com/Zfinix/ens_dart"
+    source: git
     version: "1.0.0"
   event:
     dependency: transitive
@@ -556,10 +557,10 @@ packages:
     dependency: "direct main"
     description:
       name: http
-      sha256: "5895291c13fa8a3bd82e76d5627f69e0d85ca6a30dcac95c4ea19a5d555879c2"
+      sha256: "759d1a329847dd0f39226c688d3e06a6b8679668e350e2891a6474f8b4bb8525"
       url: "https://pub.dev"
     source: hosted
-    version: "0.13.6"
+    version: "1.1.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -661,10 +662,10 @@ packages:
     dependency: transitive
     description:
       name: logger
-      sha256: "7ad7215c15420a102ec687bb320a7312afd449bac63bfb1c60d9787c27b9767f"
+      sha256: "6bbb9d6f7056729537a4309bda2e74e18e5d9f14302489cc1e93f33b3fe32cac"
       url: "https://pub.dev"
     source: hosted
-    version: "1.4.0"
+    version: "2.0.2+1"
   logging:
     dependency: transitive
     description:
@@ -745,6 +746,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.2"
+  package_info_plus:
+    dependency: transitive
+    description:
+      name: package_info_plus
+      sha256: "7e76fad405b3e4016cd39d08f455a4eb5199723cf594cd1b8916d47140d93017"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2.0"
+  package_info_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: package_info_plus_platform_interface
+      sha256: "9bc8ba46813a4cc42c66ab781470711781940780fd8beddd0c3da62506d3a6c6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.1"
   path:
     dependency: transitive
     description:
@@ -1306,18 +1323,18 @@ packages:
     dependency: "direct main"
     description:
       name: walletconnect_flutter_v2
-      sha256: "7429c8edfcf830e931ecd9112656a52c5f9c83cb0fcc00a1afb4f10d2be1b6e7"
+      sha256: "00005750b01c5b924fc028e329bee5a77f79691c8c537709536e8ef27360510a"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.4"
+    version: "2.1.9"
   walletconnect_modal_flutter:
     dependency: "direct main"
     description:
       name: walletconnect_modal_flutter
-      sha256: "396998f030f29565de0377f35f3916d61fdf75382141e2050752c639a1b3eb59"
+      sha256: "288ffa3ee53d7e1b47bfefef4b7d1c9d5a43076810180bcdd1dbd30adce39ef1"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.11"
+    version: "2.1.12"
   watcher:
     dependency: transitive
     description:
@@ -1330,10 +1347,10 @@ packages:
     dependency: "direct main"
     description:
       name: web3dart
-      sha256: "0b96223a6b284e3146e65dc842ded139eca68a85c4ab79c5ba1a73284927d3cd"
+      sha256: bebbea9278723cef51d21caf65668860e7547f59114fe9f8af01b873a72ba0e6
       url: "https://pub.dev"
     source: hosted
-    version: "2.6.1"
+    version: "2.7.1"
   web3dart_builders:
     dependency: "direct dev"
     description:
