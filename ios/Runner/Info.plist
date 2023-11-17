@@ -54,6 +54,7 @@
 		<string>metamask</string>
 		<string>rainbow</string>
 		<string>trust</string>
+		<string>safe</string>
 	</array>
 	<key>CFBundleURLTypes</key>
 	<array>

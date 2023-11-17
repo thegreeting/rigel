@@ -2,6 +2,7 @@ import 'package:ens_dart/ens_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:web3dart/web3dart.dart';
+import 'package:web3modal_flutter/web3modal_flutter.dart';
 
 import '../application/config/constant.dart';
 import '../domain/entity/account/wallet_account.entity.dart';
@@ -140,16 +141,19 @@ class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {
     VoidCallback? onConnected,
   }) async {
     state = WalletConnectionState.connecting;
-    try {
-      final session = await onCallConnect(connector);
-      if (session != null) {
-        logger.info('Session connected: $session');
-        state = WalletConnectionState.connected;
-        await Future<void>.delayed(Duration.zero);
-        onConnected?.call();
-      } else {
+    connector.service.addListener(serviceListener);
+    connector.service.web3App?.onSessionConnect.subscribe((session) {
+      logger.info('onSessionConnect: $session');
+      if (session == null) {
         state = WalletConnectionState.connectionCancelled;
+      } else {
+        state = WalletConnectionState.connected;
+        onConnected?.call();
       }
+    });
+
+    try {
+      await onCallConnect(connector);
       // ignore: avoid_catches_without_on_clauses
     } catch (e) {
       logger.severe(e.toString());
@@ -157,9 +161,16 @@ class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {
     }
   }
 
+  void serviceListener() {
+    logger.info('service updated: ${connector.service.web3App}');
+  }
+
+  void onSessionConnect(SessionConnect? session) {}
+
   Future<void> disconnect() async {
     state = WalletConnectionState.disconnected;
     connector = ref.refresh(ethereumConnectorProvider);
+    connector.service.removeListener(serviceListener);
   }
 }
 

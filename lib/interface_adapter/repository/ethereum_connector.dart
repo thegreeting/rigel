@@ -1,9 +1,8 @@
 import 'package:ens_dart/ens_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:walletconnect_flutter_v2/walletconnect_flutter_v2.dart';
-import 'package:walletconnect_modal_flutter/walletconnect_modal_flutter.dart';
 import 'package:web3dart/web3dart.dart';
+import 'package:web3modal_flutter/web3modal_flutter.dart';
 
 import '../../application/config/constant.dart';
 import '../../logger.dart';
@@ -37,7 +36,7 @@ class EthereumConnector implements WalletConnector {
   EthereumConnector({
     required this.chainIdInNamespace,
   }) {
-    service = WalletConnectModalService(
+    service = W3MService(
       projectId: AppConstant.walletConnectV2ProjectId,
       metadata: const PairingMetadata(
         name: 'The Greeting',
@@ -53,7 +52,7 @@ class EthereumConnector implements WalletConnector {
         ),
       ),
       requiredNamespaces: {
-        'eip155': const RequiredNamespace(
+        'eip155': const W3MNamespace(
           methods: [
             'personal_sign',
             'eth_signTypedData',
@@ -69,7 +68,7 @@ class EthereumConnector implements WalletConnector {
         ),
       },
       optionalNamespaces: {
-        'eip155': const RequiredNamespace(
+        'eip155': const W3MNamespace(
           methods: [
             'personal_sign',
             'eth_signTypedData',
@@ -82,18 +81,23 @@ class EthereumConnector implements WalletConnector {
           chains: [
             'eip155:5',
           ],
-        )
+        ),
       },
     );
     service.init();
   }
 
   final String chainIdInNamespace;
-  late final WalletConnectModalService service;
+  late final W3MService service;
+  SessionConnect? currentSession;
 
   @override
   Future<void> connect(BuildContext context) async {
-    return service.open(context: context);
+    await service.openModal(context);
+    service.web3App?.onSessionConnect.subscribe((args) {
+      logger.info('onSessionConnect: $args');
+      currentSession = args;
+    });
   }
 
   @override
@@ -101,6 +105,9 @@ class EthereumConnector implements WalletConnector {
     required String recipientAddress,
     required double amount,
   }) async {
+    if (currentSession == null) {
+      throw Exception('currentSession is null');
+    }
     final sender = EthereumAddress.fromHex(address);
     final recipient = EthereumAddress.fromHex(recipientAddress);
 
@@ -117,8 +124,8 @@ class EthereumConnector implements WalletConnector {
 
     try {
       final txBytes = await service.web3App?.request(
-        topic: 'topic',
-        chainId: 'eip155:$chainIdInNamespace',
+        topic: currentSession!.session.topic,
+        chainId: chainIdInNamespace,
         request: SessionRequestParams(
           method: 'eth_sendTransaction',
           params: [transaction.toJson()],
@@ -138,6 +145,9 @@ class EthereumConnector implements WalletConnector {
     String functionName, {
     List<dynamic> params = const <dynamic>[],
   }) async {
+    if (currentSession == null) {
+      throw Exception('currentSession is null');
+    }
     final transaction = Transaction.callContract(
       contract: contract,
       function: contract.function(functionName),
@@ -145,8 +155,8 @@ class EthereumConnector implements WalletConnector {
     );
     try {
       final result = await service.web3App?.request(
-        topic: 'topic',
-        chainId: 'eip155:$chainIdInNamespace',
+        topic: currentSession!.session.topic,
+        chainId: chainIdInNamespace,
         request: SessionRequestParams(
           method: 'eth_sendTransaction',
           params: [transaction.toJson(fromAddress: address)],
@@ -200,7 +210,7 @@ class EthereumConnector implements WalletConnector {
   }
 
   @override
-  Future<void> openWalletApp() async => service.launchCurrentWallet();
+  Future<void> openWalletApp() async => service.launchConnectedWallet();
 
   @override
   Future<EtherAmount> getBalance() async {
