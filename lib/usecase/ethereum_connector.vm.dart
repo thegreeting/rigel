@@ -74,7 +74,7 @@ final connectionStateProvider =
   return ConnectionStateNotifier(
     ref,
     ref.watch(ethereumConnectorProvider),
-  );
+  )..init();
 });
 
 final myWalletAddressProvider = Provider<EthereumAddress?>((ref) {
@@ -136,11 +136,7 @@ class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {
   final Ref ref;
   EthereumConnector connector;
 
-  Future<void> connect({
-    required Future<dynamic> Function(EthereumConnector connector) onCallConnect,
-    VoidCallback? onConnected,
-  }) async {
-    state = WalletConnectionState.connecting;
+  Future<void> init() async {
     connector.service.addListener(serviceListener);
     connector.service.web3App?.onSessionConnect.subscribe((session) {
       logger.info('onSessionConnect: $session');
@@ -148,10 +144,18 @@ class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {
         state = WalletConnectionState.connectionCancelled;
       } else {
         state = WalletConnectionState.connected;
-        onConnected?.call();
       }
     });
+    connector.service.web3App?.onSessionEvent.subscribe((event) {
+      logger.info('onSessionEvent: $event');
+    });
+  }
 
+  Future<void> connect({
+    required Future<dynamic> Function(EthereumConnector connector) onCallConnect,
+    VoidCallback? onConnected,
+  }) async {
+    state = WalletConnectionState.connecting;
     try {
       await onCallConnect(connector);
       // ignore: avoid_catches_without_on_clauses
@@ -162,10 +166,14 @@ class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {
   }
 
   void serviceListener() {
-    logger.info('service updated: ${connector.service.web3App}');
+    logger.info('session connected: ${connector.service.isConnected}');
+    if (connector.service.isConnected) {
+      logger.fine('service metadata: ${connector.service.web3App?.metadata}');
+      state = WalletConnectionState.connected;
+    } else {
+      state = WalletConnectionState.disconnected;
+    }
   }
-
-  void onSessionConnect(SessionConnect? session) {}
 
   Future<void> disconnect() async {
     state = WalletConnectionState.disconnected;

@@ -9,28 +9,6 @@ import '../../logger.dart';
 import 'utils/web3dart_extension.dart';
 import 'wallet_connector.dart';
 
-// class WalletConnectEthereumCredentials extends CustomTransactionSender {
-//   WalletConnectEthereumCredentials({required this.provider});
-
-//   final Web3App provider;
-
-//   @override
-//   Future<String> sendTransaction(Transaction transaction) async {
-//     ethSendTransaction
-//     final hash = await provider.sendTransaction(
-//       from: transaction.from!.hex,
-//       to: transaction.to?.hex,
-//       data: transaction.data,
-//       gas: transaction.maxGas,
-//       gasPrice: transaction.gasPrice?.getInWei,
-//       value: transaction.value?.getInWei,
-//       nonce: transaction.nonce,
-//     );
-
-//     return hash;
-//   }
-// }
-
 class EthereumConnector implements WalletConnector {
   // TODO(knaoe): chainId should be configurable
   EthereumConnector({
@@ -83,6 +61,7 @@ class EthereumConnector implements WalletConnector {
           ],
         ),
       },
+      logLevel: LogLevel.debug,
     );
     service.init();
   }

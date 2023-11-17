@@ -20,6 +20,13 @@ class WelcomePage extends ConsumerWidget {
     final flavor = ref.watch(flavorProvider);
     final connectionState = ref.watch(connectionStateProvider);
     final connector = ref.watch(ethereumConnectorProvider);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (connectionState == WalletConnectionState.connected) {
+        context.replace('/home');
+      }
+    });
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -50,21 +57,9 @@ class WelcomePage extends ConsumerWidget {
                   ),
                   const Gap(32),
                   W3MConnectWalletButton(service: connector.service),
-                  ElevatedButton(
-                    onPressed: () {
-                      ref.read(connectionStateProvider.notifier).connect(
-                            onCallConnect: (connector) => connector.connect(context),
-                            onConnected: () => context.push('/home'),
-                          );
-                    },
-                    child: const Text(
-                      'Sign in with Wallet',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ),
                   const Gap(16),
-                  // if (connectionState != WalletConnectionState.disconnected)
-                  CaptionText(transactionStateToString(connectionState)),
+                  if (connectionState != WalletConnectionState.disconnected)
+                    CaptionText(transactionStateToString(connectionState)),
                 ],
               ),
             ),
