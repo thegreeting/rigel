@@ -56,7 +56,13 @@ class WelcomePage extends ConsumerWidget {
                     style: TextStyle(fontSize: 20),
                   ),
                   const Gap(32),
-                  W3MConnectWalletButton(service: connector.service),
+                  if (connector.service.isConnected)
+                    W3MAccountButton(service: connector.service)
+                  else ...[
+                    W3MNetworkSelectButton(service: connector.service),
+                    const Gap(16),
+                    W3MConnectWalletButton(service: connector.service),
+                  ],
                   const Gap(16),
                   if (connectionState != WalletConnectionState.disconnected)
                     CaptionText(transactionStateToString(connectionState)),

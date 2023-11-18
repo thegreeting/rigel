@@ -2,7 +2,6 @@ import 'package:ens_dart/ens_dart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:web3dart/web3dart.dart';
-import 'package:web3modal_flutter/web3modal_flutter.dart';
 
 import '../application/config/constant.dart';
 import '../domain/entity/account/wallet_account.entity.dart';
@@ -16,9 +15,9 @@ import '../util/flavor.provider.dart';
 final isTestnetProvider =
     Provider<bool>((ref) => ref.watch(flavorProvider) != Flavor.mainnet);
 
-final ethChainIdInNamespaceProvider = Provider<String>((ref) {
+final ethChainIdProvider = Provider<String>((ref) {
   final flavor = ref.watch(flavorProvider);
-  return AppConstant.getChainIdInNamespace(flavor);
+  return AppConstant.getChainId(flavor);
 });
 
 final ethRpcUrlProvider = Provider<String>((ref) {
@@ -27,9 +26,9 @@ final ethRpcUrlProvider = Provider<String>((ref) {
 });
 
 final ethereumConnectorProvider = Provider<EthereumConnector>((ref) {
-  final chainIdInNamespace = ref.watch(ethChainIdInNamespaceProvider);
+  final chainId = ref.watch(ethChainIdProvider);
   return EthereumConnector(
-    chainIdInNamespace: chainIdInNamespace,
+    chainId: chainId,
   );
 });
 
@@ -138,14 +137,6 @@ class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {
 
   Future<void> init() async {
     connector.service.addListener(serviceListener);
-    connector.service.web3App?.onSessionConnect.subscribe((session) {
-      logger.info('onSessionConnect: $session');
-      if (session == null) {
-        state = WalletConnectionState.connectionCancelled;
-      } else {
-        state = WalletConnectionState.connected;
-      }
-    });
     connector.service.web3App?.onSessionEvent.subscribe((event) {
       logger.info('onSessionEvent: $event');
     });
@@ -169,7 +160,12 @@ class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {
     logger.info('session connected: ${connector.service.isConnected}');
     if (connector.service.isConnected) {
       logger.fine('service metadata: ${connector.service.web3App?.metadata}');
-      state = WalletConnectionState.connected;
+      final sessions = connector.service.web3App?.getActiveSessions();
+      if (sessions != null && sessions.isNotEmpty) {
+        state = WalletConnectionState.connected;
+      } else {
+        state = WalletConnectionState.disconnected;
+      }
     } else {
       state = WalletConnectionState.disconnected;
     }

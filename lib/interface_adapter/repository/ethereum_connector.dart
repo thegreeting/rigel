@@ -12,7 +12,7 @@ import 'wallet_connector.dart';
 class EthereumConnector implements WalletConnector {
   // TODO(knaoe): chainId should be configurable
   EthereumConnector({
-    required this.chainIdInNamespace,
+    required this.chainId,
   }) {
     service = W3MService(
       projectId: AppConstant.walletConnectV2ProjectId,
@@ -30,53 +30,34 @@ class EthereumConnector implements WalletConnector {
         ),
       ),
       requiredNamespaces: {
-        'eip155': const W3MNamespace(
+        'eip155': W3MNamespace(
           methods: [
-            'personal_sign',
+            ...EthConstants.requiredMethods,
             'eth_signTypedData',
-            'eth_sendTransaction',
           ],
-          events: [
-            'chainChanges',
-            'accountsChanges',
-          ],
+          events: EthConstants.requiredEvents,
           chains: [
-            'eip155:1',
+            W3MChainPresets.chains['1']!.namespace,
+            'eip155:5', // Goerli
           ],
         ),
       },
-      optionalNamespaces: {
-        'eip155': const W3MNamespace(
-          methods: [
-            'personal_sign',
-            'eth_signTypedData',
-            'eth_sendTransaction',
-          ],
-          events: [
-            'chainChanges',
-            'accountsChanges',
-          ],
-          chains: [
-            'eip155:5',
-          ],
-        ),
-      },
-      logLevel: LogLevel.debug,
+      logLevel: LogLevel.verbose,
     );
     service.init();
   }
 
-  final String chainIdInNamespace;
+  final String chainId;
   late final W3MService service;
-  SessionConnect? currentSession;
 
   @override
   Future<void> connect(BuildContext context) async {
     await service.openModal(context);
-    service.web3App?.onSessionConnect.subscribe((args) {
-      logger.info('onSessionConnect: $args');
-      currentSession = args;
-    });
+  }
+
+  SessionData? getCurrentSession() {
+    final sessions = service.web3App?.getActiveSessions();
+    return sessions?.values.first;
   }
 
   @override
@@ -84,6 +65,8 @@ class EthereumConnector implements WalletConnector {
     required String recipientAddress,
     required double amount,
   }) async {
+    logger.info('sendAmount $recipientAddress $amount');
+    final currentSession = getCurrentSession();
     if (currentSession == null) {
       throw Exception('currentSession is null');
     }
@@ -103,8 +86,8 @@ class EthereumConnector implements WalletConnector {
 
     try {
       final txBytes = await service.web3App?.request(
-        topic: currentSession!.session.topic,
-        chainId: chainIdInNamespace,
+        topic: currentSession.topic,
+        chainId: chainId,
         request: SessionRequestParams(
           method: 'eth_sendTransaction',
           params: [transaction.toJson()],
@@ -124,7 +107,10 @@ class EthereumConnector implements WalletConnector {
     String functionName, {
     List<dynamic> params = const <dynamic>[],
   }) async {
+    logger.info('callContract $functionName params: $params');
+    final currentSession = getCurrentSession();
     if (currentSession == null) {
+      logger.severe('currentSession is null');
       throw Exception('currentSession is null');
     }
     final transaction = Transaction.callContract(
@@ -132,10 +118,11 @@ class EthereumConnector implements WalletConnector {
       function: contract.function(functionName),
       parameters: params,
     );
+    logger.info('callContract $functionName transaction: $transaction');
     try {
       final result = await service.web3App?.request(
-        topic: currentSession!.session.topic,
-        chainId: chainIdInNamespace,
+        topic: currentSession.topic,
+        chainId: chainId,
         request: SessionRequestParams(
           method: 'eth_sendTransaction',
           params: [transaction.toJson(fromAddress: address)],
@@ -157,6 +144,7 @@ class EthereumConnector implements WalletConnector {
     EtherAmount? value,
     List<dynamic> params = const <dynamic>[],
   }) async {
+    logger.info('sendTransactionViaContract $functionName params: $params');
     final sender = EthereumAddress.fromHex(address);
 
     final transaction = Transaction.callContract(
@@ -173,7 +161,7 @@ class EthereumConnector implements WalletConnector {
     try {
       final txHash = await service.web3App?.request(
         topic: 'topic',
-        chainId: 'eip155:$chainIdInNamespace',
+        chainId: chainId,
         request: SessionRequestParams(
           method: 'eth_sendTransaction',
           params: [transaction.toJson()],
@@ -226,7 +214,7 @@ class EthereumConnector implements WalletConnector {
 }
 
 Ens initEns(EthereumConnector connector, String ethRpcUrl) {
-  final isMainnet = connector.chainIdInNamespace == '1';
+  final isMainnet = connector.chainId == 'eip155:1';
 
   final ensResolverAddress =
       isMainnet ? null : EthereumAddress.fromHex(AppConstant.goerliEnsResolverAddress);
