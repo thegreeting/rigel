@@ -59,7 +59,10 @@ class WelcomePage extends ConsumerWidget {
                   if (connector.service.isConnected)
                     W3MAccountButton(service: connector.service)
                   else ...[
-                    W3MNetworkSelectButton(service: connector.service),
+                    W3MNetworkSelectButton(
+                      service: connector.service,
+                      size: BaseButtonSize.small,
+                    ),
                     const Gap(16),
                     W3MConnectWalletButton(service: connector.service),
                   ],

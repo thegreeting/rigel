@@ -157,7 +157,9 @@ class ConnectionStateNotifier extends StateNotifier<WalletConnectionState> {
   }
 
   void serviceListener() {
-    logger.info('session connected: ${connector.service.isConnected}');
+    logger.info(
+      'session connected: ${connector.service.isConnected}, chain: ${connector.service.selectedChain?.chainId}',
+    );
     if (connector.service.isConnected) {
       logger.fine('service metadata: ${connector.service.web3App?.metadata}');
       final sessions = connector.service.web3App?.getActiveSessions();
