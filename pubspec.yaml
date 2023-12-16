@@ -20,7 +20,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: ">=3.2.0 <4.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -39,7 +39,7 @@ dependencies:
       ref: 3c62d441cee157febf9de7a3fe0cc5edcdb6fb3a
   flutter:
     sdk: flutter
-  flutter_platform_widgets: ^3.3.5
+  flutter_platform_widgets: ^6.0.2
   flutter_riverpod: ^2.1.1
   freezed_annotation: ^2.2.0
   gap: ^3.0.0
@@ -55,8 +55,8 @@ dependencies:
   simple_logger: ^1.9.0+1
   timeago_flutter: ^3.4.0
   url_launcher: ^6.1.6
-  web3dart: ^2.7.1
-  web3modal_flutter: ^3.0.0
+  web3dart: ^2.7.2
+  web3modal_flutter: ^3.0.20
 
 dev_dependencies:
   build_runner: ^2.3.2
