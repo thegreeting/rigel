@@ -30,14 +30,21 @@ class EthereumConnector implements WalletConnector {
         ),
       ),
       requiredNamespaces: {
-        'eip155': W3MNamespace(
-          methods: [
-            ...EthConstants.requiredMethods,
-            'eth_signTypedData',
-          ],
+        'eip155': const W3MNamespace(
+          methods: EthConstants.requiredMethods,
           events: EthConstants.requiredEvents,
           chains: [
-            W3MChainPresets.chains['1']!.namespace,
+            // W3MChainPresets.chains['1']!.namespace,
+            'eip155:5', // Goerli
+          ],
+        ),
+      },
+      optionalNamespaces: {
+        'eip155': const W3MNamespace(
+          methods: EthConstants.requiredMethods,
+          events: EthConstants.requiredEvents,
+          chains: [
+            // W3MChainPresets.chains['1']!.namespace,
             'eip155:5', // Goerli
           ],
         ),
@@ -45,6 +52,15 @@ class EthereumConnector implements WalletConnector {
       logLevel: LogLevel.verbose,
     );
     service.init();
+    service.selectChain(
+      W3MChainInfo(
+        chainName: 'Goerli',
+        chainId: 'eip155:5',
+        namespace: 'eip155',
+        tokenName: 'GoerliETH',
+        rpcUrl: AppConstant.ethGoerliRpcUrl,
+      ),
+    );
   }
 
   final String chainId;
@@ -114,18 +130,23 @@ class EthereumConnector implements WalletConnector {
       throw Exception('currentSession is null');
     }
     final transaction = Transaction.callContract(
+      from: EthereumAddress.fromHex(address),
       contract: contract,
       function: contract.function(functionName),
       parameters: params,
+      gasPrice: EtherAmount.inWei(BigInt.one),
+      maxGas: 100000,
     );
-    logger.info('callContract $functionName transaction: $transaction');
+    logger
+      ..info('selected chain: ${service.selectedChain}')
+      ..info('callContract $functionName transaction: ${transaction.toJson()}');
     try {
       final result = await service.web3App?.request(
         topic: currentSession.topic,
         chainId: chainId,
         request: SessionRequestParams(
           method: 'eth_sendTransaction',
-          params: [transaction.toJson(fromAddress: address)],
+          params: [transaction.toJson()],
         ),
       );
       logger.info('callContract $functionName result: $result');
